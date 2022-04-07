@@ -1,0 +1,8 @@
+{
+    "git.ignoreLimitWarning": true,
+    "workbench.editor.showTabs": true,
+    "angular.enable-strict-mode-prompt": false,
+    "svn.ignoreMissingSvnWarning": true,
+    "powermode.enabled": true,
+    "powermode.presets": "flames"
+}

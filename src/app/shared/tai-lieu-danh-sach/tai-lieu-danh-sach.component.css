@@ -1,0 +1,50 @@
+
+.title {
+    font-size: 16px;
+    font-weight: bold;
+    margin-right: 6px;
+    margin-bottom: 0;
+}
+
+header {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 20px;
+}
+.self-upload,
+.pc-upload {
+    display: flex;
+    align-items: center;    
+    position: relative;
+    padding: 0 8px;
+    overflow: hidden;
+}
+
+.pc-upload {
+    border-right: 1px solid rgb(39, 114, 255);
+}
+
+.self-upload:hover,
+.pc-upload:hover {
+    cursor: pointer;
+}
+
+.pc-upload input {
+    position: absolute;
+    top: 0;
+    left: 0;
+    opacity: 0;
+}
+
+.pc-upload input:hover {
+    cursor: pointer;
+}
+
+.self-upload a,
+.pc-upload p {
+    font-style: italic;
+    color: rgb(0, 89, 255);
+    text-decoration: underline;
+    margin-bottom: 0;
+}

@@ -1,0 +1,400 @@
+<div class="modal-header">
+    <h5 class="modal-title">Thống kê sản lượng</h5>
+    <!-- <div class="p-col-12 p-lg-4 p-p-0 d-flex flex-column flex-lg-row">
+        <label class="p-col-12 p-lg-4 p-p-0 my-auto">Nhà máy:</label>
+        <div class="p-col-12 p-lg-8 p-p-0">
+            <p-dropdown [filter]="true" [options]="listNhaMay" placeholder="Chọn nhà máy" styleClass="p-inputtext-sm"
+                [(ngModel)]="item.NhaMay" [disabled]="true"></p-dropdown>
+        </div>
+    </div> -->
+    <div class="d-flex flex-column flex-lg-row">
+        <div>
+            <span style="font-weight: bold;">Số quy trình:</span> {{item.SoQuyTrinh}}
+        </div>
+        <div class="ml-lg-3 mr-lg-3">
+            <span style="font-weight: bold;">TG Tạo:</span> {{item.Created|date:"dd/MM/yyyy HH:mm"}}
+        </div>
+        <div>
+            <span style="font-weight: bold;">TG Duyệt:</span> {{item.Modified|date:"dd/MM/yyyy HH:mm"}}
+        </div>
+    </div>
+    <button *ngIf="false" type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+<div class="modal-body">
+    <div class="p-d-flex p-flex-row p-jc-between">
+        <div class="modal-bt p-mb-4 ">
+            <button pButton pRipple type="button" label="Quay lại" class="p-mr-2 p-button-sm"
+                (click)="onClose()"></button>
+            <!-- <button pButton pRipple type="button" label="Định mức" class="p-mr-2 p-button-sm " (click)="DinhMuc()"></button> -->
+            <button pButton pRipple type="button" label="Lưu nháp" class="p-mr-2 p-button-sm " (click)="GhiLai()"
+                *ngIf="checkbutton.Ghi"></button>
+            <button pButton pRipple type="button" label="Xóa" class="p-mr-2 p-button-sm" *ngIf="checkbutton.Xoa"
+                (click)="XoaQuyTrinh()"></button>
+            <!-- <button pButton pRipple type="button" label="Không duyệt" class="p-mr-2 p-button-sm" (click)="KhongDuyet()"
+                *ngIf="checkbutton.KhongDuyet"></button> -->
+            <button pButton pRipple type="button" label="Xác nhận" class="p-mr-2 p-button-sm" (click)="ChuyenDuyet()"
+                *ngIf="checkbutton.ChuyenTiep"></button>
+            <!-- <button pButton pRipple type="button" label="Kết xuất" class="p-mr-2 p-button-sm"></button> -->
+        </div>
+
+    </div>
+    <div class="p-grid">
+        <div class="p-col-12 p-lg-4 p-p-3 d-flex flex-column flex-lg-row">
+            <label class="p-col-12 p-lg-4 p-p-0 my-auto">Ngày:</label>
+            <div class="p-col-12 p-lg-8 p-p-0">
+                <p-calendar dateFormat="dd/mm/yy" inputStyleClass="p-inputtext-sm" [locale]="lang"
+                    [monthNavigator]="true" [yearNavigator]="true" [yearRange]="yearRange" [showIcon]="true"
+                    [(ngModel)]="item.Ngay" inputId="icon" placeholder="dd/mm/yyyy"
+                    (onSelect)="getMatHangThongKeSanLuong()">
+                </p-calendar>
+            </div>
+        </div>
+        <div class="p-col-12 p-lg-4 p-p-3 d-flex flex-column flex-lg-row">
+            <label class="p-col-12 p-lg-4 p-p-0 my-auto">Thời điểm:</label>
+            <div class="p-col-12 p-lg-8 p-p-0">
+                <p-dropdown [filter]="true" [options]="listCaSanXuat" placeholder="Thời điểm"
+                    styleClass="p-inputtext-sm" [(ngModel)]="item.IddmCaSanXuat"
+                    (onChange)="getMatHangThongKeSanLuong()"></p-dropdown>
+            </div>
+        </div>
+        <div class="p-col-12 p-lg-4 p-p-3 d-flex flex-column flex-lg-row">
+            <label class="p-col-12 p-lg-4 p-p-0 my-auto">Phân xưởng:</label>
+            <div class="p-col-12 p-lg-8 p-p-0">
+                <p-dropdown [filter]="true" [options]="listPhanXuong" placeholder="Chọn phân xưởng"
+                    styleClass="p-inputtext-sm" [(ngModel)]="item.IddmPhanXuong" (onChange)="ThayDoiPhanXuong()">
+                </p-dropdown>
+            </div>
+        </div>
+        <div class="p-col-12 p-lg-4 p-p-3 d-flex flex-column flex-lg-row">
+            <label class="p-col-12 p-lg-4 p-p-0 my-auto">Công đoạn:</label>
+            <div class="p-col-12 p-lg-8 p-p-0">
+                <p-dropdown [filter]="true" [options]="listCongDoan" placeholder="Chọn công đoạn"
+                    styleClass="p-inputtext-sm" [(ngModel)]="item.CongDoan" (onChange)="getItemTheoCongDoan()">
+                </p-dropdown>
+            </div>
+        </div>
+        <div class="p-col-12 p-lg-4 p-p-3 d-flex flex-column flex-lg-row">
+            <label class="p-col-12 p-lg-4 p-p-0 my-auto">Ca<span class="text-danger">*</span>:</label>
+            <div class="p-col-12 p-lg-8 p-p-0">
+                <p-dropdown [filter]="true" [options]="listCaThucTe" placeholder="Ca" styleClass="p-inputtext-sm"
+                    [(ngModel)]="item.IddmCaSanXuatThucTe"></p-dropdown>
+            </div>
+        </div>
+        <!-- <div class="p-col-12 p-lg-4 p-p-3 d-flex flex-column flex-lg-row" *ngIf="item.CongDoan=='ONG'">
+            <label class="p-col-12 p-lg-4 p-p-0 my-auto">Lô hàng:</label>
+            <div class="p-col-12 p-lg-8 p-p-0">
+                <p-dropdown [filter]="true" [options]="listLoHang" placeholder="Chọn lô hàng" styleClass="p-inputtext-sm"
+                    [(ngModel)]="item.IdLoHang"></p-dropdown>
+            </div>
+            <button pButton pRipple icon="pi pi-plus" class="p-button-sm p-mr-2" (click)="addLoHang()"></button>
+        </div> -->
+        <div class="p-col-12 p-lg-4 p-p-3 d-flex flex-column flex-lg-row">
+            <label class="p-col-12 p-lg-4 p-p-0 my-auto">Ghi chú:</label>
+            <div class="p-col-12 p-lg-8 p-p-0">
+                <input type="text" class="p-inputtext-sm" [(ngModel)]="item.GhiChu" pInputText />
+            </div>
+        </div>
+        <div class="p-col-12 p-lg-12 p-p-3 d-flex flex-column flex-lg-row">
+            <label class="p-col-12 p-lg-1 p-p-0 my-auto">Nội dung:</label>
+            <div class="p-col-12 p-lg-11 p-p-0">
+                <!-- <input type="text" class="p-inputtext-sm" [(ngModel)]="item.NoiDung" pInputText /> -->
+                <textarea pInputTextarea [(ngModel)]="item.NoiDung"></textarea>
+            </div>
+        </div>
+        <!-- <div class="p-col-12 p-lg-4 p-p-3 d-flex flex-column flex-lg-row">
+            <label class="p-col-12 p-lg-4 p-p-0 my-auto">Trừ vào sản lượng gian máy:</label>
+            <div class="p-col-12 p-lg-8 p-p-0">
+                <input type="checkbox" class="p-inputtext-sm text-left" [(ngModel)]="item.isTruVaoSanLuong" (change)="TinhTongKhoiLuongBong()"/>
+            </div>
+        </div> -->
+        <div class="p-col-12 p-p-0 d-flex flex-column">
+            <p-table [lazy]="true"
+                [value]="listItem.concat(['clone','clone','clone','clone','clone','clone','clone']) |isXoa"
+                [scrollable]="true" styleClass="p-datatable-sm wrap-text p-datatable-striped">
+                <ng-template pTemplate="colgroup">
+                    <colgroup>
+                        <col style="width:50px">
+                        <col style="width: 10rem;">
+                        <col style="width: 5rem;">
+                        <col style="width: 10rem;">
+                        <col style="width: 10rem;">
+                        <col style="width: 10rem;">
+                        <col *ngIf="item.CongDoan==='ONG'" style="width: 10rem;">
+                        <col *ngIf="item.CongDoan==='ONG'" style="width: 10rem;">
+                        <col *ngIf="item.CongDoan!=='ONG'" style="width: 10rem;">
+                        <col *ngIf="item.CongDoan==='CON'" style="width: 9rem;">
+                        <col *ngIf="item.CongDoan==='CON'" style="width: 5rem;">
+                        <col *ngIf="item.CongDoan==='CON'" style="width: 5rem;">
+                        <col *ngIf="item.CongDoan==='THO'" style="width: 6rem;">
+                        <col style="width: 10rem;">
+                    </colgroup>
+                    <!-- <colgroup>
+                        <col style="width:50px">
+                        <col style="width: 10rem;">
+                        <col>
+                        <col style="width: 10rem;">
+                        <col *ngIf="item.CongDoan==='ONG'" style="width: 10rem;">
+                        <col *ngIf="item.CongDoan==='ONG'" style="width: 10rem;">
+                        <col *ngIf="item.CongDoan!=='ONG'" style="width: 10rem;">
+                        <col>
+                        <col>
+                        <col *ngIf="item.CongDoan==='CON'" style="width: 10rem;">
+                        <col *ngIf="item.CongDoan==='CON'">
+                        <col *ngIf="item.CongDoan==='CON'">
+                        <col *ngIf="item.CongDoan==='THO'">
+                        <col>
+                    </colgroup> -->
+                </ng-template>
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th>#</th>
+                        <th>Số máy</th>
+                        <th>Ne</th>
+                        <th>Mặt hàng</th>
+                        <th *ngIf="item.CongDoan==='ONG'">Lô hàng</th>
+                        <th *ngIf="item.CongDoan==='ONG'">Sản lượng màn hình (kg)</th>
+                        <th *ngIf="item.CongDoan!=='ONG'">Khối lượng (kg)</th>
+                        <th>Sản lượng định mức</th>
+                        <th>Chiều dài (m)</th>
+                        <!-- <th *ngIf="item.CongDoan==='GHEPSOBOCOTTON'">Cúi hồi (kg)</th> -->
+                        <th *ngIf="item.CongDoan==='CON'">Chữ đồng hồ (g/cọc)
+                            <p-checkbox [(ngModel)]="checkedAll" (onChange)="checkAll($event)" binary="true"
+                                inputId="binary"></p-checkbox>
+                        </th>
+                        <th *ngIf="item.CongDoan==='CON' || item.CongDoan==='THO'">Cọc chết (cọc)</th>
+                        <th *ngIf="item.CongDoan==='CON'">Hút mối (kg)</th>
+                        <th>Ghi chú</th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-itemtbl let-i="rowIndex">
+                    <ng-container *ngIf="itemtbl!=='clone'">
+                        <tr>
+                            <td>{{i+1}}</td>
+                            <td class="text-left">{{itemtbl.TendmMay}}</td>
+                            <td class="text-left">{{itemtbl.Ne}}</td>
+                            <td class="text-left">{{itemtbl.Ten}} <span
+                                    *ngIf="item.CongDoan==='ONG'&& itemtbl.IdLoHangDao!==null "> - Đảo</span></td>
+                            <td *ngIf="itemtbl.CongDoan==='ONG'">
+                                <div class="p-inputgroup">
+                                    <div style="flex:1">
+                                        <p-dropdown [filter]="true" [options]="listLoHang" [autofocusFilter]="true"
+                                            placeholder="Chọn lô hàng" styleClass="p-inputtext-sm"
+                                            [(ngModel)]="itemtbl.IdLoHang"></p-dropdown>
+                                    </div>
+                                    <button pButton pRipple icon="pi pi-copy"
+                                        class="p-button-sm p-button-rounded p-button-text p-mr-2"
+                                        (click)="ApDung(itemtbl)"></button>
+                                </div>
+
+                            </td>
+                            <td>
+                                <p-inputNumber *ngIf="itemtbl.DonViNangSuat=== 0" #inputNumber [minFractionDigits]="3"
+                                    locale="en-EN" [(ngModel)]="itemtbl.KhoiLuong" [tabindex]="i*5+1" disabled>
+                                </p-inputNumber>
+                                <p-inputNumber *ngIf="itemtbl.DonViNangSuat=== 1" #inputNumber
+                                    (keyup.enter)="enterCon(i*5+1)" [tabindex]="i*5+1" [minFractionDigits]="3"
+                                    locale="en-EN" [(ngModel)]="itemtbl.KhoiLuong"
+                                    (ngModelChange)="TinhTongKhoiLuongBong()">
+                                </p-inputNumber>
+                            </td>
+                            <td class="text-right">
+                                {{itemtbl.KhoiLuongTinhToan |number:'0.3-3'}}
+                            </td>
+                            <td *ngIf="itemtbl.DonViNangSuat===1" class="text-right">
+                                {{itemtbl.ChieuDai |number:'0.3-3'}}
+                                <div style="display:none">
+                                    <p-inputNumber *ngIf="item.CongDoan==='CON'" [minFractionDigits]="3" locale="en-EN"
+                                        [(ngModel)]="itemtbl.ChieuDai" #inputNumber (keyup.enter)="enterCon(i*5+2)"
+                                        [tabindex]="i*5+2" (ngModelChange)="TinhCongThucMoi(itemtbl)">
+                                    </p-inputNumber>
+                                </div>
+                            </td>
+                            <td *ngIf="itemtbl.DonViNangSuat===0">
+                                <!-- <p-inputNumber *ngIf="item.CongDoan!=='CON' && item.CongDoan!=='CHAICOTTON' && item.CongDoan!=='GHEPSOBOCOTTON' && item.CongDoan!=='THO'" 
+                                [minFractionDigits]="3" locale="en-EN"
+                                    [(ngModel)]="itemtbl.ChieuDai" -->
+                                <p-inputNumber
+                                    *ngIf="item.CongDoan==='CHAIPC' || item.CongDoan==='GHEPSOBOPC' || item.CongDoan==='ONG' "
+                                    [minFractionDigits]="3" locale="en-EN" [(ngModel)]="itemtbl.ChieuDai" #inputNumber
+                                    (keyup.enter)="enterCon(i*5+2)" (ngModelChange)="TinhGiaTri(itemtbl)">
+                                </p-inputNumber>
+                                <p-inputNumber *ngIf="item.CongDoan==='CON'" [minFractionDigits]="3" locale="en-EN"
+                                    [(ngModel)]="itemtbl.ChieuDai" #inputNumber (keyup.enter)="enterCon(i*5+2)"
+                                    [tabindex]="i*5+2" (ngModelChange)="TinhCongThucMoi(itemtbl)">
+                                </p-inputNumber>
+                                <p-inputNumber *ngIf="item.CongDoan==='CHAICOTTON'" [minFractionDigits]="3"
+                                    locale="en-EN" [(ngModel)]="itemtbl.ChieuDai" #inputNumber
+                                    (keyup.enter)="enterCon(i*5+2)" [tabindex]="i*5+2"
+                                    (ngModelChange)="TinhKhoiLuongChaiCotton(itemtbl)">
+                                </p-inputNumber>
+                                <p-inputNumber *ngIf="item.CongDoan==='GHEPSOBOCOTTON' || item.CongDoan==='GHEPTRONB' || item.CongDoan==='GHEPTRONA' 
+                                || item.CongDoan==='GHEPDAURA' || item.CongDoan==='GHEPSOBOPE'" [minFractionDigits]="3"
+                                    locale="en-EN" [(ngModel)]="itemtbl.ChieuDai" #inputNumber
+                                    (keyup.enter)="enterCon(i*5+2)" [tabindex]="i*5+2"
+                                    (ngModelChange)="TinhKhoiLuongGhepSoBoChaiCotton(itemtbl)">
+                                </p-inputNumber>
+                                <p-inputNumber #inputNumber *ngIf="item.CongDoan==='THO'" [minFractionDigits]="3"
+                                    locale="en-EN" [(ngModel)]="itemtbl.ChieuDai"
+                                    (ngModelChange)="TinhKhoiLuongTho(itemtbl)" (keyup.enter)="enterCon(i*5+2)"
+                                    [tabindex]="i*5+2">
+                                </p-inputNumber>
+                                <p-inputNumber *ngIf="item.CongDoan==='CHAIPE'" [minFractionDigits]="3" locale="en-EN"
+                                    [(ngModel)]="itemtbl.ChieuDai" #inputNumber (keyup.enter)="enterCon(i*5+2)"
+                                    [tabindex]="i*5+2" (ngModelChange)="TinhKhoiLuongChaiPE(itemtbl)">
+                                </p-inputNumber>
+                                <p-inputNumber *ngIf="item.CongDoan==='CHAIKY'" [minFractionDigits]="3" locale="en-EN"
+                                    [(ngModel)]="itemtbl.ChieuDai" #inputNumber (keyup.enter)="enterCon(i*5+2)"
+                                    [tabindex]="i*5+2" (ngModelChange)="TinhKhoiLuongChaiKy(itemtbl)">
+                                </p-inputNumber>
+                                <p-inputNumber *ngIf="item.CongDoan==='CUONCUI'" [minFractionDigits]="3" locale="en-EN"
+                                    [(ngModel)]="itemtbl.ChieuDai" #inputNumber (keyup.enter)="enterCon(i*5+2)"
+                                    [tabindex]="i*5+2" (ngModelChange)="TinhKhoiLuongCuonCui(itemtbl)">
+                                </p-inputNumber>
+                            </td>
+
+                            <!-- <td *ngIf="item.CongDoan==='GHEPSOBOCOTTON'">
+                                <p-inputNumber #inputNumber (keyup.enter)="enter(i)" [tabindex]="i+1" [minFractionDigits]="3" locale="en-EN"
+                                    [(ngModel)]="itemtbl.KhoiLuongCuiHoi" (ngModelChange)="KhoiLuongBongTheoCuiHoi(itemtbl)">
+                                </p-inputNumber>
+                            </td> -->
+
+                            <td *ngIf="item.CongDoan==='CON'" class="p-d-flex p-flex-row ">
+                                <p-inputNumber #inputNumber (keyup.enter)="enterCon(i*5+3)" [tabindex]="i*5+3"
+                                    [minFractionDigits]="3" locale="en-EN" [(ngModel)]="itemtbl.ChuDongHo"
+                                    (ngModelChange)="KhoiLuongBongCongDoanCon(itemtbl)"
+                                    [disabled]="itemtbl.DonViNangSuat===1 || itemtbl.isM === true">
+                                </p-inputNumber>
+                                <input type="checkbox" class="p-inputtext-sm" [(ngModel)]="itemtbl.isM"
+                                    (ngModelChange)="KhoiLuongBongCongDoanCon(itemtbl)" style="margin: 5px!important" />
+                                <label>M</label>
+                            </td>
+                            <td *ngIf="item.CongDoan==='CON'">
+                                <p-inputNumber #inputNumber (keyup.enter)="enterCon(i*5+4)" [tabindex]="i*5+4"
+                                    [minFractionDigits]="0" locale="en-EN" [(ngModel)]="itemtbl.CocChet"
+                                    (ngModelChange)="KhoiLuongBongCongDoanCon(itemtbl)"
+                                    [disabled]="itemtbl.DonViNangSuat===1">
+                                </p-inputNumber>
+                            </td>
+                            <td *ngIf="item.CongDoan==='CON'">
+                                <p-inputNumber #inputNumber (keyup.enter)="enterCon(i*5+5)" [tabindex]="i*5+5"
+                                    [minFractionDigits]="3" locale="en-EN" [(ngModel)]="itemtbl.HutMoi"
+                                    (ngModelChange)="KhoiLuongBongCongDoanCon(itemtbl)"
+                                    [disabled]="itemtbl.DonViNangSuat===1">
+                                </p-inputNumber>
+                            </td>
+                            <td *ngIf="item.CongDoan==='THO'">
+                                <p-inputNumber #inputNumber (keyup.enter)="enterCon(i*5+5)" [tabindex]="i*5+5"
+                                    [minFractionDigits]="3" locale="en-EN" [(ngModel)]="itemtbl.CocChet"
+                                    (ngModelChange)="TinhKhoiLuongTho(itemtbl)" [disabled]="itemtbl.DonViNangSuat===1">
+                                </p-inputNumber>
+                            </td>
+                            <td>
+                                <input type="text" class="p-inputtext-sm" [(ngModel)]="itemtbl.GhiChu" pInputText />
+                            </td>
+                        </tr>
+                    </ng-container>
+                    <ng-container *ngIf="itemtbl==='clone' && item.CongDoan==='ONG'">
+                        <tr style="height: 40px;">
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                    </ng-container>
+                </ng-template>
+                <ng-template pTemplate="footer">
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td *ngIf="item.CongDoan==='ONG'" class="text-right">
+                        </td>
+                        <td class="text-right">
+                            {{TongKhoiLuong |number:'0.3-3'}}
+                        </td>
+                        <td class="text-right">
+                            {{listItem|isXoa|SumByKey:'KhoiLuongTinhToan'|number:'0.3-3'}}
+                        </td>
+                        <td class="text-right">
+                            {{listItem|isXoa|SumByKey:'ChieuDai'|number:'0.3-3'}}
+                        </td>
+                        <!-- <td *ngIf="item.CongDoan==='GHEPSOBOCOTTON'" class="text-right">
+                            {{listItem|isXoa|SumByKey:'KhoiLuongCuiHoi'|number:'0.3-3'}}
+                        </td> -->
+                        <td *ngIf="item.CongDoan==='CON'" class="text-right">
+                            {{listItem|isXoa|SumByKey:'ChuDongHo'|number:'0.3-3'}}
+                        </td>
+                        <td *ngIf="item.CongDoan==='CON' || item.CongDoan==='THO'" class="text-right">
+                            {{listItem|isXoa|SumByKey:'CocChet'|number:'0.0'}}
+                        </td>
+                        <td *ngIf="item.CongDoan==='CON'" class="text-right">
+                            {{listItem|isXoa|SumByKey:'HutMoi'|number:'0.3-3'}}
+                        </td>
+                        <td></td>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="emptymessage">
+                    <!-- <tr>
+                        <td colspan="11">Không tìm thấy dữ liệu nào phù hợp điều kiện.</td>
+                    </tr> -->
+                </ng-template>
+            </p-table>
+            <br />
+            <div class="p-col-12 p-p-0 d-flex flex-column p-jc-end">
+                <ng-container *ngFor="let CongDoan of item.listTyLeBongPhe|filterByKey:'MaCongDoan':(item.CongDoan?item.CongDoan:'xyz')">
+                    <div class="p-col-12 p-p-0 d-flex flex-row p-jc-end"
+                        *ngFor="let bongphe of CongDoan.listKhoiLuongBongPhe">
+                        <div class="p-grid" style="width:100%">
+                            <div class="p-col-12 p-lg-6 p-p-3 d-flex flex-column flex-lg-row">
+                                <label class="p-col-12 p-lg-4 p-p-0 my-auto">Khối lượng
+                                    {{bongphe.TenLoaiBongPhe}}</label>
+                                <div class="p-col-12 p-lg-7 p-p-0">
+                                    <p-inputNumber [minFractionDigits]="3" locale="en-EN"
+                                        [(ngModel)]="bongphe.KhoiLuong" (onBlur)="Typing($event)">
+                                    </p-inputNumber>
+                                </div>
+                                <div class="p-col-12 p-lg-1 p-p-0">
+                                    <button pButton pRipple icon="pi pi-ellipsis-v"
+                                        class="p-button-sm p-button-rounded p-button-secondary p-button-text"
+                                        title="Nhập theo biểu thức" (click)="tinhToan(bongphe,'KhoiLuong')"
+                                        pTooltip="Tính toán" showDelay="1000" tooltipPosition="bottom"></button>
+                                </div>
+                            </div>
+                            <div class="p-col-12 p-lg-6 p-p-3 d-flex flex-column flex-lg-row">
+                                <label class="p-col-12 p-lg-4 p-p-0 my-auto">Tỷ lệ {{bongphe.TenLoaiBongPhe}}
+                                    (%):</label>
+                                <div class="p-col-12 p-lg-8 p-p-0">
+                                    {{bongphe.TyLe|number:'0.3-3'}}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </ng-container>
+                <div class="p-col-12 p-p-0 d-flex flex-row p-jc-end">
+                    <div class="p-grid" style="width:100%">
+                        <div class="p-col-12 p-lg-6 p-p-3 d-flex flex-column flex-lg-row">
+                            <label class="p-col-12 p-lg-4 p-p-0 my-auto">Trừ vào sản lượng gian máy:</label>
+                            <div class="p-col-12 p-lg-8 p-p-0">
+                                <input type="checkbox" class="p-inputtext-sm text-left"
+                                    [(ngModel)]="item.isTruVaoSanLuong" (change)="TinhTongKhoiLuongBong()" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal-footer">
+    <!-- <button pButton pRipple label="Chấp nhận" class="p-button-sm p-mr-2" (click)="accept()"></button>
+    <button pButton pRipple label="Thoát" class="p-button-sm p-button-outlined p-button-secondary p-mr-2"
+        (click)="activeModal.dismiss()"></button> -->
+</div>

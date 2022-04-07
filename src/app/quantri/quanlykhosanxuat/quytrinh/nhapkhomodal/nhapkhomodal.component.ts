@@ -1,0 +1,434 @@
+import { Validatable } from '@amcharts/amcharts4/core';
+import { Component, OnInit } from '@angular/core';
+import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { ToastrService } from 'ngx-toastr';
+import { ModalthongbaoComponent } from 'src/app/quantri/modal/modalthongbao/modalthongbao.component';
+import { SanXuatService } from 'src/app/services/callApiSanXuat';
+import { vn } from 'src/app/services/const';
+import { DateToUnix, deepCopy, mapArrayForDropDown, UnixToDate, validVariable } from 'src/app/services/globalfunction';
+
+@Component({
+  selector: 'app-nhapkhomodal',
+  templateUrl: './nhapkhomodal.component.html',
+  styleUrls: ['./nhapkhomodal.component.css']
+})
+export class NhapkhomodalComponent implements OnInit {
+  opt: any = ''
+  item: any = {};
+  checkbutton: any = {
+    Ghi: true,
+    KhongDuyet: false,
+    ChuyenTiep: false,
+    Xoa: false,
+  }
+  newTableItem: any = {};
+  editTableItem: any = [];
+  listLoaiBong: any = [];
+  listLoBong: any = [];
+  listCapBong: any = [];
+  listdmViTri: any = [];
+  listCaMay: any = [];
+  listKho: any = [];
+  lang: any = vn;
+  data: any = {};
+  listKeHoach: any = [];
+  listKeHoachFull: any = [];
+  listKhachHang: any = [];
+  type: any = '';
+  editField: any = false;
+  nametype: any = '';
+  listLoBongFull: any = [];
+  yearRange: string = `${((new Date()).getFullYear() - 50)}:${((new Date()).getFullYear())}`;
+  constructor(public activeModal: NgbActiveModal,
+    public toastr: ToastrService, public _modal: NgbModal, private _services: SanXuatService) {
+
+  }
+
+  ngOnInit(): void {
+    if (this.opt !== 'edit') {
+      this.item = {
+        NhaMay: '',
+        IddmLoaiBong: '',
+        IddmCapBong: '',
+        IdLoBong: '',
+        listItem: [],
+        isTuDong: false,
+      }
+      // if(this.type==='bong'){
+      //   this.item.isGopPhieu= true;
+      // }
+      this.GetNextSoQuyTrinh();
+    }
+    else {
+      this.KiemTraButtonModal();
+    }
+    if (this.item.NgayUnix !== null && this.item.NgayUnix !== undefined) {
+      this.item.Ngay = UnixToDate(this.item.NgayUnix);
+    }
+    this.data.CurrentPage = 0;
+    this.getListLoaiBong();
+    this.getListCapBong();
+    this.getListLoBong();
+    this.getListCaMay();
+    this.getListdmViTri();
+    this.getListKeHoach();
+    this.getListKho();
+  }
+  KiemTraButtonModal() {
+    this._services.KiemTraButton(this.item.Id || '', this.item.IdTrangThai || '').subscribe(res => {
+      this.checkbutton = res;
+    })
+  }
+  // GetNextSoLoBong(event, index) {
+  //   if (index == 1)
+  //     this.item.IddmLoaiBong = event.value;
+  //   else
+  //     this.item.IddmCapBong = event.value;
+
+  //   if (this.item.IddmLoaiBong != undefined && this.item.IddmLoaiBong != null && this.item.IddmLoaiBong != ''
+  //     && this.item.IddmCapBong != null && this.item.IddmCapBong != undefined && this.item.IddmCapBong != '')
+  //     this._services.QuyTrinhPhieuNhapLoBong().GetNextSoLoBong(this.item.IddmLoaiBong, this.item.IddmCapBong).subscribe(
+  //       (res: any) => {
+  //         this.item.IdLoBong = res.SoLoBong;
+  //       })
+  // }
+
+  ChuyenTiep() {
+    if (this.CheckTruocKhiLuu()) {
+      if (this.item.Ngay !== null && this.item.Ngay !== undefined)
+        this.item.NgayUnix = DateToUnix(this.item.Ngay);
+      this._services.QuyTrinhPhieuNhapLoBong().ChuyenTiep(this.item).subscribe((res: any) => {
+        if (res) {
+          if (res.State === 1) {
+            this.activeModal.close();
+          } else {
+            this.toastr.error(res.message);
+          }
+        }
+      })
+    }
+  }
+
+  GetNextSoQuyTrinh() {
+    this._services.QuyTrinhPhieuNhapLoBong().GetNextSo().subscribe((res: any) => {
+      this.item.SoQuyTrinh = res.SoQuyTrinh;
+    })
+  }
+
+  GhiLai() {
+    if (this.opt !== 'edit') {
+      if (this.type === 'bong')
+        this.item.Loai = 2;
+      else if (this.type === 'xo')
+        this.item.Loai = 5;
+      else if (this.type === 'bonghoi')
+        this.item.Loai = 6;
+      else if (this.type === 'bongphe')
+        this.item.Loai = 7;
+    }
+    // let isCheck = false;
+    if (this.CheckTruocKhiLuu()) {
+      this.item.NgayUnix = DateToUnix(this.item.Ngay);
+      this._services.QuyTrinhPhieuNhapLoBong().Set(this.item).subscribe((res: any) => {
+        if (res) {
+          if (res.State === 1) {
+            this.toastr.success(res.message)
+            this.opt = 'edit';
+            this.item = res.objectReturn;
+            if (this.item.NgayUnix !== null && this.item.NgayUnix !== undefined) {
+              this.item.Ngay = UnixToDate(this.item.NgayUnix);
+            }
+            console.log(this.type)
+            this.KiemTraButtonModal();
+          } else {
+            this.toastr.error(res.message);
+          }
+        }
+      })
+    }
+  }
+
+  XoaQuyTrinh() {
+    let modalRef = this._modal.open(ModalthongbaoComponent, {
+      backdrop: 'static'
+    });
+    modalRef.componentInstance.message = "Bạn có chắc chắn muốn xóa quy trình này chứ?"
+    modalRef.result.then(res => {
+      this._services.QuyTrinhPhieuNhapLoBong().Delete(this.item).subscribe((res: any) => {
+        console.log(res);
+        if (res?.State === 1) {
+          this.activeModal.close();
+          this.toastr.success(res.message);
+        } else {
+          this.toastr.error(res.message);
+        }
+      })
+    }).catch(er => console.log(er))
+  }
+
+  getListKho() {
+    if (this.opt === 'edit') {
+      this.data.Loai = this.item.Loai;
+    }
+    else {
+      if (this.type === 'bong')
+        this.data.Loai = 2;
+      else if (this.type === 'xo')
+        this.data.Loai = 5;
+      else if (this.type === 'bonghoi') {
+        this.data.Loai = 6;
+        this.data.IddmLoaiBong = this.item.IddmLoaiBong;
+      }
+      else if (this.type === 'bongphe') {
+        this.data.Loai = 7;
+      }
+    }
+    this._services.GetListdmKho(this.data).subscribe((res: any) => {
+      this.listKho = mapArrayForDropDown(res, 'Ten', 'Id');
+    })
+  }
+  getListLoaiBong() {
+    if (this.opt === 'edit') {
+      if (this.type === 'bong')
+        this.data.Loai = 2;
+      else
+        this.data.Loai = this.item.Loai;
+    }
+    else {
+      if (this.type === 'bong')
+        this.data.Loai = 2;
+      else if (this.type === 'xo')
+        this.data.Loai = 5;
+      else if (this.type === 'bonghoi') {
+        this.data.Loai = 6;
+        this.data.IddmLoaiBong = this.item.IddmLoaiBong;
+      }
+      else if (this.type === 'bongphe') {
+        this.data.Loai = 7;
+      }
+    }
+    this._services.GetListdmLoaiBong(this.data).subscribe((res: any) => {
+      this.listLoaiBong = mapArrayForDropDown(res, 'Ten', 'Id');
+    })
+  }
+
+  getListLoBong() {
+    if (this.type === 'bong')
+      this.data.Loai = 1;
+    else if (this.type === 'bonghoi')
+      this.item.Loai = 6;
+    this._services.GetListLoBong(this.data).subscribe((res: any) => {
+      let data: any = {
+        Id: "",
+        Ten: "",
+        SoHopDong: "",
+      };
+      res.unshift(data);
+      res.forEach(element => {
+        element.Ten = element.Ten + ' - ' + element.SoHopDong
+      });
+      this.listLoBong = mapArrayForDropDown(res, 'Ten', 'Id');
+      this.listLoBongFull = res;
+    })
+  }
+  getListCapBong() {
+    this._services.GetListdmCapBong(this.data).subscribe((res: any) => {
+      this.listCapBong = mapArrayForDropDown(res, 'Ten', 'Id');
+    })
+  }
+  getListKhachHang() {
+    this._services.dmKhachHang().GetListOpt().subscribe((res: any) => {
+      this.listKhachHang = mapArrayForDropDown(res, 'Ten', 'Id');
+    })
+  }
+  getListCaMay() {
+    this._services.GetListOptdmCaSanXuat().subscribe((res: any) => {
+      this.listCaMay = mapArrayForDropDown(res, 'Ten', 'Id');
+    })
+  }
+  add() {
+    if (this.item.listItem == undefined || this.item.listItem == null)
+      this.item.listItem = [];
+    this.item.listItem.push(this.newTableItem);
+    this.newTableItem = {}
+
+  }
+
+  delete(index) {
+    let item = this.item.listItem.splice(index, 1)[0];
+    if (item.Id === '' || item.Id === null || item.Id === undefined) {
+    } else {
+      item.isXoa = true;
+      this.item.listItem.push(JSON.parse(JSON.stringify(item)));
+    }
+  }
+
+  Onclose() {
+    this.activeModal.close();
+  }
+  getListdmViTri() {
+    this._services.GetListdmViTriOpt().subscribe((res: any) => {
+      this.listdmViTri = mapArrayForDropDown(res, 'Ten', 'Id');
+    })
+  }
+  getListKeHoach() {
+    let loai = 0;
+    if (this.type === 'bong')
+      loai = 2;
+    else if (this.type === 'xo')
+      loai = 5;
+
+    this._services.NhapKeHoachNguyenLieu().GetListChuaNhap(this.item.IdKeHoachNhapNguyenLieuInvoice_Item, loai).subscribe((res: any) => {
+      this.listKeHoach = mapArrayForDropDown(res, 'Ten', 'Id');
+      this.listKeHoachFull = res;
+    })
+  }
+  getKeHoach(item) {
+    let dataFilter: any = this.listKeHoachFull.filter(obj => {
+      return obj.Id === item.value
+    });
+    console.log(dataFilter)
+    this.item.IddmLoaiBong = dataFilter[0].IddmLoaiBong;
+    this.item.MaInvoice = dataFilter[0].MaInvoice;
+    this.item.NoiDung = dataFilter[0].NoiDung;
+    this.item.IddmCapBong = dataFilter[0].IddmCapBong;
+    this.item.GiaBong = dataFilter[0].GiaBong;
+    this.item.SoHopDong = dataFilter[0].SoHopDong;
+    this.item.listItem.forEach(element => {
+      element.isXoa = true;
+    });;
+    for (let i = 0; i < dataFilter[0].Container; i++) {
+      this.add()
+    }
+  }
+  TinhSoKienDai(item) {
+    if (item.SoKien !== null && item.SoKien !== undefined && item.SoKienDai !== null
+      && item.SoKienDai !== undefined) {
+      item.SoKienNgan = item.SoKien - item.SoKienDai;
+      if (item.SoKienNgan < 0)
+        item.SoKienNgan = 0;
+    }
+  }
+  TinhSoKienNgan(item) {
+    if (item.SoKien !== null && item.SoKien !== undefined && item.SoKienNgan !== null
+      && item.SoKienNgan !== undefined) {
+      item.SoKienDai = item.SoKien - item.SoKienNgan;
+      if (item.SoKienDai < 0)
+        item.SoKienDai = 0;
+    }
+  }
+  TinhSoCanDai(item) {
+    if (item.SoCan !== null && item.SoCan !== undefined && item.SoCanDai !== null
+      && item.SoCanDai !== undefined) {
+      item.SoCanNgan = item.SoCan - item.SoCanDai;
+      if (item.SoCanNgan < 0)
+        item.SoCanNgan = 0;
+    }
+  }
+  TinhSoCanNgan(item) {
+    if (item.SoCan !== null && item.SoCan !== undefined && item.SoCanNgan !== null
+      && item.SoCanNgan !== undefined) {
+      item.SoCanDai = item.SoCan - item.SoCanNgan;
+      if (item.SoCanDai < 0)
+        item.SoCanDai = 0;
+    }
+  }
+  exportExcel() {
+    if (this.type === 'bong') {
+      this._services.QuyTrinhPhieuNhapLoBong().ExportExcel(this.item.Id).subscribe((res: any) => {
+        this._services.download(res.TenFile);
+      })
+    }
+    if (this.type === 'xo') {
+      this._services.QuyTrinhPhieuNhapLoBong().ExportPhieuNhapLoBongXo(this.item.Id).subscribe((res: any) => {
+        this._services.download(res.TenFile);
+      })
+    }
+  }
+  exportHoaDon() {
+    if (this.type === 'bong') {
+      this._services.QuyTrinhPhieuNhapLoBong().ExportHoaDonNhapKhoBong(this.item.Id).subscribe((res: any) => {
+        this._services.download(res.TenFile);
+      })
+    }
+    if (this.type === 'xo') {
+      this._services.QuyTrinhPhieuNhapLoBong().ExportHoaDonNhapKhoXo(this.item.Id).subscribe((res: any) => {
+        this._services.download(res.TenFile);
+      })
+    }
+  }
+  CheckTruocKhiLuu() {
+    if (this.newTableItem.Ten != undefined || this.newTableItem.SoCan != undefined || this.newTableItem.SoKien != undefined || this.newTableItem.IddmViTri != undefined) {
+      this.add();
+    }
+    if (validVariable(this.item.SoHopDong)) {
+      let loBongFind: any = this.listLoBongFull.filter(e => e.Id === this.item.IdLoBong);
+      if (loBongFind.length > 0) {
+        console.log(this.item.SoHopDong.trim(), loBongFind[0].SoHopDong.trim())
+        if (this.item.SoHopDong.trim() !== loBongFind[0].SoHopDong.trim()) {
+          this.toastr.error("Bạn chưa chọn đúng lô bông nằm trong đợt nhập này!");
+          return false;
+        }
+      }
+    }
+    if (this.item.IddmKho === null || this.item.IddmKho === undefined) {
+      this.toastr.error("Bạn chưa chọn danh mục kho!");
+      return false;
+    }
+    else if (this.item.Ngay === null || this.item.Ngay === undefined) {
+      this.toastr.error("Bạn chưa chọn  ngày!");
+      return false;
+    }
+    else if ((this.item.IddmCapBong === null || this.item.IddmCapBong === undefined || this.item.IddmCapBong === "") && this.type === 'bong' ) {
+      this.toastr.error("Bạn chưa chọn  danh mục cấp bông!");
+      return false;
+    }
+    else if (this.item.IddmLoaiBong === null || this.item.IddmLoaiBong === undefined || this.item.IddmLoaiBong === "") {
+      this.toastr.error("Bạn chưa chọn  danh mục loại bông!");
+      return false;
+    }
+    // else{
+    //   var listIddmKhoCheck: any = []
+    //   this.item.listItem.forEach(element => {
+    //     if(listIddmKhoCheck.indexOf(element.IddmKho)  === (-1))
+    //     {
+    //       listIddmKhoCheck.push(element.IddmKho)
+    //     }
+    //   });
+    //   if(listIddmKhoCheck.length > 1 && this.item.isGopPhieu == true && this.item.Loai == 2){
+    //     this.toastr.error("Bạn không thể gộp phiếu khi nhập kiện cho nhiều kho!");
+    //     return false;
+    //   }
+    // }
+    // else{
+    //   let isCheck : any = false;
+    //   console.log(this.item.listItem)
+    //   this.item.listItem.forEach(element => {
+    //     if(element.IddmKho === null || element.IddmKho === undefined)
+    //     {
+    //       isCheck = true;
+    //     }
+    //   });
+    //   if(isCheck === true){
+    //     this.toastr.error("Bạn chưa chọn danh mục kho!");
+    //       return false;
+    //   }
+    // }
+    return true;
+  }
+  CheckGopPhieu(event) {
+    if (event == true) {
+      let modalRef = this._modal.open(ModalthongbaoComponent, {
+        backdrop: 'static'
+      });
+      modalRef.componentInstance.message = "Bạn có chắc chắn muốn gộp phiếu này?"
+      modalRef.result.then(res => {
+        this.item.isGopPhieuCheck = true
+        this.item.isGopPhieu = true
+      }).catch(er => {
+        console.log(er)
+        this.item.isGopPhieu = false
+      })
+    }
+  }
+}

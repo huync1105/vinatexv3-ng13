@@ -1,0 +1,48 @@
+
+<p-table [value]="item" styleClass="p-datatable-customers p-datatable-gridlines p-datatable-sm">
+  <ng-template pTemplate="colgroup">
+    <colgroup>
+      <col style="width:50px">
+      <col style="width:200px">
+      <col style="width:200px">
+      <col style="width:200px">
+      <col style="width:100px">
+    </colgroup>
+  </ng-template>
+  <ng-template pTemplate="header">
+    <tr>
+      <th>STT</th>
+      <th>Loại thông số</th>
+      <th>Thông tin thông số</th>
+      <th>Ghi chú</th>
+      <th style="width: 100px;"> <button pButton pRipple type="button" icon="pi pi-plus" class="p-button-rounded p-button-sm "
+        (click)="addThongSo()">
+      </button></th>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="body" let-itemTable let-i="rowIndex">
+    <tr>
+      <td class="text-center">{{i+1}} </td>
+      <td class="text-center"><input type="text" class="p-inputtext-sm" [(ngModel)]="itemTable.Loai" pInputText /> </td>
+      <td class="text-center"><input type="text" class="p-inputtext-sm" [(ngModel)]="itemTable.ThongTin" pInputText /> </td>
+      <td class="text-center"><input type="text" class="p-inputtext-sm" [(ngModel)]="itemTable.GhiChu" pInputText /> </td>
+      <td class="text-center">
+        <button pButton pRipple icon="pi pi-trash"
+          class="p-button-sm p-button-rounded p-button-secondary p-button-text p-mr-2" (click)="delete(i)"
+          pTooltip="Xóa" showDelay="1000" tooltipPosition="bottom"></button>
+      </td>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="footer">
+    <!-- <tr>
+      <td class="text-center"><input type="text" class="p-inputtext-sm" [(ngModel)]="newitem.Loai" pInputText /> </td>
+      <td class="text-center"><input type="text" class="p-inputtext-sm" [(ngModel)]="newitem.ThongTin" pInputText />
+      </td>
+      <td class="text-center"><input type="text" class="p-inputtext-sm" [(ngModel)]="newitem.GhiChu" pInputText /> </td>
+      <td class="text-center">
+       
+      </td>
+    </tr> -->
+
+  </ng-template>
+</p-table>

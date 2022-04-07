@@ -1,0 +1,138 @@
+<div class="modal-header">
+  <div class="p-d-flex p-flex-row">
+    <div class="p-mr-2">
+      <div class="p-field-checkbox ischon">
+        <p-checkbox binary="false" [(ngModel)]="item.isChon" (onChange)="isChon(item)"></p-checkbox>
+        <label>Tình trạng bảo dưỡng</label>
+      </div>
+    </div>
+    <div class="p-mr-2">
+      <div class="p-field-radiobutton ischon" *ngIf="item.isChon">
+        <p-radioButton [value]="0" [(ngModel)]="item.isChonNam" (onClick)="isChonNam(item)"></p-radioButton>
+        <label>Theo năm</label>
+      </div>
+    </div>
+    <div class="p-mr-2">
+      <div class="p-field-radiobutton ischon" *ngIf="item.isChon ">
+        <p-radioButton [value]="1" [(ngModel)]="item.isChonThang" (onClick)="isChonThang(item)"></p-radioButton>
+        <label>Theo tháng</label>
+      </div>
+    </div>
+    <div class="p-mr-2" *ngIf="item.isChonNam === 0 && item.isChon">
+      <p-dropdown [filter]="true" [options]="listNam" placeholder="Chọn năm" [(ngModel)]="filter.Nam" styleClass="p-inputtext-sm" (onChange)="isChonNam()"></p-dropdown>
+      <!-- <p-calendar dateFormat="yy" inputStyleClass="p-inputtext-sm bold" [locale]="lang" [monthNavigator]="true"
+        [yearNavigator]="true" [yearRange]="" [showIcon]="true" inputId="icon" placeholder="yyyy"
+        [(ngModel)]="item.Ngay" (onSelect)="isChonNam()">
+      </p-calendar> -->
+    </div>
+    <div class="p-mr-2" *ngIf="item.isChonThang ===1 && item.isChon">
+      <p-dropdown [filter]="true" [options]="listThang" placeholder="Chọn tháng" [(ngModel)]="filter.Thang" styleClass="p-inputtext-sm"></p-dropdown>
+      <!-- <p-calendar dateFormat="mm/yy" inputStyleClass="p-inputtext-sm" [showIcon]="true" inputId="icon"
+        placeholder="Chọn tháng, năm">
+      </p-calendar> -->
+    </div>
+  </div>
+</div>
+
+<div class="modal-body">
+  <!--  -->
+  <p-table [value]="itemLichBaoDuong" *ngIf="!item.isChon" styleClass="p-datatable-sm wrap-text p-datatable-striped">
+    <ng-template pTemplate="colgroup">
+      <colgroup>
+        <!-- <col style="width:50px">
+        <col style="width:100px">
+        <col style="width:50px"> -->
+      </colgroup>
+    </ng-template>
+    <ng-template pTemplate="header">
+      <tr>
+        <th class="text-center">STT</th>
+        <th class="text-center">Tài sản</th>
+        <th class="text-center" *ngFor="let tendm of itemLichBaoDuong[0]?.listThoiGianNangSuat"> {{tendm.TGNS}}</th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-item let-i="rowIndex">
+      <tr>
+        <td class="text-center">{{i + 1}}</td>
+        <!-- <td class="text-center">{{item.TendmLoaiBaoDuong}}</td> -->
+        <td class="text-center">{{item.TendmLoaiBaoDuong }}</td>
+        <td class="text-center" *ngFor="let newItem of item.listThoiGianNangSuat">
+          {{newItem.isChon?'X':''}}
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+  <!--  -->
+  <p-table [value]="items.listBaoDuong" *ngIf="item.isChonNam === 0 && item.isChon"
+    styleClass="p-datatable-sm wrap-text p-datatable-striped">
+    <ng-template pTemplate="colgroup">
+      <colgroup>
+        <col style="width:100px">
+        <col style="width:50px">
+        <col style="width:50px">
+        <col style="width:50px">
+        <col style="width:50px">
+        <col style="width:50px">
+        <col style="width:50px">
+        <col style="width:50px">
+        <col style="width:50px">
+        <col style="width:50px">
+        <col style="width:50px">
+        <col style="width:50px">
+        <col style="width:50px">
+      </colgroup>
+    </ng-template>
+    <ng-template pTemplate="header">
+      <tr>
+        <th class="text-center">Loại bảo dưỡng</th>
+        <th class="text-center">Tháng 1</th>
+        <th class="text-center">Tháng 2</th>
+        <th class="text-center">Tháng 3</th>
+        <th class="text-center">Tháng 4</th>
+        <th class="text-center">Tháng 5</th>
+        <th class="text-center">Tháng 6</th>
+        <th class="text-center">Tháng 7</th>
+        <th class="text-center">Tháng 8</th>
+        <th class="text-center">Tháng 9</th>
+        <th class="text-center">Tháng 10</th>
+        <th class="text-center">Tháng 11</th>
+        <th class="text-center">Tháng 12</th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-item let-i="rowIndex">
+      <tr>
+        <td class="text-center">
+          {{item.TendmLoaiBaoDuong}}
+        </td>
+        <td class="text-center" *ngFor="let newItem of item.listItemTheoThoiGian" [style.backgroundColor]="newItem.Mau">
+          {{newItem.isChon?'X':''}}
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+  <p-table [value]="itemsThang.listBaoDuong" *ngIf="item.isChonThang ===1 && item.isChon"
+    styleClass="p-datatable-sm wrap-text p-datatable-striped">
+    <ng-template pTemplate="colgroup">
+      <colgroup>
+
+      </colgroup>
+    </ng-template>
+    <ng-template pTemplate="header">
+      <tr>
+        <th class="text-center" style="width: 120px;">Loại bảo dưỡng</th>
+        <th *ngFor="let label of labelThang" style="width: 30px;">{{label}}</th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-item let-i="rowIndex">
+      <tr>
+        <td class="text-center">
+          {{item.TendmLoaiBaoDuong}}
+        </td>
+        <td class="text-center" *ngFor="let newItem of item.listItemTheoThoiGian" [style.backgroundColor]="newItem.Mau">
+          {{newItem.isChon?'X':''}}
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+
+</div>

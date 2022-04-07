@@ -1,0 +1,67 @@
+<div class="modal-header">
+    <h5 class="modal-title">Chi phí</h5>
+</div>
+<div class="modal-body">
+    <div class="p-d-flex p-flex-row p-jc-between">
+        <div class="modal-bt p-mb-4">
+            <button pButton pRipple type="button" label="Quay lại" class="p-mr-2 p-button-sm"
+                (click)="activeModal.dismiss('close')"></button>
+        </div>
+    </div>
+    <div class="p-d-flex p-flex-row">
+        <div class="p-col-12 p-p-0 pintable-container" style="height: 77vh;" voiPintable [pinnedCols]="1">
+            <table>
+                <thead>
+                    <tr>
+                        <th class="tc-w-200">Tên sản phẩm</th>
+                        <th class="tc-w-121">Tổng chi phí</th>  
+                        <th class="tc-w-200">Nhà máy</th>
+                        <th class="tc-w-121">Tổng 12 tháng</th>
+                        <th *ngFor="let label of labelThang" class="tc-w-100">{{label}}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <ng-container *ngFor="let item of item.lstSanPham; let i = index">
+                        <tr >
+                            <td class="text-center tc-w-200" style="background-color: white;z-index: 999;">                 
+                                        {{item.TenSanPham}}
+                            </td>
+                            <td class="text-center tc-w-121">
+                                {{item.TongChiPhi}}
+                            </td>
+                            <td class="text-center tc-w-200">
+                               Tổng 
+                            </td>
+                            <td class="text-center tc-w-121">
+                                {{item.Tong}}
+                            </td>
+                            <td class="text-center tc-w-100" *ngFor="let prop of item.lstChiPhi">
+                               {{prop.ChiPhi}}
+                            </td>
+
+                        </tr>
+                        <tr *ngFor="let nhaMay of item.lstNhaMay">
+                            <td class="text-center tc-w-200" style="background-color: white;z-index: 999;">
+                              
+                            </td>
+                            <td class="text-center tc-w-121">
+                            
+                            </td>
+                            <td class="text-center tc-w-200">
+                               {{nhaMay.TenDuAn}}
+                            </td>
+                            <td class="text-center tc-w-121">
+                                {{nhaMay.TongChiPhi}}
+                            </td>
+                            <td class="text-center tc-w-100" *ngFor="let thang of nhaMay.lstChiPhi">
+                              {{thang.ChiPhi}} 
+                            </td>
+                        </tr>
+                    </ng-container>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<div class="modal-footer">
+</div>

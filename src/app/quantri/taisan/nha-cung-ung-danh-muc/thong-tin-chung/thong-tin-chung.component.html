@@ -1,0 +1,61 @@
+<div class="p-grid p-mb-3">  
+  <label for="" class="p-m-0 p-lg-2">Mã<span class="required"> *</span>:</label>
+  <div class="p-lg-4 p-p-0">
+    <input type="text" class="p-inputtext-sm" [(ngModel)]="item.Ma" pInputText />
+  </div>
+  <label for="" class="p-m-0 p-pl-5 p-lg-2">Tên:</label>
+  <div class="p-lg-4 p-p-0">
+    <input type="text" class="p-inputtext-sm" [(ngModel)]="item.Ten" pInputText />
+  </div>
+</div>
+
+<div class="p-grid p-mb-3">  
+  <label for="" class="p-m-0 p-lg-2">Nhóm cung ứng:</label>
+  <div class="p-lg-4 p-p-0">
+    <p-dropdown [filter]="true" [options]="listNhomCungUng" [(ngModel)]="item.IddmNhomNhaCungUng" placeholder="Chọn nhóm cung ứng" [showClear]="true"></p-dropdown>
+  </div>
+  <label for="" class="p-m-0 p-pl-5 p-lg-2">Địa chỉ:</label>
+  <div class="p-lg-4 p-p-0">
+    <input type="text" class="p-inputtext-sm" [(ngModel)]="item.DiaChi" pInputText />
+  </div>
+</div>
+
+<div class="p-grid p-mb-3">  
+  <label for="" class="p-m-0 p-lg-2">Số điện thoại:</label>
+  <div class="p-lg-4 p-p-0">
+    <input type="text" class="p-inputtext-sm" [(ngModel)]="item.SoDienThoai" pInputText />
+  </div>
+  <label for="" class="p-m-0 p-pl-5 p-lg-2">Fax:</label>
+  <div class="p-lg-4 p-p-0">
+    <input type="text" class="p-inputtext-sm" [(ngModel)]="item.Fax" pInputText />
+  </div>
+</div>
+
+<div class="p-grid p-mb-3">  
+  <label for="" class="p-m-0 p-lg-2">Tài khoản:</label>
+  <div class="p-lg-4 p-p-0">
+    <input type="text" class="p-inputtext-sm" [(ngModel)]="item.TaiKhoan" pInputText />
+  </div>
+  <label for="" class="p-m-0 p-pl-5 p-lg-2">Mã số thuế:</label>
+  <div class="p-lg-4 p-p-0">
+    <input type="text" class="p-inputtext-sm" [(ngModel)]="item.MaSoThue" pInputText />
+  </div>
+</div>
+
+<div class="p-grid p-mb-3">  
+  <label for="" class="p-m-0 p-lg-2">Người đại diện:</label>
+  <div class="p-lg-4 p-p-0">
+    <input type="text" class="p-inputtext-sm" [(ngModel)]="item.NguoiDaiDien" pInputText />
+  </div>
+  <label for="" class="p-m-0 p-pl-5 p-lg-2">Chức vụ:</label>
+  <div class="p-lg-4 p-p-0">
+    <input type="text" class="p-inputtext-sm" [(ngModel)]="item.ChucVu" pInputText />
+  </div>
+</div>
+
+<div class="p-grid p-mb-3">  
+  <label for="" class="p-m-0 p-lg-2">Ghi chú:</label>
+  <div class="p-lg-10 p-p-0">
+    <input type="text" class="p-inputtext-sm" [(ngModel)]="item.GhiChu" pInputText />
+  </div>
+</div>

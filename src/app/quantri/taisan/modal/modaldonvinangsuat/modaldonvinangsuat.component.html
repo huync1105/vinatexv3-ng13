@@ -1,0 +1,37 @@
+<div class="modal-header">   <h5 class="modal-title">
+    {{title}}</h5>
+<button *ngIf="false" type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+    <span aria-hidden="true">&times;</span>
+</button>
+<!-- <span class="p-button-sm p-button-sm p-button-text close" aria-hidden="true"
+    (click)="activeModal.dismiss('Cross click')">×</span> -->
+</div>
+<div class="modal-body">
+<div class="col-12 col-lg-12">
+<div class="p-grid">
+    <div class="p-col-12 p-md-6 p-lg-12 p-d-flex p-flex-column">
+        <label class="p-col-12 p-lg-12 p-p-0 my-auto">Mã  <span class="text-danger">(*)</span></label>
+        <div class="p-col-12 p-lg-12 p-p-0">
+            <input type="text" class="p-inputtext-sm" (keyup.enter)="GhiLai()" [(ngModel)]="item.Ma" pInputText />
+        </div>
+    </div>
+    <div class="p-col-12 p-md-6 p-lg-12 p-d-flex p-flex-column ">
+        <label class="p-col-12 p-lg-12 p-p-0 my-auto">Tên <span class="text-danger">(*)</span></label>
+        <div class="p-col-12 p-lg-12 p-p-0">
+            <input type="text" class="p-inputtext-sm" (keyup.enter)="GhiLai()" [(ngModel)]="item.Ten" pInputText />
+        </div>
+    </div>
+    <div class="p-col-12 p-md-6 p-lg-12 p-d-flex p-flex-column">
+        <label class="p-col-12 p-lg-12 p-p-0 my-auto">Ghi chú</label>
+        <div class="p-col-12 p-lg-12 p-p-0">
+            <input type="text" class="p-inputtext-sm" (keyup.enter)="GhiLai()" [(ngModel)]="item.MoTa" pInputText />
+        </div>
+    </div>
+</div>
+</div>
+</div>
+<div class="modal-footer">
+<button pButton pRipple label="Lưu" icon="pi pi-save" class="p-button-sm p-mr-2" (click)="GhiLai()"></button>
+<button pButton pRipple label="Đóng" class="p-button-sm p-button-outlined p-button-secondary p-mr-2"
+    (click)="activeModal.dismiss()"></button>
+</div>

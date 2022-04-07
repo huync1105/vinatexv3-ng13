@@ -1,0 +1,86 @@
+<div class="p-grid"> 
+    <div class="p-col-12 p-lg-4 p-mb-3 p-p-3 d-flex flex-column flex-xl-row">
+        <label class="p-col-12 p-xl-4 p-p-0 my-auto">Mã tài sản : </label>
+        <div class="p-col-12 p-xl-8 p-p-0">
+            <input type="text" disabled="disabled" class="p-inputtext-sm"  style="font-weight: bold" [(ngModel)]="Chon_Vao.Ma" pInputText />
+        </div>
+    </div>
+    <div class="p-col-12 p-lg-4 p-mb-3 p-p-3 d-flex flex-column flex-xl-row">
+        <label class="p-col-12 p-xl-4 p-p-0 my-auto">Mã đơn vị tính : </label>
+        <div class="p-col-12 p-xl-8 p-p-0">
+            <input type="text" disabled="disabled" class="p-inputtext-sm"  style="font-weight: bold" [(ngModel)]="Chon_Vao.MadmDonViTinh" pInputText />
+        </div>
+    </div>
+    <div class="p-col-12 p-lg-4 p-mb-3 p-p-3 d-flex flex-column flex-xl-row">
+        <label class="p-col-12 p-xl-4 p-p-0 my-auto">Tên : </label>
+        <div class="p-col-12 p-xl-8 p-p-0">
+            <input type="text" disabled="disabled" class="p-inputtext-sm"  style="font-weight: bold" [(ngModel)]="Chon_Vao.Ten" pInputText />
+        </div>
+    </div>
+    <div class="p-col-12 p-lg-4 p-mb-3 p-p-3 d-flex flex-column flex-xl-row">
+        <label class="p-col-12 p-xl-4 p-p-0 my-auto">Ngày nhập : </label>
+        <div class="p-col-12 p-xl-8 p-p-0">
+            <p-calendar disabled="disabled" dateFormat="dd/mm/yy" inputStyleClass="p-inputtext-sm bold" [locale]="lang" 
+                    [monthNavigator]="true" [yearNavigator]="true" [yearRange]="yearRange" [showIcon]="true" 
+                    [(ngModel)]="Chon_Vao.NgayNhap" inputId="icon" placeholder="dd/mm/yyyy"  >
+                  
+                </p-calendar>
+                <!-- <input type="text"  class="p-inputtext-sm"  [(ngModel)]="Chon_Vao.NgayNhap" pInputText /> -->
+        </div>
+    </div>
+    <div class="p-col-12 p-lg-4 p-mb-3 p-p-3 d-flex flex-column flex-xl-row">
+        <label class="p-col-12 p-xl-4 p-p-0 my-auto">Đơn vị tính : </label>
+        <div class="p-col-12 p-xl-8 p-p-0">
+            <input type="text" disabled="disabled" class="p-inputtext-sm" style="font-weight: bold"  [(ngModel)]="Chon_Vao.TendmDonViTinh" pInputText />
+        </div>
+    </div>
+    <div class="p-col-12 p-lg-4 p-mb-3 p-p-3 d-flex flex-column flex-xl-row">
+        <label class="p-col-12 p-xl-4 p-p-0 my-auto">Số seri : </label>
+        <div class="p-col-12 p-xl-8 p-p-0">
+            <input type="text" disabled="disabled" class="p-inputtext-sm"  style="font-weight: bold" [(ngModel)]="Chon_Vao.SoSeri" pInputText />
+        </div>
+    </div>
+    <div class="p-col-12 p-lg-4 p-mb-3 p-p-3 d-flex flex-column flex-xl-row">
+        <label class="p-col-12 p-xl-4 p-p-0 my-auto">Bộ phận sử dụng : </label>
+        <div class="p-col-12 p-xl-8 p-p-0">
+            <input type="text" disabled="disabled" class="p-inputtext-sm"  style="font-weight: bold" [(ngModel)]="Chon_Vao.TendmPhanXuong" pInputText />
+        </div>
+    </div>
+    <div class="p-col-12 p-lg-4 p-mb-3 p-p-3 d-flex flex-column flex-xl-row">
+        <label class="p-col-12 p-xl-4 p-p-0 my-auto">Nhà sản xuất : </label>
+        <div class="p-col-12 p-xl-8 p-p-0">
+            <input type="text" disabled="disabled" class="p-inputtext-sm"  style="font-weight: bold" [(ngModel)]="Chon_Vao.TendmNhaSanXuat	" pInputText />
+        </div>
+    </div>
+    <div class="p-col-12 p-lg-4 p-mb-3 p-p-3 d-flex flex-column flex-xl-row">
+        <label class="p-col-12 p-xl-4 p-p-0 my-auto">Nước sản xuất : </label>
+        <div class="p-col-12 p-xl-8 p-p-0">
+            <input type="text" disabled="disabled" class="p-inputtext-sm"  style="font-weight: bold" [(ngModel)]="Chon_Vao.NuocSanXuat" pInputText />
+        </div>
+    </div>
+    <div class="p-col-12 p-lg-4 p-mb-3 p-p-3 d-flex flex-column flex-xl-row">
+        <label class="p-col-12 p-xl-4 p-p-0 my-auto">Nguyên giá : </label>
+        <div class="p-col-12 p-xl-8 p-p-0">
+            <input type="text" disabled="disabled" class="p-inputtext-sm"  style="font-weight: bold" [(ngModel)]="Chon_Vao.NguyenGia" pInputText />
+        </div>
+    </div>
+    <div class="p-col-12 p-lg-4 p-mb-3 p-p-3 d-flex flex-column flex-xl-row">
+        <label class="p-col-12 p-xl-4 p-p-0 my-auto">Giá trị còn lại : </label>
+        <div class="p-col-12 p-xl-8 p-p-0">
+            <input type="text" disabled="disabled" class="p-inputtext-sm"  style="font-weight: bold" [(ngModel)]="Chon_Vao.GiaTriConLai" pInputText />
+        </div>
+    </div>
+    <div class="p-col-12 p-lg-4 p-mb-3 p-p-3 d-flex flex-column flex-xl-row">
+        <label class="p-col-12 p-xl-4 p-p-0 my-auto">Tình trạng : </label>
+        <div class="p-col-12 p-xl-8 p-p-0">
+            <input type="text" disabled="disabled" class="p-inputtext-sm"  style="font-weight: bold" [(ngModel)]="Chon_Vao.TendmTinhTrang" pInputText />
+        </div>
+    </div>
+    <!-- <div class="p-col-12 p-lg-4 p-mb-3 p-p-3 d-flex flex-column flex-xl-row">
+        <label class="p-col-12 p-xl-4 p-p-0 my-auto">Thời gian sử dụng : </label>
+        <div class="p-col-12 p-xl-8 p-p-0">
+            <input type="text" disabled="disabled" class="p-inputtext-sm"  [(ngModel)]="Chon_Vao.ThoiGianSuDung" pInputText />
+        </div>
+    </div> -->
+
+</div>

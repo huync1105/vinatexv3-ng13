@@ -1,0 +1,82 @@
+<div class="modal-header">
+    <h5 class="modal-title">{{title}}</h5>
+    <button *ngIf="false" type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+<div class="modal-body">
+    <div class="p-d-flex p-flex-row p-jc-between">
+        <div class="modal-bt p-mb-4 ">
+            <button pButton pRipple type="button" label="Quay lại" class="p-mr-2 p-button-sm"
+                (click)="activeModal.dismiss('close')"></button>
+            <button pButton pRipple type="button" label="Ghi lại" class="p-mr-2 p-button-sm "
+                (click)="GhiLai()"></button>
+        </div>
+    </div>
+    <p-table [value]="item.listLichBaoDuong|isXoa" styleClass="p-datatable-customers p-datatable-gridlines p-datatable-sm"
+        [scrollable]="true">
+        <ng-template pTemplate="colgroup">
+            <colgroup>
+                <col style="width: 90px;">
+                <col style="width: 90px;">
+                <col *ngFor="let item of dmloaibaoduong" style="width: 90px;">
+                <col style="width: 50px;">
+            </colgroup>
+        </ng-template>
+        <ng-template pTemplate="header">
+            <tr>
+                <th class="text-center" rowspan="2">Số lượng</th>
+                <th class="text-center" rowspan="2">Số lượng cảnh báo</th>
+                <th class="text-center" [attr.colspan]="dmloaibaoduong.length">Loại cảnh báo</th>    
+                <th class="text-center" rowspan="2"></th>            
+            </tr>
+            <tr>
+                <th class="text-center" *ngFor="let item of dmloaibaoduong">{{item.Ten}}</th>                                          
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-item let-i="rowIndex">
+            <tr>
+                <td>
+                    <p-inputNumber [minFractionDigits]="0" locale="en-EN" [(ngModel)]="item.SoLuong">
+                    </p-inputNumber>
+                </td>
+                <td>
+                    <p-inputNumber [minFractionDigits]="0" locale="en-EN" [(ngModel)]="item.SoLuongCanhBao">
+                    </p-inputNumber>
+                </td>
+                <td class="text-center" *ngFor="let data of item.listChiTiet">           
+                    <p-checkbox [(ngModel)]="data.isBaoDuong" binary="true" inputId="binary" (onChange)="checked($event,data)">
+                    </p-checkbox>
+                </td>               
+                <td class="text-center">                   
+                    <button pButton pRipple type="button" icon="pi pi-trash"
+                        class="p-button-text p-button-sm p-button-secondary p-mr-2" pTooltip="Xóa"
+                        (click)="Xoa(item,i)"></button>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <p-inputNumber [minFractionDigits]="0" locale="en-EN" [(ngModel)]="newTableItem.SoLuong">
+                    </p-inputNumber>
+                </td>
+                <td>
+                    <p-inputNumber [minFractionDigits]="0" locale="en-EN" [(ngModel)]="newTableItem.SoLuongCanhBao">
+                    </p-inputNumber>
+                </td>
+                <td class="text-center" *ngFor="let data of newTableItem.listChiTiet">
+                     <p-checkbox [(ngModel)]="data.isBaoDuong" binary="true" inputId="binary" (onChange)="checked($event,data)">
+                    </p-checkbox>
+                </td> 
+                <td class="text-center">
+                    <button pButton pRipple type="button" icon="pi pi-plus" class="p-button-rounded p-button-sm "
+                    (click)="add()"></button>
+                </td>              
+            </tr>
+        </ng-template>       
+    </p-table>
+</div>
+<!-- <div class="modal-footer">
+    <button pButton pRipple label="Chấp nhận" class="p-button-sm p-mr-2" (click)="accept()"></button>
+    <button pButton pRipple label="Thoát" class="p-button-sm p-button-outlined p-button-secondary p-mr-2"
+        (click)="activeModal.dismiss()"></button>
+</div> -->

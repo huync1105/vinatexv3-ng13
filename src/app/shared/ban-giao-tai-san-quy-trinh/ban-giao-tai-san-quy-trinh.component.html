@@ -1,0 +1,40 @@
+<br>
+<p-accordion [collapseIcon]="''" [expandIcon]="''" (click)="transformIcon()" >
+    <p-accordionTab>
+        <!-- header -->
+        <ng-template pTemplate="header" [style]="{backgroundColor: '#fff'}">
+            <h4 style="width: 100%; display: flex; justify-content: space-between" class="header-title">
+                <span>{{title}}</span>
+                <span>
+                    <i class="pi" style="font-size: 20px" [class.pi-angle-right]="bool" [class.pi-angle-down]="!bool" ></i>
+                </span>
+            </h4>
+        </ng-template>
+
+        <!-- content -->
+        <ng-template pTemplate="content" class="content">
+            <div class="progress-bar-container">
+                <div class="progress-bar">
+    
+                    <!-- line -->
+                    <div class="progress-bar_line" [style.width]="listQuyTrinh.length*200 + 'px'"></div>
+    
+                    <!-- items -->  
+                    <a 
+                        *ngFor="let item of listQuyTrinh" 
+                        class="progress-bar_item"
+                        [class.done]="item.isHoanThanh"
+                        [class.pending]="item.isXuLy"
+                    >
+                        <img class="not-done-img" src="./assets/logo/prohibition.png" alt="">
+                        <img class="done-img" src="./assets/logo/check.png" alt="">
+                        <img class="pending-img" src="./assets/logo/target.png" alt="">
+                        <p class="pending-text">{{item.ten}}</p>
+                        <p class="done-text" [class.green]="isHoanThanh">{{item.isHoanThanh?'Đã hoàn thành':item.ten}}</p>
+                    </a>
+                    
+                </div>
+            </div>
+        </ng-template>
+    </p-accordionTab>
+</p-accordion>

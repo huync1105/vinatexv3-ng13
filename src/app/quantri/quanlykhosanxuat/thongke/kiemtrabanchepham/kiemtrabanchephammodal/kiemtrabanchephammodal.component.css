@@ -1,0 +1,41 @@
+.table-bongphe {
+  width: 100%;
+  overflow: hidden;
+}
+
+.table-bongphe table {
+  border: 1px solid #ccc;
+  border-collapse: separate;
+  border-spacing: 0;
+  height: 100%;
+  width: 100%;
+}
+
+.table-bongphe thead th {
+  color: white;
+  background-color: #828282;
+  border-bottom: 1px solid #ccc;
+  border-right: 1px solid #ccc;
+}
+
+.table-bongphe tbody td {
+  border-bottom: 1px solid #ccc;
+  border-right: 1px solid #ccc;
+}
+
+.bcp-w-50 {
+  max-width: 50px !important;
+  min-width: 50px !important;
+}
+.bcp-w-80 {
+  max-width: 80px !important;
+  min-width: 80px !important;
+}
+.bcp-w-200 {
+  max-width: 200px !important;
+  min-width: 200px !important;
+}
+.bcp-w-100 {
+  max-width: 100px !important;
+  min-width: 100px !important;
+}

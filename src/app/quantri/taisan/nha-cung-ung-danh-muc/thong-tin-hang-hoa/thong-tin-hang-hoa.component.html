@@ -1,0 +1,74 @@
+<div>
+  <p-button label="Thêm mới" class="p-mr-2" (click)="AddHangHoa()"></p-button>
+  <p-button label="Xóa" class="p-mr-2" (click)="DeleteListHangHoa()"></p-button>
+  <p-button label="Xuất Excel" class="p-mr-2" (click)="ExportListHangHoa()"></p-button>
+  <p-button label="Nhập Excel" (click)="ImportListHangHoa()"></p-button>
+</div>
+
+<div class="p-grid p-jc-between p-mt-3">
+  <div></div>
+  <div class="p-grid p-ai-center p-flex-row-reverse p-lg-5 p-p-0">
+    <div class="p-inputgroup" style="width:200px"> 
+      <input type="text" pInputText class="p-inputtext-sm" [(ngModel)]="filter.keyword" (keyup.enter)="SearchHangHoa(filter.keyword)"> 
+      <button pButton pRipple type="button" icon="pi pi-search" class="p-button-rounded p-button-secondary p-button-text" (click)="SearchHangHoa()"></button>
+      <button pButton pRipple type="button" icon="pi pi-refresh" class="p-button-rounded p-button-secondary p-button-text" (click)="LoadData()"></button>
+    </div>
+  </div>
+</div>
+
+<div class="p-mt-3">
+  <p-table [value]="listItem_copy" styleClass="p-datatable-sm p-datatable-gridlines">
+    <ng-template pTemplate="colgroup"> 
+      <colgroup>
+        <col style="width: 50px">
+        <col style="width: 50px">
+        <col>
+        <col>
+        <col>
+        <col>
+        <col>
+      </colgroup>
+    </ng-template>
+    <ng-template pTemplate="header">
+      <tr>
+        <th>
+          <p-checkbox [(ngModel)]="checkedAll" binary="true" inputId="binary"
+          (onChange)="CheckAllHangHoa()"></p-checkbox>
+        </th>
+        <th>STT</th>
+        <th>Mã </th>
+        <th>Tên thiết bị</th>
+        <th>Đơn giá TB</th>
+        <th>Thời gian giao hàng dự kiến</th>
+        <th>Ghi chú</th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-item let-i="rowIndex">
+      <tr>
+        <td class="text-center">
+          <p-checkbox [(ngModel)]="item.checked" binary="true" inputId="binary"></p-checkbox>
+        </td>
+        <td class="text-center">
+          {{20* (paging.currentPage - 1) + i + 1 }}
+        </td>
+        <td class="text-center">{{item.MadmItem}}</td>
+        <td>{{item.TendmItem}}</td>
+        <td>
+          <p-inputNumber [(ngModel)]="item.DonGia"></p-inputNumber>
+        </td>
+        <td>
+          <input type="text" pInputText [(ngModel)]="item.ThoiGianGiaoHangDuKien"/>
+        </td>
+        <td>
+          <input type="text" pInputText placeholder="Ghi chú" [(ngModel)]="item.GhiChu"> 
+        </td>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="summary">
+      <div class="p-d-flex p-ai-center p-jc-between p-px-2">
+        Tổng số bản ghi {{paging.totalCount}}.
+        <p-paginator #paginator [totalRecords]="paging.totalCount" [rows]="20" (onPageChange)="changePage($event)"></p-paginator>
+      </div>
+    </ng-template>
+  </p-table>
+</div>

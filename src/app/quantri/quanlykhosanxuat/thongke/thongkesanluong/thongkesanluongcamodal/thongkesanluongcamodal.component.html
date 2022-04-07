@@ -1,0 +1,727 @@
+<div class="modal-header">
+    <h5 class="modal-title">Thống kê sản lượng nhiều ca</h5>
+    <div class="d-flex flex-column flex-lg-row">
+        <div>
+            <span style="font-weight: bold;">Số quy trình:</span> {{item.SoQuyTrinh}}
+        </div>
+        <div class="ml-lg-3 mr-lg-3">
+            <span style="font-weight: bold;">TG Tạo:</span> {{item.Created|date:"dd/MM/yyyy HH:mm"}}
+        </div>
+        <div>
+            <span style="font-weight: bold;">TG Duyệt:</span> {{item.Modified|date:"dd/MM/yyyy HH:mm"}}
+        </div>
+    </div>
+    <button *ngIf="false" type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+<div class="modal-body">
+    <div class="p-d-flex p-flex-row p-jc-between">
+        <div class="modal-bt p-mb-4 ">
+            <button pButton pRipple type="button" label="Quay lại" class="p-mr-2 p-button-sm"
+                (click)="onClose()"></button>
+            <button pButton pRipple type="button" label="Lưu nháp" class="p-mr-2 p-button-sm "
+                (click)="GhiLai()"></button>
+            <button pButton pRipple type="button" label="Xóa" class="p-mr-2 p-button-sm" *ngIf="checkbutton.Xoa"
+                (click)="XoaQuyTrinh()"></button>
+            <button pButton pRipple type="button" label="Không duyệt" class="p-mr-2 p-button-sm" (click)="KhongDuyet()"
+                *ngIf="checkbutton.KhongDuyet"></button>
+            <button pButton pRipple type="button" label="Xác nhận" class="p-mr-2 p-button-sm" (click)="ChuyenDuyet()"
+                *ngIf="checkbutton.ChuyenTiep"></button>
+        </div>
+
+    </div>
+    <div class="p-grid">
+        <div class="p-col-12 p-lg-3 p-p-3 d-flex flex-column flex-lg-row">
+            <label class="p-col-12 p-lg-4 p-p-0 my-auto">Ngày:</label>
+            <div class="p-col-12 p-lg-8 p-p-0">
+                <p-calendar dateFormat="dd/mm/yy" inputStyleClass="p-inputtext-sm" [locale]="lang"
+                    [monthNavigator]="true" [yearNavigator]="true" [yearRange]="yearRange" [showIcon]="true"
+                    [(ngModel)]="item.Ngay" inputId="icon" placeholder="dd/mm/yyyy"
+                    (onSelect)="getMatHangThongKeSanLuong()">
+                </p-calendar>
+            </div>
+        </div>
+        <div class="p-col-12 p-lg-3 p-p-3 d-flex flex-column flex-lg-row">
+            <label class="p-col-12 p-lg-4 p-p-0 my-auto">Phân xưởng:</label>
+            <div class="p-col-12 p-lg-8 p-p-0">
+                <p-dropdown [filter]="true" [options]="listPhanXuong" placeholder="Chọn phân xưởng"
+                    styleClass="p-inputtext-sm" [(ngModel)]="item.IddmPhanXuong" (onChange)="ThayDoiPhanXuong()">
+                </p-dropdown>
+            </div>
+        </div>
+        <div class="p-col-12 p-lg-3 p-p-3 d-flex flex-column flex-lg-row">
+            <label class="p-col-12 p-lg-4 p-p-0 my-auto">Công đoạn:</label>
+            <div class="p-col-12 p-lg-8 p-p-0">
+                <p-dropdown [filter]="true" [options]="listCongDoan" placeholder="Chọn công đoạn"
+                    styleClass="p-inputtext-sm" [(ngModel)]="item.CongDoan" (onChange)="getItemTheoCongDoan()">
+                </p-dropdown>
+            </div>
+        </div>
+
+        <div class="p-col-12 p-lg-3 p-p-3 d-flex flex-column flex-lg-row">
+            <label class="p-col-12 p-lg-4 p-p-0 my-auto">Ghi chú:</label>
+            <div class="p-col-12 p-lg-8 p-p-0">
+                <input type="text" class="p-inputtext-sm" [(ngModel)]="item.GhiChu" pInputText />
+            </div>
+        </div>
+        <div class="p-col-12 p-p-0 d-flex flex-column table-bongphe">
+            <table>
+                <thead>
+                    <tr>
+                        <th rowspan="2" class="tc-w-30">#</th>
+                        <th rowspan="2">Số máy</th>
+                        <th rowspan="2" class="tc-w-30">Ne</th>
+                        <th rowspan="2">Mặt hàng</th>
+                        <th *ngFor="let col of listCaSanXuat; let i = index" [attr.colspan]="col.SoCot">
+                            <div class="d-flex flex-column flex-lg-row">
+                                <label class="p-col-12 p-lg-9 p-p-0 my-auto">{{col.Ten}}</label>
+                                <div class="p-col-12 p-lg-3 p-p-0">
+                                    <p-dropdown [options]="listCaThucTe" placeholder="Ca" styleClass="p-inputtext-sm"
+                                        [(ngModel)]="item.listThongKeSanLuong[i].IddmCaSanXuatThucTe">
+                                    </p-dropdown>
+                                </div>
+                            </div>
+                        </th>
+                    </tr>
+                    <tr>
+                        <th style="display: none;"></th>
+                        <th style="display: none;"></th>
+                        <th style="display: none;"></th>
+                        <th style="display: none;"></th>
+                        <ng-container *ngFor="let col of listCaSanXuat; let i = index">
+                            <th *ngIf="item.CongDoan==='ONG'"
+                                [ngStyle]="{'min-width':item.width,'max-width':item.width}">Sản lượng màn hình (kg)</th>
+                            <th *ngIf="item.CongDoan!=='ONG'"
+                                [ngStyle]="{'min-width':item.width,'max-width':item.width}">Khối lượng (kg)</th>
+                            <th *ngIf="item.CongDoan!=='CON'" [ngStyle]="{'min-width':item.width,'max-width':item.width}">Chiều dài (m)</th>
+                            <th *ngIf="item.CongDoan==='CON'" class="tc-w-100">Chữ đồng hồ (g/cọc)
+                                <p-checkbox (onChange)="checkAll($event, i)" binary="true" inputId="binary">
+                                </p-checkbox>
+                            </th>
+                            <th *ngIf="item.CongDoan==='CON' || item.CongDoan==='THO'"
+                                [ngStyle]="{'min-width':item.width,'max-width':item.width}">Cọc chết (cọc)
+                            </th>
+                            <!-- <th *ngIf="item.CongDoan==='CON'"
+                                [ngStyle]="{'min-width':item.width,'max-width':item.width}">Hút mối (kg)</th> -->
+                            <th *ngIf="item.CongDoan==='ONG'" class="tc-w-150">Lô hàng</th>
+                        </ng-container>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let itemtbl of thongKeFull[0]?.listItem; let i = index">
+                        <td class="tc-w-30" style="background-color: #fff;">{{i+1}}</td>
+                        <td class="text-left" style="background-color: #fff;">{{itemtbl.TendmMay}}</td>
+                        <td class="text-left tc-w-30" style="background-color: #fff;">{{itemtbl.Ne}}</td>
+                        <td class="text-left" style="background-color: #fff;">{{itemtbl.Ten}}
+                            <span *ngIf="item.CongDoan==='ONG'&& itemtbl.IdLoHangDao!==null "> - Đảo</span>
+                        </td>
+                        <ng-container *ngFor="let col of thongKeFull; let indexCa = index">
+                            <td td class="text-right" [ngStyle]="{'min-width':item.width,'max-width':item.width}">
+                                <span *ngIf="col.listItem[i].DonViNangSuat=== 0">
+                                    {{col.listItem[i].KhoiLuong |number:'0.3-3'}}
+                                </span>
+                                <p-inputNumber
+                                    *ngIf="col.listItem[i].DonViNangSuat=== 1 && ((item.CongDoan !== 'ONG' || (item.CongDoan === 'ONG' && col.listItem[i].isCheckdmCaSanXuat === true)) && item.CongDoan !== 'CON')"
+                                    #inputNumber (keyup.enter)="enterCon(i*6+(indexCa*2)+1, indexCa)"
+                                    [tabindex]="i*6+(indexCa*2)+1" [minFractionDigits]="3" locale="en-EN"
+                                    [(ngModel)]="col.listItem[i].KhoiLuong"
+                                    (ngModelChange)="TinhTongKhoiLuongBong(indexCa)">
+                                </p-inputNumber>
+                                <p-inputNumber *ngIf="col.listItem[i].DonViNangSuat=== 1 && item.CongDoan === 'CON'"
+                                    #inputNumber (keyup.enter)="enterCon(i*15+(indexCa*5)+1, indexCa)"
+                                    [tabindex]="i*15+(indexCa*5)+1" [minFractionDigits]="3" locale="en-EN"
+                                    [(ngModel)]="col.listItem[i].KhoiLuong"
+                                    (ngModelChange)="TinhTongKhoiLuongBong(indexCa)">
+                                </p-inputNumber>
+                            </td>
+                            <td *ngIf="col.listItem[i].DonViNangSuat===1 && item.CongDoan!=='CON'"
+                                [ngStyle]="{'min-width':item.width,'max-width':item.width}">
+                                {{col.listItem[i].ChieuDai |number:'0.3-3'}}
+                            </td>
+                            <td *ngIf="col.listItem[i].DonViNangSuat===0 && item.CongDoan!=='CON'"
+                                [ngStyle]="{'min-width':item.width,'max-width':item.width}">
+                                <p-inputNumber
+                                    *ngIf="item.CongDoan==='CHAIPC' || item.CongDoan==='GHEPSOBOPC' || item.CongDoan==='ONG' "
+                                    [minFractionDigits]="3" locale="en-EN" [(ngModel)]="col.listItem[i].ChieuDai"
+                                    #inputNumber (keyup.enter)="enterCon(i*6+(indexCa*2)+2, indexCa)"
+                                    [tabindex]="i*6+(indexCa*2)+2"
+                                    (ngModelChange)="TinhGiaTri(col.listItem[i], indexCa)">
+                                </p-inputNumber>
+                                <!-- <p-inputNumber *ngIf="item.CongDoan==='CON'" [minFractionDigits]="3" locale="en-EN"
+                                    [(ngModel)]="col.listItem[i].ChieuDai" #inputNumber
+                                    (ngModelChange)="TinhCongThucMoi(col.listItem[i], indexCa)"
+                                    (keyup.enter)="enterCon(i*15+(indexCa*5)+2, indexCa)"
+                                    [tabindex]="i*15+(indexCa*5)+2">
+                                </p-inputNumber> -->
+                                <p-inputNumber *ngIf="item.CongDoan==='CHAICOTTON'" [minFractionDigits]="3"
+                                    locale="en-EN" [(ngModel)]="col.listItem[i].ChieuDai"
+                                    (keyup.enter)="enterCon(i*6+(indexCa*2)+2, indexCa)" [tabindex]="i*6+(indexCa*2)+2"
+                                    (ngModelChange)="TinhKhoiLuongChaiCotton(col.listItem[i], indexCa)">
+                                </p-inputNumber>
+                                <p-inputNumber *ngIf="item.CongDoan==='GHEPSOBOCOTTON' || item.CongDoan==='GHEPTRONB' || item.CongDoan==='GHEPTRONA' 
+                                    || item.CongDoan==='GHEPDAURA' || item.CongDoan==='GHEPSOBOPE'"
+                                    (keyup.enter)="enterCon(i*6+(indexCa*2)+2, indexCa)" [tabindex]="i*6+(indexCa*2)+2"
+                                    [minFractionDigits]="3" locale="en-EN" [(ngModel)]="col.listItem[i].ChieuDai"
+                                    (ngModelChange)="TinhKhoiLuongGhepSoBoChaiCotton(col.listItem[i], indexCa)">
+                                </p-inputNumber>
+                                <p-inputNumber #inputNumber *ngIf="item.CongDoan==='THO'" [minFractionDigits]="3"
+                                    locale="en-EN" [(ngModel)]="col.listItem[i].ChieuDai"
+                                    (ngModelChange)="TinhKhoiLuongTho(col.listItem[i], indexCa)"
+                                    (keyup.enter)="enterCon(i*6+(indexCa*2)+2, indexCa)" [tabindex]="i*6+(indexCa*2)+2">
+                                </p-inputNumber>
+                                <p-inputNumber *ngIf="item.CongDoan==='CHAIPE'" [minFractionDigits]="3" locale="en-EN"
+                                    [(ngModel)]="col.listItem[i].ChieuDai" #inputNumber
+                                    (keyup.enter)="enterCon(i*6+(indexCa*2)+2, indexCa)" [tabindex]="i*6+(indexCa*2)+2"
+                                    (ngModelChange)="TinhKhoiLuongChaiPE(col.listItem[i], indexCa)">
+                                </p-inputNumber>
+                                <p-inputNumber *ngIf="item.CongDoan==='CHAIKY'" [minFractionDigits]="3" locale="en-EN"
+                                    [(ngModel)]="col.listItem[i].ChieuDai" #inputNumber
+                                    (keyup.enter)="enterCon(i*6+(indexCa*2)+2, indexCa)" [tabindex]="i*6+(indexCa*2)+2"
+                                    (ngModelChange)="TinhKhoiLuongChaiKy(col.listItem[i], indexCa)">
+                                </p-inputNumber>
+                                <p-inputNumber *ngIf="item.CongDoan==='CUONCUI'" [minFractionDigits]="3" locale="en-EN"
+                                    [(ngModel)]="col.listItem[i].ChieuDai" #inputNumber
+                                    (keyup.enter)="enterCon(i*6+(indexCa*2)+2, indexCa)" [tabindex]="i*6+(indexCa*2)+2"
+                                    (ngModelChange)="TinhKhoiLuongCuonCui(col.listItem[i], indexCa)">
+                                </p-inputNumber>
+                            </td>
+                            <td *ngIf="item.CongDoan==='CON'" class="p-d-flex p-flex-row tc-w-100">
+                                <p-inputNumber #inputNumber (keyup.enter)="enterCon(i*15+(indexCa*5)+3, indexCa)"
+                                    [tabindex]="i*15+(indexCa*5)+3" [minFractionDigits]="3" locale="en-EN"
+                                    [(ngModel)]="col.listItem[i].ChuDongHo"
+                                    (ngModelChange)="KhoiLuongBongCongDoanCon(col.listItem[i], indexCa)"
+                                    [disabled]="col.listItem[i].DonViNangSuat===1 || col.listItem[i].isM === true">
+                                </p-inputNumber>
+                                <input type="checkbox" class="p-inputtext-sm" [(ngModel)]="col.listItem[i].isM"
+                                    (ngModelChange)="KhoiLuongBongCongDoanCon(col.listItem[i], indexCa)"
+                                    style="margin: 5px!important" />
+                                <label>M</label>
+                            </td>
+                            <td *ngIf="item.CongDoan==='CON'"
+                                [ngStyle]="{'min-width':item.width,'max-width':item.width}">
+                                <p-inputNumber #inputNumber (keyup.enter)="enterCon(i*15+(indexCa*5)+4, indexCa)"
+                                    [tabindex]="i*15+(indexCa*5)+4" [minFractionDigits]="0" locale="en-EN"
+                                    [(ngModel)]="col.listItem[i].CocChet"
+                                    (ngModelChange)="KhoiLuongBongCongDoanCon(col.listItem[i], indexCa)"
+                                    [disabled]="col.listItem[i].DonViNangSuat===1">
+                                </p-inputNumber>
+                            </td>
+                            <td *ngIf="item.CongDoan==='THO'"
+                                [ngStyle]="{'min-width':item.width,'max-width':item.width}">
+                                <p-inputNumber #inputNumber (keyup.enter)="enterCon(i*6+(indexCa*2)+3, indexCa)"
+                                    [tabindex]="i*6+(indexCa*2)+3" [minFractionDigits]="0" locale="en-EN"
+                                    [(ngModel)]="col.listItem[i].CocChet"
+                                    (ngModelChange)="TinhKhoiLuongTho(col.listItem[i], indexCa)"
+                                    [disabled]="col.listItem[i].DonViNangSuat===1">
+                                </p-inputNumber>
+                            </td>
+                            <!-- <td *ngIf="item.CongDoan==='CON'"
+                                [ngStyle]="{'min-width':item.width,'max-width':item.width}">
+                                <p-inputNumber #inputNumber (keyup.enter)="enterCon(i*15+(indexCa*5)+5, indexCa)"
+                                    [tabindex]="i*15+(indexCa*5)+5" [minFractionDigits]="3" locale="en-EN"
+                                    [(ngModel)]="col.listItem[i].HutMoi"
+                                    (ngModelChange)="KhoiLuongBongCongDoanCon(col.listItem[i], indexCa)"
+                                    [disabled]="col.listItem[i].DonViNangSuat===1">
+                                </p-inputNumber>
+                            </td> -->
+                            <td *ngIf="item.CongDoan==='ONG'" class="tc-w-150">
+                                <div class="p-inputgroup">
+                                    <div style="flex:1">
+                                        <p-dropdown [filter]="true" [options]="listLoHang" [autofocusFilter]="true"
+                                            placeholder="Chọn lô hàng" styleClass="p-inputtext-sm"
+                                            [(ngModel)]="col.listItem[i].IdLoHang"></p-dropdown>
+                                    </div>
+                                    <button pButton pRipple icon="pi pi-copy"
+                                        class="p-button-sm p-button-rounded p-button-text p-mr-2"
+                                        (click)="ApDung(col.listItem[i], indexCa)"></button>
+                                </div>
+                            </td>
+                        </ng-container>
+                    </tr>
+                    <tr>
+                        <td class="tc-w-30" style="background-color: #fff;">&nbsp;</td>
+                        <td tyle="background-color: #fff;"></td>
+                        <td class="text-left tc-w-30" style="background-color: #fff;"></td>
+                        <td style="background-color: #fff;">TỔNG</td>
+                        <ng-container *ngFor="let col of thongKeFull">
+                            <td class="text-right" [ngStyle]="{'min-width':item.width,'max-width':item.width}">
+                                {{col.listItem|isXoa|SumByKey:'KhoiLuong'|number:'0.3-3'}}
+                            </td>
+                            <td *ngIf="item.CongDoan!=='CON'" class="text-right" [ngStyle]="{'min-width':item.width,'max-width':item.width}">
+                                {{col.listItem|isXoa|SumByKey:'ChieuDai'|number:'0.3-3'}}
+                            </td>
+                            <td *ngIf="item.CongDoan==='CON'" class="text-right tc-w-100">
+                                {{col.listItem|isXoa|SumByKey:'ChuDongHo'|number:'0.3-3'}}
+                            </td>
+                            <td *ngIf="item.CongDoan==='CON' || item.CongDoan==='THO'" class="text-right"
+                                [ngStyle]="{'min-width':item.width,'max-width':item.width}">
+                                {{col.listItem|isXoa|SumByKey:'CocChet'|number:'0.0'}}
+                            </td>
+                            <!-- <td *ngIf="item.CongDoan==='CON'" class="text-right"
+                                [ngStyle]="{'min-width':item.width,'max-width':item.width}">
+                                {{col.listItem|isXoa|SumByKey:'HutMoi'|number:'0.3-3'}}
+                            </td> -->
+                            <td *ngIf="item.CongDoan==='ONG'">
+                            </td>
+                        </ng-container>
+                    </tr>
+                    <tr *ngFor="let col of listItemTable">
+                        <td style="background-color: #fff;">&nbsp;</td>
+                        <td style="background-color: #fff;"></td>
+                        <td style="background-color: #fff;"></td>
+                        <td style="background-color: #fff;"></td>
+                        <ng-container *ngFor="let col of listCaSanXuat">
+                            <td></td>
+                            <td *ngIf="item.CongDoan!=='CON'"></td>
+                            <td *ngIf="item.CongDoan==='CON'"></td>
+                            <td *ngIf="item.CongDoan==='CON'"></td>
+                            <td *ngIf="item.CongDoan==='THO'"></td>
+                            <td *ngIf="item.CongDoan==='ONG'"></td>
+                        </ng-container>
+                    </tr>
+                </tbody>
+            </table>
+            <br />
+        </div>
+
+        <div class="p-col-12 p-p-0 d-flex flex-column table-bongphe">
+            <table>
+                <thead>
+                    <tr>
+                        <th rowspan="2" style="width: 10rem;">Tên</th>
+                        <ng-container *ngFor="let col of listCaSanXuat">
+                            <th colspan="2">{{col.Ten}}</th>
+                        </ng-container>
+                    </tr>
+                    <tr>
+                        <ng-container *ngFor="let col of listCaSanXuat">
+                            <th style="width: 10rem;">Khối lượng</th>
+                            <th style="width: 10rem;">Tỷ lệ</th>
+                        </ng-container>
+                    </tr>
+                </thead>
+                <tbody>
+                    <ng-container *ngIf="item.CongDoan==='CHAICOTTON'">
+                        <tr>
+                            <td class="text-left">Khối lượng bông F:</td>
+                            <ng-container *ngFor="let col of item.listThongKeSanLuong; let i = index">
+                                <td class="text-right p-d-flex p-flex-row ">
+                                    <p-inputNumber [minFractionDigits]="3" locale="en-EN"
+                                        [(ngModel)]="col.CottonBongPhe" (ngModelChange)="TinhTyLeCottonBongPhe(i)">
+                                    </p-inputNumber>
+                                    <button pButton pRipple icon="pi pi-ellipsis-v"
+                                        class="p-button-sm p-button-rounded p-button-secondary p-button-text"
+                                        title="Nhập theo biểu thức" (click)="tinhToan(col,'CottonBongPhe')"
+                                        pTooltip="Tính toán" showDelay="1000" tooltipPosition="bottom"></button>
+                                </td>
+                                <td class="text-right">
+                                    {{col.TyLeCottonBongPhe|number:'0.3-3'}}
+                                </td>
+                            </ng-container>
+                        </tr>
+                        <tr>
+                            <td class="text-left">Khối lượng bông mùn:</td>
+                            <ng-container *ngFor="let col of item.listThongKeSanLuong ; let i = index">
+                                <td class="text-right p-d-flex p-flex-row ">
+                                    <p-inputNumber [minFractionDigits]="3" locale="en-EN"
+                                        [(ngModel)]="col.CottonBongMun" (ngModelChange)="TinhTyLeCottonBongPhe(i)">
+                                    </p-inputNumber>
+                                    <button pButton pRipple icon="pi pi-ellipsis-v" title="Nhập theo biểu thức"
+                                        class="p-button-sm p-button-rounded p-button-secondary p-button-text"
+                                        (click)="tinhToan(col,'CottonBongMun')" pTooltip="Tính toán" showDelay="1000"
+                                        tooltipPosition="bottom"></button>
+                                </td>
+                                <td class="text-right">
+                                    {{col.TyLeCottonBongMun|number:'0.3-3'}}
+                                </td>
+                            </ng-container>
+                        </tr>
+                        <tr>
+                            <td class="text-left">Khối lượng cúi hồi:</td>
+                            <ng-container *ngFor="let col of item.listThongKeSanLuong ; let i = index">
+                                <td class="text-right p-d-flex p-flex-row ">
+                                    <p-inputNumber [minFractionDigits]="3" locale="en-EN"
+                                        [(ngModel)]="col.KhoiLuongCuiHoiChaiCotton"
+                                        (ngModelChange)="TinhTyLeCottonBongPhe(i)">
+                                    </p-inputNumber>
+                                    <button pButton pRipple icon="pi pi-ellipsis-v" title="Nhập theo biểu thức"
+                                        class="p-button-sm p-button-rounded p-button-secondary p-button-text"
+                                        (click)="tinhToan(col,'KhoiLuongCuiHoiChaiCotton')" pTooltip="Tính toán"
+                                        showDelay="1000" tooltipPosition="bottom"></button>
+                                </td>
+                                <td class="text-right">
+                                    {{col.TyLeCuiHoiChaiCotton|number:'0.3-3'}}
+                                </td>
+                            </ng-container>
+                        </tr>
+                        <tr>
+                            <td class="text-left">Khối lượng xơ ngoại lai:</td>
+                            <ng-container *ngFor="let col of item.listThongKeSanLuong; let i = index">
+                                <td class="text-right p-d-flex p-flex-row ">
+                                    <p-inputNumber [minFractionDigits]="3" locale="en-EN"
+                                        [(ngModel)]="col.KhoiLuongXoNgoaiLai"
+                                        (ngModelChange)="TinhTyLeCottonBongPhe(i)">
+                                    </p-inputNumber>
+                                    <button pButton pRipple icon="pi pi-ellipsis-v" title="Nhập theo biểu thức"
+                                        class="p-button-sm p-button-rounded p-button-secondary p-button-text"
+                                        (click)="tinhToan(col,'KhoiLuongXoNgoaiLai')" pTooltip="Tính toán"
+                                        showDelay="1000" tooltipPosition="bottom"></button>
+                                </td>
+                                <td class="text-right">
+                                    {{col.TyLeXoNgoaiLai|number:'0.3-3'}}
+                                </td>
+                            </ng-container>
+                        </tr>
+                        <tr>
+                            <td class="text-left">Khối lượng bông quét nhà:</td>
+                            <ng-container *ngFor="let col of item.listThongKeSanLuong; let i = index">
+                                <td class="text-right p-d-flex p-flex-row ">
+                                    <p-inputNumber [minFractionDigits]="3" locale="en-EN"
+                                        [(ngModel)]="col.CottonBongQuetNha" (ngModelChange)="TinhTyLeCottonBongPhe(i)">
+                                    </p-inputNumber>
+                                    <button pButton pRipple icon="pi pi-ellipsis-v" title="Nhập theo biểu thức"
+                                        class="p-button-sm p-button-rounded p-button-secondary p-button-text"
+                                        (click)="tinhToan(col,'CottonBongQuetNha')" pTooltip="Tính toán"
+                                        showDelay="1000" tooltipPosition="bottom"></button>
+                                </td>
+                                <td class="text-right">
+                                    {{col.TyLeCottonBongQuetNha|number:'0.3-3'}}
+                                </td>
+                            </ng-container>
+                        </tr>
+                    </ng-container>
+                    <ng-container *ngIf="item.CongDoan==='CHAIPE'">
+                        <tr>
+                            <td class="text-left">Khối lượng cúi hồi:</td>
+                            <ng-container *ngFor="let col of item.listThongKeSanLuong; let i = index">
+                                <td class="text-right p-d-flex p-flex-row ">
+                                    <p-inputNumber [minFractionDigits]="3" locale="en-EN" [(ngModel)]="col.PECuiHoi"
+                                        (ngModelChange)="TinhTyLePEBongPhe(i)">
+                                    </p-inputNumber>
+                                    <button pButton pRipple icon="pi pi-ellipsis-v" title="Nhập theo biểu thức"
+                                        class="p-button-sm p-button-rounded p-button-secondary p-button-text"
+                                        (click)="tinhToan(col,'PECuiHoi')" pTooltip="Tính toán" showDelay="1000"
+                                        tooltipPosition="bottom"></button>
+                                </td>
+                                <td class="text-right">
+                                    {{col.TyLePECuiHoi|number:'0.3-3'}}
+                                </td>
+                            </ng-container>
+                        </tr>
+                        <tr>
+                            <td class="text-left">Khối lượng bông F:</td>
+                            <ng-container *ngFor="let col of item.listThongKeSanLuong; let i = index">
+                                <td class="text-right p-d-flex p-flex-row ">
+                                    <p-inputNumber [minFractionDigits]="3" locale="en-EN" [(ngModel)]="col.PEBongPhe"
+                                        (ngModelChange)="TinhTyLePEBongPhe(i)">
+                                    </p-inputNumber>
+                                    <button pButton pRipple icon="pi pi-ellipsis-v" title="Nhập theo biểu thức"
+                                        class="p-button-sm p-button-rounded p-button-secondary p-button-text"
+                                        (click)="tinhToan(col,'PEBongPhe')" pTooltip="Tính toán" showDelay="1000"
+                                        tooltipPosition="bottom"></button>
+                                </td>
+                                <td class="text-right">
+                                    {{col.TyLePEBongPhe|number:'0.3-3'}}
+                                </td>
+                            </ng-container>
+                        </tr>
+                        <tr>
+                            <td class="text-left">Khối lượng bông mùn:</td>
+                            <ng-container *ngFor="let col of item.listThongKeSanLuong; let i = index">
+                                <td class="text-right p-d-flex p-flex-row ">
+                                    <p-inputNumber [minFractionDigits]="3" locale="en-EN" [(ngModel)]="col.PEBongMun"
+                                        (ngModelChange)="TinhTyLePEBongPhe(i)">
+                                    </p-inputNumber>
+                                    <button pButton pRipple icon="pi pi-ellipsis-v" title="Nhập theo biểu thức"
+                                        class="p-button-sm p-button-rounded p-button-secondary p-button-text"
+                                        (click)="tinhToan(col,'PEBongMun')" pTooltip="Tính toán" showDelay="1000"
+                                        tooltipPosition="bottom"></button>
+                                </td>
+                                <td class="text-right">
+                                    {{col.TyLePEBongMun|number:'0.3-3'}}
+                                </td>
+                            </ng-container>
+                        </tr>
+                    </ng-container>
+                    <ng-container *ngIf="item.CongDoan==='CHAIKY'">
+                        <tr>
+                            <td class="text-left">Khối lượng bông chải kỹ:</td>
+                            <ng-container *ngFor="let col of item.listThongKeSanLuong; let i = index">
+                                <td class="text-right p-d-flex p-flex-row ">
+                                    <p-inputNumber [minFractionDigits]="3" locale="en-EN" [(ngModel)]="col.ChaiKy"
+                                        (ngModelChange)="TinhTyLeBongChaiKy(i)">
+                                    </p-inputNumber>
+                                    <button pButton pRipple icon="pi pi-ellipsis-v" title="Nhập theo biểu thức"
+                                        class="p-button-sm p-button-rounded p-button-secondary p-button-text"
+                                        (click)="tinhToan(col,'ChaiKy')" pTooltip="Tính toán" showDelay="1000"
+                                        tooltipPosition="bottom"></button>
+                                </td>
+                                <td class="text-right">
+                                    {{col.TyLeBongChaiKy|number:'0.3-3'}}
+                                </td>
+                            </ng-container>
+                        </tr>
+                    </ng-container>
+                    <ng-container *ngIf="item.CongDoan==='THO'">
+                        <tr>
+                            <td class="text-left">Khối lượng cúi hồi:</td>
+                            <ng-container *ngFor="let col of item.listThongKeSanLuong; let i = index">
+                                <td class="text-right p-d-flex p-flex-row ">
+                                    <p-inputNumber [minFractionDigits]="3" locale="en-EN" [(ngModel)]="col.CuiHoi"
+                                        (ngModelChange)="TinhTyLeBongCuiHoi(i)">
+                                    </p-inputNumber>
+                                    <button pButton pRipple icon="pi pi-ellipsis-v" title="Nhập theo biểu thức"
+                                        class="p-button-sm p-button-rounded p-button-secondary p-button-text"
+                                        (click)="tinhToan(col,'CuiHoi')" pTooltip="Tính toán" showDelay="1000"
+                                        tooltipPosition="bottom"></button>
+                                </td>
+                                <td class="text-right">
+                                    {{col.TyLeBongCuiHoi|number:'0.3-3'}}
+                                </td>
+                            </ng-container>
+                        </tr>
+                        <tr>
+                            <td class="text-left">Khối lượng thô màng:</td>
+                            <ng-container *ngFor="let col of item.listThongKeSanLuong; let i = index">
+                                <td class="text-right p-d-flex p-flex-row ">
+                                    <p-inputNumber [minFractionDigits]="3" locale="en-EN" [(ngModel)]="col.ThoMangTho"
+                                        (ngModelChange)="TinhTyLeBongCuiHoi(i)">
+                                    </p-inputNumber>
+                                    <button pButton pRipple icon="pi pi-ellipsis-v" title="Nhập theo biểu thức"
+                                        class="p-button-sm p-button-rounded p-button-secondary p-button-text"
+                                        (click)="tinhToan(col,'ThoMangTho')" pTooltip="Tính toán" showDelay="1000"
+                                        tooltipPosition="bottom"></button>
+                                </td>
+                                <td class="text-right">
+                                    {{col.TyLeThoMangTho|number:'0.3-3'}}
+                                </td>
+                            </ng-container>
+                        </tr>
+                        <tr>
+                            <td class="text-left">Khối lượng bông quét nhà:</td>
+                            <ng-container *ngFor="let col of item.listThongKeSanLuong; let i = index">
+                                <td class="text-right p-d-flex p-flex-row ">
+                                    <p-inputNumber [minFractionDigits]="3" locale="en-EN"
+                                        [(ngModel)]="col.ThoBongQuetNha" (ngModelChange)="TinhTyLeBongCuiHoi(i)">
+                                    </p-inputNumber>
+                                    <button pButton pRipple icon="pi pi-ellipsis-v" title="Nhập theo biểu thức"
+                                        class="p-button-sm p-button-rounded p-button-secondary p-button-text"
+                                        (click)="tinhToan(col,'ThoBongQuetNha')" pTooltip="Tính toán" showDelay="1000"
+                                        tooltipPosition="bottom"></button>
+                                </td>
+                                <td class="text-right">
+                                    {{col.TyLeThoBongQuetNha|number:'0.3-3'}}
+                                </td>
+                            </ng-container>
+                        </tr>
+                    </ng-container>
+                    <ng-container *ngIf="item.CongDoan==='CON'">
+                        <tr>
+                            <td class="text-left">Khối lượng thô màng:</td>
+                            <ng-container *ngFor="let col of item.listThongKeSanLuong; let i = index">
+                                <td class="text-right p-d-flex p-flex-row ">
+                                    <p-inputNumber [minFractionDigits]="3" locale="en-EN" [(ngModel)]="col.ThoMang"
+                                        (ngModelChange)="TinhTyLeBongThoMang(i)">
+                                    </p-inputNumber>
+                                    <button pButton pRipple icon="pi pi-ellipsis-v" title="Nhập theo biểu thức"
+                                        class="p-button-sm p-button-rounded p-button-secondary p-button-text"
+                                        (click)="tinhToan(col,'ThoMang')" pTooltip="Tính toán" showDelay="1000"
+                                        tooltipPosition="bottom"></button>
+                                </td>
+                                <td class="text-right">
+                                    {{col.TyLeThoMang|number:'0.3-3'}}
+                                </td>
+                            </ng-container>
+                        </tr>
+                        <tr>
+                            <td class="text-left">Khối lượng bông hút mối:</td>
+                            <ng-container *ngFor="let col of item.listThongKeSanLuong; let i = index">
+                                <td class="text-right p-d-flex p-flex-row ">
+                                    <p-inputNumber [minFractionDigits]="3" locale="en-EN" [(ngModel)]="col.BongHutMoi"
+                                        (ngModelChange)="TinhTyLeBongThoMang(i)">
+                                    </p-inputNumber>
+                                    <button pButton pRipple icon="pi pi-ellipsis-v" title="Nhập theo biểu thức"
+                                        class="p-button-sm p-button-rounded p-button-secondary p-button-text"
+                                        (click)="tinhToan(col,'BongHutMoi')" pTooltip="Tính toán" showDelay="1000"
+                                        tooltipPosition="bottom"></button>
+                                </td>
+                                <td class="text-right">
+                                    {{col.TyLeBongHutMoi|number:'0.3-3'}}
+                                </td>
+                            </ng-container>
+                        </tr>
+                        <tr>
+                            <td class="text-left">Khối lượng bông quét nhà:</td>
+                            <ng-container *ngFor="let col of item.listThongKeSanLuong; let i = index">
+                                <td class="text-right p-d-flex p-flex-row ">
+                                    <p-inputNumber [minFractionDigits]="3" locale="en-EN"
+                                        [(ngModel)]="col.ConBongQuetNha" (ngModelChange)="TinhTyLeBongThoMang(i)">
+                                    </p-inputNumber>
+                                    <button pButton pRipple icon="pi pi-ellipsis-v" title="Nhập theo biểu thức"
+                                        class="p-button-sm p-button-rounded p-button-secondary p-button-text"
+                                        (click)="tinhToan(col,'ConBongQuetNha')" pTooltip="Tính toán" showDelay="1000"
+                                        tooltipPosition="bottom"></button>
+                                </td>
+                                <td class="text-right">
+                                    {{col.TyLeConBongQuetNha|number:'0.3-3'}}
+                                </td>
+                            </ng-container>
+                        </tr>
+                    </ng-container>
+                    <ng-container *ngIf="item.CongDoan==='ONG'">
+                        <tr>
+                            <td class="text-left">Khối lượng sợi cắt:</td>
+                            <ng-container *ngFor="let col of item.listThongKeSanLuong; let i = index">
+                                <td class="text-right p-d-flex p-flex-row ">
+                                    <p-inputNumber [minFractionDigits]="3" locale="en-EN" [(ngModel)]="col.SoiCat"
+                                        (ngModelChange)="TinhTyLeSoiCat(i)">
+                                    </p-inputNumber>
+                                    <button pButton pRipple icon="pi pi-ellipsis-v" title="Nhập theo biểu thức"
+                                        class="p-button-sm p-button-rounded p-button-secondary p-button-text"
+                                        (click)="tinhToan(col,'SoiCat')" pTooltip="Tính toán" showDelay="1000"
+                                        tooltipPosition="bottom"></button>
+                                </td>
+                                <td class="text-right">
+                                    {{col.TyLeSoiCat|number:'0.3-3'}}
+                                </td>
+                            </ng-container>
+                        </tr>
+                        <tr>
+                            <td class="text-left">Khối lượng bông quét nhà:</td>
+                            <ng-container *ngFor="let col of item.listThongKeSanLuong; let i = index">
+                                <td class="text-right p-d-flex p-flex-row ">
+                                    <p-inputNumber [minFractionDigits]="3" locale="en-EN"
+                                        [(ngModel)]="col.OngBongQuetNha" (ngModelChange)="TinhTyLeSoiCat(i)">
+                                    </p-inputNumber>
+                                    <button pButton pRipple icon="pi pi-ellipsis-v" title="Nhập theo biểu thức"
+                                        class="p-button-sm p-button-rounded p-button-secondary p-button-text"
+                                        (click)="tinhToan(col,'OngBongQuetNha')" pTooltip="Tính toán" showDelay="1000"
+                                        tooltipPosition="bottom"></button>
+                                </td>
+                                <td class="text-right">
+                                    {{col.TyLeOngBongQuetNha|number:'0.3-3'}}
+                                </td>
+                            </ng-container>
+                        </tr>
+                    </ng-container>
+                    <ng-container *ngIf="item.CongDoan==='GHEPSOBOCOTTON'">
+                        <tr>
+                            <td class="text-left">Khối lượng cúi hồi:</td>
+                            <ng-container *ngFor="let col of item.listThongKeSanLuong; let i = index">
+                                <td class="text-right p-d-flex p-flex-row ">
+                                    <p-inputNumber [minFractionDigits]="3" locale="en-EN"
+                                        [(ngModel)]="col.TongKhoiLuongCuiHoi" (ngModelChange)="resetKhoiLuongCuiHoi(i)">
+                                    </p-inputNumber>
+                                    <button pButton pRipple icon="pi pi-ellipsis-v" title="Nhập theo biểu thức"
+                                        class="p-button-sm p-button-rounded p-button-secondary p-button-text"
+                                        (click)="tinhToan(col,'TongKhoiLuongCuiHoi')" pTooltip="Tính toán"
+                                        showDelay="1000" tooltipPosition="bottom"></button>
+                                </td>
+                                <td class="text-right">
+                                    {{col.TyLeCuiHoiGhepSoBoCotton|number:'0.3-3'}}
+                                </td>
+                            </ng-container>
+                        </tr>
+                    </ng-container>
+                    <ng-container *ngIf="item.CongDoan==='GHEPDAURA'">
+                        <tr>
+                            <td class="text-left">Khối lượng cúi hồi:</td>
+                            <ng-container *ngFor="let col of item.listThongKeSanLuong; let i = index">
+                                <td class="text-right p-d-flex p-flex-row ">
+                                    <p-inputNumber [minFractionDigits]="3" locale="en-EN"
+                                        [(ngModel)]="col.KhoiLuongCuiHoiGhepDauRa"
+                                        (ngModelChange)="TinhTyLeCuiHoiGhepDauRa(i)">
+                                    </p-inputNumber>
+                                    <button pButton pRipple icon="pi pi-ellipsis-v" title="Nhập theo biểu thức"
+                                        class="p-button-sm p-button-rounded p-button-secondary p-button-text"
+                                        (click)="tinhToan(col,'KhoiLuongCuiHoiGhepDauRa')" pTooltip="Tính toán"
+                                        showDelay="1000" tooltipPosition="bottom"></button>
+                                </td>
+                                <td class="text-right">
+                                    {{col.TyLeCuiHoiGhepDauRa|number:'0.3-3'}}
+                                </td>
+                            </ng-container>
+                        </tr>
+                    </ng-container>
+                    <ng-container *ngIf="item.CongDoan==='GHEPTRONA'">
+                        <tr>
+                            <td class="text-left">Khối lượng cúi hồi:</td>
+                            <ng-container *ngFor="let col of item.listThongKeSanLuong; let i = index">
+                                <td class="text-right p-d-flex p-flex-row ">
+                                    <p-inputNumber [minFractionDigits]="3" locale="en-EN"
+                                        [(ngModel)]="col.KhoiLuongCuiHoiGhepTronA"
+                                        (ngModelChange)="TinhTyLeCuiHoiGhepTronA(i)">
+                                    </p-inputNumber>
+                                    <button pButton pRipple icon="pi pi-ellipsis-v" title="Nhập theo biểu thức"
+                                        class="p-button-sm p-button-rounded p-button-secondary p-button-text"
+                                        (click)="tinhToan(col,'KhoiLuongCuiHoiGhepTronA')" pTooltip="Tính toán"
+                                        showDelay="1000" tooltipPosition="bottom"></button>
+                                </td>
+                                <td class="text-right">
+                                    {{col.TyLeCuiHoiGhepTronA|number:'0.3-3'}}
+                                </td>
+                            </ng-container>
+                        </tr>
+                    </ng-container>
+                    <ng-container *ngIf="item.CongDoan==='GHEPTRONB'">
+                        <tr>
+                            <td class="text-left">Khối lượng cúi hồi:</td>
+                            <ng-container *ngFor="let col of item.listThongKeSanLuong; let i = index">
+                                <td class="text-right p-d-flex p-flex-row ">
+                                    <p-inputNumber [minFractionDigits]="3" locale="en-EN"
+                                        [(ngModel)]="col.KhoiLuongCuiHoiGhepTronB"
+                                        (ngModelChange)="TinhTyLeCuiHoiGhepTronB(i)">
+                                    </p-inputNumber>
+                                    <button pButton pRipple icon="pi pi-ellipsis-v" title="Nhập theo biểu thức"
+                                        class="p-button-sm p-button-rounded p-button-secondary p-button-text"
+                                        (click)="tinhToan(col,'KhoiLuongCuiHoiGhepTronB')" pTooltip="Tính toán"
+                                        showDelay="1000" tooltipPosition="bottom"></button>
+                                </td>
+                                <td class="text-right">
+                                    {{col.TyLeCuiHoiGhepTronB|number:'0.3-3'}}
+                                </td>
+                            </ng-container>
+                        </tr>
+                    </ng-container>
+                    <ng-container *ngIf="item.CongDoan==='GHEPSOBOPE'">
+                        <tr>
+                            <td class="text-left">Khối lượng cúi hồi:</td>
+                            <ng-container *ngFor="let col of item.listThongKeSanLuong; let i = index">
+                                <td class="text-right p-d-flex p-flex-row ">
+                                    <p-inputNumber [minFractionDigits]="3" locale="en-EN"
+                                        [(ngModel)]="col.KhoiLuongCuiHoiGhepSoBoPE"
+                                        (ngModelChange)="TinhTyLeCuiHoiGhepSoBoPE(i)">
+                                    </p-inputNumber>
+                                    <button pButton pRipple icon="pi pi-ellipsis-v" title="Nhập theo biểu thức"
+                                        class="p-button-sm p-button-rounded p-button-secondary p-button-text"
+                                        (click)="tinhToan(col,'KhoiLuongCuiHoiGhepSoBoPE')" pTooltip="Tính toán"
+                                        showDelay="1000" tooltipPosition="bottom"></button>
+                                </td>
+                                <td class="text-right">
+                                    {{col.TyLeCuiHoiGhepSoBoPE|number:'0.3-3'}}
+                                </td>
+                            </ng-container>
+                        </tr>
+                    </ng-container>
+                    <tr>
+                        <td class="text-left">Trừ vào sản lượng gian máy:</td>
+                        <ng-container *ngFor="let col of item.listThongKeSanLuong; let i = index">
+                            <td class="text-center p-d-flex p-flex-row">
+                                <input type="checkbox" class="p-inputtext-sm text-left"
+                                    [(ngModel)]="col.isTruVaoSanLuong" (change)="TinhTongKhoiLuongBong(i)" />
+                            </td>
+                            <td></td>
+                        </ng-container>
+                    </tr>
+                </tbody>
+            </table>
+            <br />
+        </div>
+    </div>
+</div>
+<div class="modal-footer">
+    <!-- <button pButton pRipple label="Chấp nhận" class="p-button-sm p-mr-2" (click)="accept()"></button>
+    <button pButton pRipple label="Thoát" class="p-button-sm p-button-outlined p-button-secondary p-mr-2"
+        (click)="activeModal.dismiss()"></button> -->
+</div>

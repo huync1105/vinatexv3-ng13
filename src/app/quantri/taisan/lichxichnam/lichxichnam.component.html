@@ -1,0 +1,138 @@
+<div class="p-mb-3 p-mt-3">
+    <h4 style="color:#1f2779">Lịch xích năm</h4>
+</div>
+<div class="p-d-flex p-ai-center p-jc-between p-mb-3">
+    <!-- <button pButton lab el="Thêm mới" icon="pi pi-plus" class="p-button-sm p-mr-2" (click)="add()"
+        *ngIf="checkQuyen.ThemMoi"></button> -->
+        <div></div>
+        <div></div>
+        <div class="p-d-flex p-flex-row">
+            <div class="field-radiobutton p-mr-2">
+                <p-radioButton [value]="0" [(ngModel)]="item.isChon" (onClick)="isChon(item)" ></p-radioButton>
+                <label >Theo loại bảo dưỡng</label>
+            </div>
+            <div class="field-radiobutton p-mr-2">
+                <p-radioButton [value]="1" [(ngModel)]="item.isChonMay" (onClick)="isChonMay(item)"></p-radioButton>
+                <label >Theo máy</label>
+            </div>
+        </div>
+            
+    <div class="p-d-flex p-flex-row">
+        <div class="p-mr-2">
+            <p-dropdown [filter]="true" [options]="listNam" placeholder="Chọn năm" styleClass="p-inputtext-sm"
+            ></p-dropdown>
+            <!-- <p-calendar dateFormat="yy" inputStyleClass="p-inputtext-sm bold" [locale]="lang"
+                    [monthNavigator]="true" [yearNavigator]="true" [yearRange]="" [showIcon]="true" inputId="icon"
+                    placeholder="yyyy" [(ngModel)]="item.Ngay">
+                </p-calendar> -->
+        </div>
+        <div class="p-mr-2">
+            <p-dropdown [filter]="true" [options]="listPhanXuong" placeholder="Chọn bộ phận sử dụng "
+               styleClass="p-inputtext-sm" 
+                [showClear]="true" [filter]="true" [(ngModel)]="filter.IdBoPhanSuDung"></p-dropdown>
+        </div>
+        <div class="p-mr-2">
+            <p-dropdown [filter]="true" [options]="listLoaiTaiSan" placeholder="Chọn tài sản "
+                 styleClass="p-inputtext-sm" [(ngModel)]="filter.IddmLoaiTaiSan"
+                [showClear]="true" [filter]="true"></p-dropdown>
+        </div>
+    </div>
+</div>
+<div class="p-d-flex p-ai-center p-jc-between p-mb-3">
+    <div></div>
+    <div class="p-mr-2"> <p>Tổng số:{{items.TongSoTaiSan}} thiết bị</p></div>
+</div>
+
+<p-table [value]="items.listBaoDuong" *ngIf="item.isChon ===0" styleClass="p-datatable-sm wrap-text p-datatable-striped">
+    <ng-template pTemplate="colgroup">
+      <colgroup>
+        <col style="width:100px">
+        <col style="width:50px">
+        <col style="width:50px">
+        <col style="width:50px">
+        <col style="width:50px">
+        <col style="width:50px">
+        <col style="width:50px">
+        <col style="width:50px">
+        <col style="width:50px">
+        <col style="width:50px">
+        <col style="width:50px">
+        <col style="width:50px">
+        <col style="width:50px">
+      </colgroup>
+    </ng-template>
+    <ng-template pTemplate="header">
+      <tr>
+        <th class="text-center">Loại bảo dưỡng</th>
+        <th class="text-center">Tháng 1</th>
+        <th class="text-center">Tháng 2</th>
+        <th class="text-center">Tháng 3</th>
+        <th class="text-center">Tháng 4</th>
+        <th class="text-center">Tháng 5</th>
+        <th class="text-center">Tháng 6</th>
+        <th class="text-center">Tháng 7</th>
+        <th class="text-center">Tháng 8</th>
+        <th class="text-center">Tháng 9</th>
+        <th class="text-center">Tháng 10</th>
+        <th class="text-center">Tháng 11</th>
+        <th class="text-center">Tháng 12</th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-item let-i="rowIndex">
+      <tr>
+        <td class="text-center" (click)="ChiTietBaoDuong(item)">{{item.TendmLoaiBaoDuong}}</td>
+        <td class="text-center"  *ngFor="let newItem of item.listItemTheoThoiGian">
+          <a href="javascript:void(0)"  *ngFor="let taisan of newItem.listChiTiet" (click)="ChiTietThongTin(taisan)">
+         {{taisan.TenTaiSan}},
+          </a>
+           
+          </td>
+      </tr>
+    </ng-template>
+  </p-table>
+  <p-table [value]="itemMay.listTaiSan" *ngIf="item.isChonMay === 1" styleClass="p-datatable-sm wrap-text p-datatable-striped">
+    <ng-template pTemplate="colgroup">
+      <colgroup>
+        <col style="width:100px">
+        <col style="width:50px">
+        <col style="width:50px">
+        <col style="width:50px">
+        <col style="width:50px">
+        <col style="width:50px">
+        <col style="width:50px">
+        <col style="width:50px">
+        <col style="width:50px">
+        <col style="width:50px">
+        <col style="width:50px">
+        <col style="width:50px">
+        <col style="width:50px">
+      </colgroup>
+    </ng-template>
+    <ng-template pTemplate="header">
+      <tr>
+        <th class="text-center">Mã, tên tài sản</th>
+        <th class="text-center">Tháng 1</th>
+        <th class="text-center">Tháng 2</th>
+        <th class="text-center">Tháng 3</th>
+        <th class="text-center">Tháng 4</th>
+        <th class="text-center">Tháng 5</th>
+        <th class="text-center">Tháng 6</th>
+        <th class="text-center">Tháng 7</th>
+        <th class="text-center">Tháng 8</th>
+        <th class="text-center">Tháng 9</th>
+        <th class="text-center">Tháng 10</th>
+        <th class="text-center">Tháng 11</th>
+        <th class="text-center">Tháng 12</th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-item let-i="rowIndex">
+      <tr>
+        <td class="text-center" (click)="ChiTietThongTin(item)">{{item.TenTaiSan}}</td>
+        <td class="text-center"  *ngFor="let newItem of item.listItemTheoThoiGian">
+          <a href="javascript:void(0)"  *ngFor="let taisan of newItem.listChiTiet" (click)="ChiTietBaoDuong(taisan)">
+         {{taisan.TendmLoaiBaoDuong}}
+          </a>
+          </td>
+      </tr>
+    </ng-template>
+  </p-table>

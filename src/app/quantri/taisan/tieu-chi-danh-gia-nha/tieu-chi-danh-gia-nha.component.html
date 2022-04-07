@@ -1,0 +1,76 @@
+<div class="p-mb-3 p-mt-3">
+  <h4 style="color:#1f2779">Tiêu chí đánh giá nhà cung ứng</h4>
+</div>
+
+<!-- toolbar -->
+<div class="p-d-flex p-ai-center p-jc-between p-mb-3">
+  <!-- button container -->
+  <div>
+    <p-button label="Thêm mới" class="p-mr-2" (click)="AddTieuChi()"></p-button>
+    <p-button label="Xóa" class="p-mr-2" (click)="DeleteListTieuChi()"></p-button>
+    <p-button label="Xuất Excel" class="p-mr-2" (click)="ExportTieuChi()"></p-button>
+    <p-button label="Nhập Excel" (click)="ImportTieuChi()"></p-button>
+  </div>
+
+  <!-- searching -->
+  <div class="p-inputgroup" style="width: 200px"> 
+    <input type="text" pInputText class="p-inputtext-sm" [(ngModel)]="filter.keyword" (keyup.enter)="LoadListTieuChi()"> 
+    <button pButton pRipple type="button" icon="pi pi-search" class="p-button-rounded p-button-secondary p-button-text" (click)="LoadListTieuChi(true)"></button>
+    <button pButton pRipple type="button" icon="pi pi-refresh" class="p-button-rounded p-button-secondary p-button-text" (click)="ResetListTieuChi()"></button>
+  </div>
+</div>
+
+<!-- table -->
+<div>
+  <p-treeTable [value]="items">
+    <ng-template pTemplate="colgroup"> 
+      <colgroup>
+        <col style="width: 50px">
+        <col style="width: 50px">
+        <col style="width: 200px">
+        <col>
+        <col style="width: 100px">
+        <col style="width: 100px">
+        <col>
+        <col style="width: 100px">
+      </colgroup>
+    </ng-template>
+    <ng-template pTemplate="header">
+      <tr>
+        <th class="text-center"></th>
+        <th class="text-center">STT</th>
+        <th class="text-center">Mã </th>
+        <th class="text-center">Tên</th>
+        <th class="text-center">Điểm tối đa</th>
+        <th class="text-center">Thứ tự</th>
+        <th class="text-center">Ghi chú</th>
+        <th></th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-rowNode let-rowData="rowData">
+      <tr [ttRow]="rowNode">
+        <td class="text-center">
+          <p-checkbox [(ngModel)]="rowData.checked" binary="true" inputId="binary" (onChange)="CheckAll(rowData)"></p-checkbox>
+        </td>
+        <td class="text-center">{{rowData.STT}}</td>
+        <td class="text-center">
+          <p-treeTableToggler [rowNode]="rowNode"></p-treeTableToggler>
+          {{rowData.Ma}}
+        </td>
+        <td>{{rowData.Ten}}</td>
+        <td class="text-center">{{rowData.DiemToiDa}}</td>
+        <td class="text-center">{{rowData.ThuTu}}</td>
+        <td class="text-center">{{rowData.GhiChu}}</td>
+        <td class="text-center p-d-flex">
+          <button pButton pRipple type="button" icon="pi pi-pencil" class="p-button-rounded p-button-text" style="border-radius: 2px" (click)="UpdateTieuChi(rowData.Id)"></button>
+        </td>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="summary">
+      <div class="p-d-flex p-ai-center p-jc-between p-px-2">
+        Tổng số bản ghi {{paging.totalCount}}.
+        <p-paginator #paginator [totalRecords]="paging.totalCount" [rows]="20" (onPageChange)="changePage($event)"></p-paginator>
+      </div>
+    </ng-template>
+</p-treeTable>
+</div>

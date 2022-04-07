@@ -1,0 +1,71 @@
+<div class="p-px-3">
+
+  <div class="p-mb-3 p-mt-3">
+    <h4 style="color:#1f2779">Báo cáo ghép thô tổng hợp</h4>
+  </div>
+
+  <div class="p-d-flex p-jc-end p-mb-3">
+    <div class="p-mr-3">
+      <p-dropdown placeholder="Chọn phân xưởng" [filter]="true"></p-dropdown>
+    </div>
+    <div class="p-mr-3">
+      <p-dropdown placeholder="Ca sản xuất" [filter]="true"></p-dropdown>
+    </div>
+    <div class="p-mr-3">
+      <p-dropdown [placeholder]="currentTime.day" [options]="listNgay" [filter]="true"></p-dropdown>
+    </div>
+    <div class="p-mr-3">
+      <p-dropdown [placeholder]="currentTime.month" [options]="listThang" [filter]="true"></p-dropdown>
+    </div>
+    <div class="">
+      <p-dropdown [placeholder]="currentTime.year" [options]="listNam" [filter]="true"></p-dropdown>
+    </div>
+  </div>
+
+  <div>
+    <p-table [value]="items" [columns]="cols" styleClass="p-datatable-sm p-datatable-gridlines">
+      <ng-template pTemplate="colgroup" let-columns>
+        <colgroup>
+          <col *ngFor="let col of columns" [style.width]="col.width">
+        </colgroup>
+      </ng-template>
+      <ng-template pTemplate="header" let-columns>
+        <tr>
+          <th>
+            Ngày
+          </th>
+          <th *ngFor="let col of columns" style="word-wrap: break-word" [style.width]="col.width">
+            {{col.header}}
+          </th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-item let-columns="columns">
+        <tr>
+          <td class="text-center">
+            {{item.Ngay}}
+          </td>
+          <td *ngFor="let col of columns" [style.backgroundColor]="col.backgroundColor" [class]="col.textAlign">
+            {{item[col.field]}}
+          </td>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="footer" let-columns="columns">
+        <tr>
+          <td style="background-color: #f0f0f0">
+            Lũy kế
+          </td>
+          <td *ngFor="let col of cols" class="text-right" style="background-color: #f0f0f0">
+            {{items | SumByKey: col.field}}
+          </td>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="summary">
+        <div class="p-d-flex p-ai-center p-jc-between"> Tổng số bản ghi .
+          <p-paginator [rows]="20">
+          </p-paginator>
+      </div>
+      </ng-template>
+    </p-table>
+  </div>
+
+</div>

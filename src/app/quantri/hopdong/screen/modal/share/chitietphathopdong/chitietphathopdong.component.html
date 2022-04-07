@@ -1,0 +1,37 @@
+<div class="p-mt-3">
+    <p-table styleClass="p-datatable-sm p-datatable-striped p-datatable-gridlines" [scrollable]="true">
+
+        <ng-template pTemplate="header">
+            <tr>
+                <th class="text-center">STT</th>
+
+                <th>Ngày </th>
+                <th>Giá trị </th>
+                <th>Số CV/BB</th>
+                <th>Ngày phát hành</th>
+
+
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-item let-i="rowIndex">
+            <tr>
+                <!-- <td class="text-center"> {{ 20 * (paging.CurrentPage - 1) + i + 1 }} </td>
+                <td class="text-center">{{item.SoQuyTrinh}}</td>
+                <td class="text-center">{{item.Modified|date:'dd/MM/yyyy'}}</td>
+                <td class="text-center">{{item.NoiDung}}</td>
+                <td class="text-center">{{item.TendmPhanXuong}}</td>
+                <td class="text-center">{{item.TuNgay|date:'dd/MM/yyyy'}}</td>
+                <td class="text-center">{{item.DenNgay|date:'dd/MM/yyyy'}}</td>
+                <td class="text-center" *ngFor="let col of cols"> {{item[col.field]}} </td>
+                <td class="text-center">
+                    <button pButton pRipple type="button" icon="fas fa-edit" *ngIf="trangThai===2&&item.isDaHoanThanh===false" class="p-button-text p-button-sm p-button-secondary p-mr-2" pTooltip="Chưa hoàn thành" (click)="hoanthanh(item.Id)"></button>
+                    <button pButton pRipple type="button" icon="pi pi-pencil" class="p-button-text p-button-sm p-button-secondary p-mr-2" pTooltip="Chỉnh sửa" (click)="changeParam(item.Id)"></button>
+                </td> -->
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="summary">
+            <div class="p-d-flex p-ai-center p-jc-between"> Tổng số bản ghi
+            </div>
+        </ng-template>
+    </p-table>
+</div>

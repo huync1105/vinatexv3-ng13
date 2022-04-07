@@ -1,0 +1,69 @@
+<div class="modal-header">
+    <h5 class="modal-title"> {{title}}
+       </h5>
+    <button *ngIf="false" type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+    </button>
+    <!-- <span class="p-button-sm p-button-sm p-button-text close" aria-hidden="true"
+    (click)="activeModal.dismiss('Cross click')">×</span> -->
+</div>
+<div class="modal-body">
+    <div class="p-d-flex p-flex-row p-jc-between">
+        <div class="modal-bt p-mb-4 ">
+            <button pButton pRipple type="button" label="Quay lại" class="p-mr-2 p-button-sm"
+                (click)="activeModal.dismiss('close')"></button>
+            <button pButton pRipple type="button" label="Ghi lại" class="p-mr-2 p-button-sm" (click)="GhiLai()"></button>
+        </div>
+    </div>
+    <div class="p-grid">
+        <div class="p-col-12 p-lg-6  p-p-3 d-flex flex-column flex-xl-row">
+            <label class="p-col-12 p-xl-4 p-p-0 my-auto">Loại bảo dưỡng : </label>
+            <div class="p-col-12 p-xl-8 p-p-0">
+                <p-dropdown [filter]="true" [options]="listLoaiBaoDuong" placeholder="Chọn loại bảo dưỡng" [(ngModel)]="item.IddmLoaiBaoDuong" (onChange)="chonLoaiBaoDuong($event)" [showClear]="true"></p-dropdown>
+            </div>
+        </div>
+        <div *ngIf="item.IddmLoaiBaoDuong" class="p-col-12 p-lg-6  p-p-3 d-flex flex-column flex-xl-row">
+            <label class="p-col-12 p-xl-4 p-p-0 my-auto"> </label>
+            <div class="p-col-12 p-xl-8 p-p-0">
+                <input type="text" class="p-inputtext-sm" [(ngModel)]="item.ThoiGianNangSuat" pInputText />
+            </div>
+        </div> 
+        <div class="p-col-12 p-lg-12  p-p-3 d-flex flex-column flex-xl-row">
+            <label class="p-col-12 p-xl-2 p-p-0 my-auto">Nội dung: </label>
+            <div class="p-col-12 p-xl-10 p-p-0">
+                <input type="text" class="p-inputtext-sm" [(ngModel)]="item.NoiDung" pInputText />
+            </div>
+        </div> 
+        <!-- <div class="p-col-12 p-lg-6  p-p-3 d-flex flex-column flex-xl-row">
+            <div class="p-field-checkbox p-col-12 p-xl-6 p-p-0">
+                <p-checkbox binary="true" value=""  inputId="" [(ngModel)]="item.isBaoDuongTheoHang"></p-checkbox>
+                <label for="">Bảo dưỡng theo hãng</label>
+            </div>
+            <div class=" p-col-12 p-xl-3 p-p-0"> </div>
+            <div class="p-field-checkbox p-col-12 p-xl-3 p-p-0">
+                <p-checkbox binary="true" value="" [(ngModel)]="item.isApDung" inputId=""></p-checkbox>
+                <label for="">Áp dụng</label>
+            </div>
+        </div> -->
+        <!-- <div class="p-col-12 p-lg-6  p-p-3 d-flex flex-column flex-xl-row">
+            <label class="p-col-12 p-xl-4 p-p-0 my-auto">Theo thời gian: </label>
+            <div class="p-col-12 p-xl-8 p-p-0">
+                <input  [disabled]="true" type="text" class="p-inputtext-sm" [(ngModel)]="item.ThoiGianBaoDuong" pInputText />
+            </div>
+        </div>
+        <div class="p-col-12 p-lg-6  p-p-3 d-flex flex-column flex-xl-row">
+            <label class="p-col-12 p-xl-4 p-p-0 my-auto">Theo công suất: </label>
+            <div class="p-col-12 p-xl-8 p-p-0">
+                <p-inputNumber [disabled]="true" [minFractionDigits]="0" locale="en-EN" [(ngModel)]="item.NangSuat">
+                </p-inputNumber>
+            </div>
+        </div> -->
+        <div class="p-col-12 p-lg-12  p-p-3 d-flex flex-column flex-xl-row">
+            <label class="p-col-12 p-xl-2 p-p-0 my-auto">Ghi chú : </label>
+            <div class="p-col-12 p-xl-10 p-p-0">
+                <input type="text" class="p-inputtext-sm" [(ngModel)]="item.GhiChu" pInputText />
+            </div>
+        </div>
+
+    </div>
+</div>

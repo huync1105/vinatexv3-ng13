@@ -1,0 +1,80 @@
+<div class="modal-header">
+    <h5 class="modal-title">Danh mục mặt hàng</h5>
+    <button *ngIf="false" type="button" class="close" aria-label="Close" (click)="_activeModal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+<div class="modal-body">
+    <div class="p-grid">
+        <div class="p-col-12 p-p-0 d-flex flex-column">
+            <div class="p-d-flex p-flex-row p-jc-between p-mb-3">
+                <div>
+                    <button pButton pRipple label="Chấp nhận" class="p-button-sm p-mr-2" (click)="accept()"></button>
+                    <button pButton pRipple label="Đóng" class="p-button-sm p-mr-2"
+                        (click)="_activeModal.dismiss()"></button>
+                </div>
+                <div>
+                    <div class="p-inputgroup">
+                        <input type="text" placeholder="Tìm kiếm" class="p-inputtext-sm" pInputText
+                            [(ngModel)]="KeyWord" />
+                        <button type="button" pButton pRipple icon="pi pi-refresh"
+                            class="p-button-secondary p-button-sm p-button-text" (click)="resetFilter()"></button>
+                    </div>
+                </div>
+            </div>
+            <p-table [value]="items|filter:KeyWord"
+                styleClass="p-datatable-sm wrap-text p-datatable-striped p-datatable-gridlines" [scrollable]="true"
+                scrollHeight="500px" [virtualScroll]="true" [virtualRowHeight]="30">
+                <ng-template pTemplate="colgroup">
+                    <colgroup>
+                        <col style="width:50px">
+                        <col style="width: 15rem;" >
+                        <col style="width: 15rem;">
+                        <col>
+                        <col >
+                        <col>
+                        <col>
+                        <col>
+                        <col>
+                    </colgroup>
+                </ng-template>
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th>
+                            <p-checkbox [(ngModel)]="checkedAll" (onChange)="checkAll($event)" binary="true"
+                                inputId="binary"></p-checkbox>
+                        </th>
+                        <th>Số- Tên hợp đồng</th>
+                        <th>Mặt hàng</th>
+                        <th>Mã</th>
+                        <th>Chi số Ne</th>
+                        <th>Độ săn</th>
+                        <th>Khối lượng đã hoàn thành</th>
+                        <th>Khối lượng theo hợp đồng</th>
+                        <th>Ghi chú</th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-item let-i="rowIndex">
+                    <tr>
+                        <td class="text-center">
+                            <p-checkbox [(ngModel)]="item.checked" (onChange)="checked(item)" binary="true" inputId="binary"></p-checkbox>
+                        </td>
+                        <td>{{item.soTenHopDong}}</td>
+                        <td>{{item.ten}}</td>
+                        <td>{{item.ma}}</td>
+                        <td class="text-right">{{item.ne|number:'0.0' }}</td>
+                        <td class="text-right">{{item.doSan|number:'0.0'}}</td>
+                        <td class="text-right">{{item.khoiLuongDaHoanThanh |number:'0.0-2' }}</td>
+                        <td class="text-right">{{item.khoiLuongHopDong |number:'0.0-2' }}</td>
+                        <td>{{item.ghiChu}}</td>
+                    </tr>
+                </ng-template>
+            </p-table>
+        </div>
+    </div>
+</div>
+<div class="modal-footer">
+    <!-- <button pButton pRipple label="Chấp nhận" class="p-button-sm p-mr-2" (click)="accept()"></button>
+    <button pButton pRipple label="Thoát" class="p-button-sm p-button-outlined p-button-secondary p-mr-2"
+        (click)="activeModal.dismiss()"></button> -->
+</div>

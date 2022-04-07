@@ -1,0 +1,186 @@
+<div class="modal-header">
+    <!-- {{opt==='add'?'Thêm mới':'Cập nhật'}} -->
+    <h5 class="modal-title">Phiếu triển khai kế hoạch giao</h5>
+    <div class="d-flex flex-column flex-lg-row">
+        <div>
+           <span style="font-weight: bold;">Số phiếu:</span> {{item.SoQuyTrinh}}
+        </div>
+        <div class="ml-lg-3 mr-lg-3">
+            <span style="font-weight: bold;">TG Tạo:</span> {{item.Created|date:"dd/MM/yyyy HH:mm"}}
+        </div>
+        <div>
+            <span style="font-weight: bold;">TG Duyệt:</span> {{item.Modified|date:"dd/MM/yyyy HH:mm"}}
+        </div>
+    </div>
+    <button *ngIf="false" type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+<div class="modal-body">
+    <div class="p-d-flex p-flex-row p-jc-between">
+        <div class="modal-bt p-mb-4 ">
+            <button pButton pRipple type="button" label="Quay lại" class="p-mr-2 p-button-sm"
+                (click)="activeModal.dismiss('close')"></button>
+            <button pButton pRipple type="button" label="Hoàn thành" class="p-mr-2 p-button-sm " (click)="GhiLai()"
+                ></button>
+            <button pButton pRipple type="button" label="Xuất excel" class="p-mr-2 p-button-sm"
+            (click)="exportExcelMau()"></button>
+        </div>
+
+    </div>
+    <div class="p-grid">
+        <div class="p-col-12 p-lg-3 p-mb-3 p-p-3 d-flex flex-column flex-lg-row">
+            <label class="p-col-12 p-lg-4 p-p-0 my-auto">Phân xưởng<span class="required">*</span>:</label>
+            <div class="p-col-12 p-lg-8 p-p-0">
+                <p-dropdown [filter]="true" [options]="listPhanXuong" placeholder="Chọn phân xưởng"
+                    styleClass="p-inputtext-sm" [(ngModel)]="item.IddmPhanXuong"
+                    disabled></p-dropdown>
+            </div>
+        </div>
+        <div class="p-col-12 p-lg-3 p-mb-3 p-p-3 d-flex flex-column flex-lg-row">
+            <label class="p-col-12 p-lg-4 p-p-0 my-auto">Kế hoạch giao<span class="required">*</span>:</label>
+            <div class="p-col-12 p-lg-8 p-p-0">
+                <p-dropdown [filter]="true" [options]="listGiaoKeHoach" placeholder="Chọn kế hoạch giao"
+                    styleClass="p-inputtext-sm" [(ngModel)]="item.IdGiaoKeHoachSanXuat"
+                    disabled></p-dropdown>
+                    
+            </div>
+        </div>
+        <div class="p-col-12 p-lg-6 p-mb-3 p-p-3 d-flex flex-column flex-lg-row">
+            <label class="p-col-12 p-lg-4 p-p-0 my-auto">Nội dung<span class="required">*</span>:</label>
+            <div class="p-col-12 p-lg-8 p-p-0">
+                <input type="text" class="p-inputtext-sm" [(ngModel)]="item.NoiDung" pInputText disabled/>
+            </div>
+        </div>
+        <div class="p-col-12 p-lg-3 p-mb-3 p-p-3 d-flex flex-column flex-lg-row">
+            <label class="p-col-12 p-lg-4 p-p-0 my-auto">Từ ngày<span class="required">*</span>:
+            </label>
+            <div class="p-col-12 p-lg-8 p-p-0">
+                <p-calendar inputStyleClass="p-inputtext-sm" [locale]="lang" dateFormat="dd/mm/yy"
+                    [defaultDate]="minDateChonMay" [yearNavigator]="false" [minDate]="minDateChonMay"
+                    [maxDate]="maxDateChonMay" [(ngModel)]="item.TuNgay" (onBlur)="TinhNangSuat()"
+                    placeholder="dd/mm/yyyy" disabled>
+                </p-calendar>
+            </div>
+        </div>
+        <div class="p-col-12 p-lg-3 p-mb-3 p-p-3 d-flex flex-column flex-lg-row">
+            <label class="p-col-12 p-lg-4 p-p-0 my-auto">Đến ngày<span class="required">*</span>:
+            </label>
+            <div class="p-col-12 p-lg-8 p-p-0">
+                <p-calendar inputStyleClass="p-inputtext-sm" [locale]="lang" dateFormat="dd/mm/yy"
+                    [defaultDate]="maxDateChonMay" [yearNavigator]="false" [minDate]="minDateChonMay"
+                    (onSelect)="validDenNgay(item,$event)" [maxDate]="maxDateChonMay" (onBlur)="TinhNangSuat()"
+                    [(ngModel)]="item.DenNgay" placeholder="dd/mm/yyyy" disabled>
+                </p-calendar>
+            </div>
+        </div>
+        <div class="p-col-12 p-lg-3 p-mb-3 p-p-3 d-flex flex-column flex-lg-row">
+            <label class="p-col-12 p-lg-4 p-p-0 my-auto">Số ca:</label>
+            <div class="p-col-12 p-lg-8 p-p-0">
+                <p-inputNumber locale="en-EN" [(ngModel)]="item.SoCa" (onBlur)="ThayDoiSoCa()" disabled>
+                </p-inputNumber>
+            </div>
+        </div>
+        <div class="p-col-12 p-lg-3 p-mb-3 p-p-3 d-flex flex-column flex-lg-row">
+            <label class="p-col-12 p-lg-4 p-p-0 my-auto">Ghi chú:</label>
+            <div class="p-col-12 p-lg-8 p-p-0">
+                <input type="text" class="p-inputtext-sm" [(ngModel)]="item.GhiChu" pInputText disabled/>
+            </div>
+        </div>
+        <div class="p-col-12 p-lg-3 p-mb-3 p-p-3 d-flex flex-column flex-lg-row">
+            <label class="p-col-12 p-lg-4 p-p-0 my-auto">Hoàn thành:</label>
+            <div class="p-col-12 p-lg-8 p-p-0">
+                <input type="checkbox" class="p-inputtext-sm" [(ngModel)]="item.isHoanThanh" />
+            </div>
+        </div>
+        <div class="p-col-12 p-p-0 d-flex flex-column">
+            <div class="p-d-flex p-flex-row p-jc-between p-mb-3">
+                <div class="p-d-flex p-flex-row">
+                    <button pButton pRipple type="button" label="Chọn mặt hàng" class="p-mr-2 p-button-sm"
+                        (click)="chonHangHoa()"></button>
+                    <p-dropdown [filter]="true" [options]="listCongDoan" styleClass="p-inputtext-sm pl-2"
+                        [(ngModel)]="filter.CongDoan" (onChange)="chonCongDoan($event.value)"></p-dropdown>
+                    <div style="display: flex; align-items: center; height: 100%;"
+                        *ngIf="mapCongDoan_TinhTrangMay[filter.CongDoan]!==undefined">
+                        <span class="mr-5 ml-5">
+                            Tổng kế hoạch triển khai(Tấn): &nbsp;
+                            <strong>{{mapCongDoan_TinhTrangMay[filter.CongDoan]?.TongKhoiLuong|number:'0.0-2'}}</strong>
+                        </span>
+                        <span class="mr-5 ml-5">
+                            Số máy hiện có: &nbsp;
+                            <strong>{{mapCongDoan_TinhTrangMay[filter.CongDoan]?.SoMayHienCo|number:'0.0-2'}}</strong>
+                        </span>
+                        <span class="mr-5">
+                            Số máy cần: &nbsp;
+                            <strong>{{mapCongDoan_TinhTrangMay[filter.CongDoan]?.SoMayTinhToan|number:'0.0-2'}}</strong>
+                        </span>
+                        <span>
+                            Số máy cân đối: &nbsp;
+                            <strong>{{mapCongDoan_TinhTrangMay[filter.CongDoan]?.SoMayCanDoi|number:'0.0-2'}}</strong>
+                        </span>
+                    </div>
+                </div>
+                <div>
+                    <div class="p-inputgroup">
+                        <input type="text" placeholder="Tìm kiếm" class="p-inputtext-sm" pInputText
+                            [(ngModel)]="filter.KeyWord" />
+                        <button type="button" pButton pRipple icon="pi pi-refresh"
+                            class="p-button-secondary p-button-sm p-button-text" (click)="resetFilter()"></button>
+                    </div>
+                </div>
+            </div>
+            <p-table [value]="item.listItemMay | isXoa | CongDoan:filter.CongDoan | filter: filter.KeyWord"
+                styleClass="p-datatable-sm wrap-text p-datatable-gridlines">
+                <ng-template pTemplate="colgroup">
+                    <colgroup>
+                        <col style="width:50px">
+                        <col>
+                        <col *ngIf="filter.CongDoan ==='THO'">
+                        <col>
+                        <col>
+                        <col>
+                        <col>
+                    </colgroup>
+                </ng-template>
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th>#</th>
+                        <th>Mặt hàng</th>
+                        <th *ngIf="filter.CongDoan ==='THO'">Nm</th>
+                        <th>Kế hoạch triển khai(Tấn)</th>
+                        <th>Sản lượng ca (kg)</th>
+                        <th>Năng suất định mức (kg/ca/máy)</th>
+                        <th>Số máy cần</th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-mathang let-i="rowIndex">
+                    <tr>
+                        <td class="text-center">{{i+1}}</td>
+                        <td class="text-center">{{mathang.Ten}}</td>
+                        <td class="text-center" *ngIf="filter.CongDoan ==='THO'">
+                            <p-dropdown [options]="mathang.listNMtemp" placeholder="Chọn Nm"
+                                styleClass="p-inputtext-sm" [(ngModel)]="mathang.ChiSoMoi" disabled></p-dropdown>
+                        </td>
+                        <td class="text-center">
+                            {{mathang.KhoiLuongSanXuat|number:'0.0-2'}}
+                        </td>
+                        <td class="text-center">
+                            {{mathang.SanLuongCa|number:'0.0-2'}}
+                        </td>
+                        <td class="text-center">
+                            {{mathang.NangSuatDinhMuc|number:'0.0-2'}}
+                        </td>
+                        <td class="text-center">
+                            {{mathang.SoMayTinhToan|number:'0.0-2'}}
+                        </td>
+                    </tr>
+                </ng-template>
+            </p-table>
+        </div>
+    </div>
+</div>
+<div class="modal-footer">
+    <!-- <button pButton pRipple label="Chấp nhận" class="p-button-sm p-mr-2" (click)="accept()"></button>
+    <button pButton pRipple label="Thoát" class="p-button-sm p-button-outlined p-button-secondary p-mr-2"
+        (click)="activeModal.dismiss()"></button> -->
+</div>

@@ -1,0 +1,69 @@
+<div class="modal-header">
+    <h5 class="modal-title">{{title}}</h5>
+    <button *ngIf="false" type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+<div class="modal-body">
+    <div class="p-grid">
+        <div class="p-col-12 p-d-flex p-flex-row">
+            <label class="p-col-12 p-lg-4 p-p-0 my-auto">Mã <span class="text-danger">*</span>:</label>
+            <div class="p-col-12 p-lg-8 p-p-0">
+                <input type="text" class="p-inputtext-sm" (keyup.enter)="accept()" [(ngModel)]="item.Ma" pInputText />
+            </div>
+        </div>
+      
+        <div class="p-col-12 p-d-flex p-flex-row">
+            <label class="p-col-12 p-lg-4 p-p-0 my-auto">Tên <span class="text-danger">*</span>:</label>
+            <div class="p-col-12 p-lg-8 p-p-0">
+                <input type="text" class="p-inputtext-sm" (keyup.enter)="accept()" [(ngModel)]="item.Ten" pInputText />
+            </div>
+        </div>
+        <div class="p-col-12 p-d-flex p-flex-row" *ngIf="type==='loaibong'">
+            <label class="p-col-12 p-lg-4 p-p-0 my-auto">Loại :</label>
+            <div class="p-col-12 p-lg-8 p-p-0">
+                <p-dropdown [options]="listLoaiBong" placeholder="Chọn loại" styleClass="p-inputtext-sm"
+                    [(ngModel)]="item.Loai"></p-dropdown>
+            </div>
+        </div>
+        <div class="p-col-12 p-d-flex p-flex-row" *ngIf="type==='loaibong'&& item?.Loai===7">
+            <label class="p-col-12 p-lg-4 p-p-0 my-auto">Loại bông phế:</label>
+            <div class="p-col-12 p-lg-8 p-p-0">
+                <p-dropdown [options]="listLoaiBongPhe" placeholder="Chọn loại bông phế" styleClass="p-inputtext-sm"
+                    [(ngModel)]="item.IddmLoaiBongPhe"></p-dropdown>
+            </div>
+        </div>
+        <div class="p-col-12 p-d-flex p-flex-row" *ngIf="type=='loaibong'">
+            <label class="p-col-12 p-lg-4 p-p-0 my-auto">Màu:</label>
+            <div class="p-col-12 p-lg-8 p-p-0">
+                <input type="text" class="p-inputtext-sm" [(ngModel)]="item.Mau" pInputText />
+            </div>
+        </div>
+        <div class="p-col-12 p-d-flex p-flex-row" *ngIf="type=='loaibong'">
+            <label class="p-col-12 p-lg-4 p-p-0 my-auto">Tỷ lệ Cotton:</label>
+            <div class="p-col-12 p-lg-8 p-p-0">
+                <!-- <input type="text" class="p-inputtext-sm" [(ngModel)]="item.TyLeCotton" pInputText /> -->
+                <p-inputNumber [minFractionDigits]="2" locale="en-EN" [(ngModel)]="item.TyLeCotton">
+                </p-inputNumber>
+            </div>
+        </div>
+        <div class="p-col-12 p-d-flex p-flex-row" *ngIf="type==='dmnhomkho'">
+            <label class="p-col-12 p-lg-4 p-p-0 my-auto">Loại :</label>
+            <div class="p-col-12 p-lg-8 p-p-0">
+                <p-dropdown [options]="listLoaiNhomKho" placeholder="Chọn loại" styleClass="p-inputtext-sm"
+                    [(ngModel)]="item.Loai"></p-dropdown>
+            </div>
+        </div>
+        <div class="p-col-12 p-d-flex p-flex-row">
+            <label class="p-col-12 p-lg-4 p-p-0 my-auto">Ghi chú:</label>
+            <div class="p-col-12 p-lg-8 p-p-0">
+                <input type="text" class="p-inputtext-sm" (keyup.enter)="accept()" [(ngModel)]="item.GhiChu" pInputText />
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal-footer">
+    <button pButton pRipple label="Chấp nhận" class="p-button-sm p-mr-2" (click)="accept()" [disabled]="khongclicknhieu"></button>
+    <button pButton pRipple label="Thoát" class="p-button-sm p-button-outlined p-button-secondary p-mr-2"
+        (click)="activeModal.dismiss()"></button>
+</div>

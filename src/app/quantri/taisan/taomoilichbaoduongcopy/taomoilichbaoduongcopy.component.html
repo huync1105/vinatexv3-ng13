@@ -1,0 +1,48 @@
+<p-table [value]="item|isXoa" styleClass="p-datatable-customers p-datatable-gridlines p-datatable-sm"
+   >
+    <ng-template pTemplate="colgroup">
+        <colgroup>
+            <col style="width: 50px;">
+            <col>
+            <col>
+            <col>
+            <col>
+            <col style="width: 150px;">
+        </colgroup>
+    </ng-template>
+    <ng-template pTemplate="header">
+        <tr>
+            <th class="text-center">
+                STT
+            </th>
+            <th class="text-center">Loại bảo dưỡng</th>
+            <th class="text-center">Theo thời gian</th>
+            <th class="text-center">Theo công suất</th>
+            <th class="text-center">Ghi chú</th>
+            <th class="text-center"> <button pButton pRipple icon="pi pi-plus" (click)="addBaoDuong()" class="p-button-sm p-mr-2"></button></th>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-item let-i="rowIndex">
+        <tr>
+            <td class="text-center">
+                {{i + 1}}
+            </td>
+            <td class="text-center">{{item.TendmLoaiBaoDuong}}</td>
+            <td class="text-center">{{item.ThoiGianBaoDuong}}</td>
+            <td class="text-center">{{item.NangSuat}}</td>
+            <!-- <td class="text-center">{{item.NguyenGia|number:'0.0'}}</td> -->
+            <td class="text-center">{{item.GhiChu}}</td>
+            <td class="text-center">
+                <button pButton pRipple type="button" icon="pi pi-pencil"
+                    class="p-button-text p-button-sm p-button-secondary p-mr-2" pTooltip="Chỉnh sửa"
+                    (click)="CapNhat(item)"></button>
+                <!-- <button pButton pRipple type="button" icon="pi pi-align-justify"
+                    class="p-button-text p-button-sm p-button-secondary p-mr-2" pTooltip="Tạo lịch bảo dưỡng"
+                    (click)="TaoLichBaoDuong(item)"></button> -->
+                <button pButton pRipple type="button" icon="pi pi-trash"
+                    class="p-button-text p-button-sm p-button-secondary p-mr-2" pTooltip="Xóa"
+                    (click)="Xoa(item,i)"></button>
+            </td>
+        </tr>
+    </ng-template>
+</p-table>

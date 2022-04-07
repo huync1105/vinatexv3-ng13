@@ -1,0 +1,24 @@
+<div class="modal-header">
+  <h5 class="modal-title">Thông tin nhà cung ứng</h5>
+</div>
+
+<div class="modal-body">
+  <p-tabView>
+    <p-tabPanel header="Thông tin chung">
+      <app-thong-tin-chung [item]="item"></app-thong-tin-chung>
+    </p-tabPanel>
+
+    <p-tabPanel header="Thông tin hàng hóa">
+      <app-thong-tin-hang-hoa [item]="item"></app-thong-tin-hang-hoa>
+    </p-tabPanel>
+
+    <p-tabPanel header="Thông tin đánh giá">
+      <app-thong-tin-danh-gia-ncu [phieuDanhGia]="phieuDanhGia" [daDanhGia]="listDiemDaDanhGia"></app-thong-tin-danh-gia-ncu>
+    </p-tabPanel>
+  </p-tabView>
+
+  <div class="p-d-flex p-ai-center p-jc-between">
+    <button pButton pRipple type="button" label="Đóng" class="p-button-outlined" (click)="activeModal.dismiss()"></button>
+    <p-button label="Chấp nhận" class="p-button-sm" (click)="SetNhaCungUng()"></p-button>
+  </div>
+</div>  

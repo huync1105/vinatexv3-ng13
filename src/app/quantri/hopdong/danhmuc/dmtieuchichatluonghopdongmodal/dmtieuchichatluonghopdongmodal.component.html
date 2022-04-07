@@ -1,0 +1,52 @@
+<div class="modal-header">   
+    <h5 class="modal-title"> {{title}}</h5>
+<button *ngIf="false" type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+    <span aria-hidden="true">&times;</span>
+</button>
+</div>
+<div class="modal-body">
+<div class="col-12 col-lg-12">
+<div class="p-grid">
+    <div class="p-col-12 p-md-6 p-lg-12 flex-column flex-lg-row d-flex">
+        <label class="p-col-12 p-lg-2 p-p-0 my-auto">Mã <span class="text-danger">(*)</span></label>
+        <div class="p-col-12 p-lg-10 p-p-0">
+            <input type="text" class="p-inputtext-sm" [(ngModel)]="item.ma" pInputText />
+        </div>
+    </div>
+    <div class="p-col-12 p-md-6 p-lg-12 flex-column flex-lg-row d-flex">
+        <label class="p-col-12 p-lg-2 p-p-0 my-auto">Đặc tính </label>
+        <div class="p-col-12 p-lg-10 p-p-0">
+            <input type="text" class="p-inputtext-sm" [(ngModel)]="item.dacTinh" pInputText />
+        </div>
+    </div>
+    <div class="p-col-12 p-md-6 p-lg-12 flex-column flex-lg-row d-flex">
+        <label class="p-col-12 p-lg-2 p-p-0 my-auto">Đơn vị </label>
+        <div class="p-col-12 p-lg-10 p-p-0">
+            <input type="text" class="p-inputtext-sm" [(ngModel)]="item.donVi" pInputText />
+        </div>
+    </div>
+    <div class="p-col-12 p-md-6 p-lg-12 flex-column flex-lg-row d-flex">
+        <label class="p-col-12 p-lg-2 p-p-0 my-auto">Tiêu chuẩn </label>
+        <div class="p-col-12 p-lg-10 p-p-0">
+            <input type="text" class="p-inputtext-sm" [(ngModel)]="item.tieuChuan" pInputText />
+        </div>
+    </div>
+    <div class="p-col-12 p-md-6 p-lg-12  flex-column flex-lg-row d-flex">
+        <label class="p-col-12 p-lg-2 p-p-0 my-auto">Ghi chú</label>
+        <div class="p-col-12 p-lg-10 p-p-0">
+            <input type="text" class="p-inputtext-sm" (keyup.enter)="GhiLai()" [(ngModel)]="item.ghiChu" pInputText />
+        </div>
+    </div>
+    <!-- <div class="p-field-checkbox">
+        <p-checkbox name="" value=""  inputId="ny"></p-checkbox>
+        <label for="ny">Có giá trị hợp đồng </label>
+    </div> -->
+</div>
+</div>
+</div>
+<div class="modal-footer">
+<button pButton pRipple label="Lưu" icon="pi pi-save" class="p-button-sm p-mr-2" (click)="GhiLai()"></button>
+<button pButton pRipple label="Đóng" class="p-button-sm p-button-outlined p-button-secondary p-mr-2"
+    (click)="activeModal.dismiss()"></button>
+</div>
+

@@ -1,0 +1,19 @@
+@media screen and (max-width:1199px) {
+    .paddingbot {
+        margin-bottom: 1rem !important;
+    }
+}
+
+@media screen and (min-width:1200px) {
+    .paddingbot {
+        margin-bottom: 1rem !important;
+    }
+}
+
+:host ::ng-deep .p-toggleable-content.ng-trigger {
+    padding-left: unset !important;
+}
+
+.p-pl-theokieunaodo{
+    padding-left: 4% !important;
+}

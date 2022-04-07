@@ -1,0 +1,74 @@
+<div class="modal-header">
+    <h5 class="modal-title">{{opt==='add'?'Thêm mới':'Cập nhật'}} mặt hàng</h5>
+    <button *ngIf="false" type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+<div class="modal-body">
+    <div class="p-grid">
+        <div class="p-col-12 flex-column flex-lg-row d-flex">
+            <label class="p-col-12 p-lg-2 p-p-0 my-auto">Mã<span class="text-danger">*</span>:</label>
+            <div class="p-col-12 p-lg-10 p-p-0">
+                <input type="text" class="p-inputtext-sm" (keyup.enter)="accept()" [(ngModel)]="item.Ma" pInputText />
+            </div>
+        </div>
+        <div class="p-col-12 flex-column flex-lg-row d-flex">
+            <label class="p-col-12 p-lg-2 p-p-0 my-auto">Tên khách hàng<span class="text-danger">*</span>:</label>
+            <div class="p-col-12 p-lg-10 p-p-0">
+                <input type="text" class="p-inputtext-sm" (keyup.enter)="accept()" [(ngModel)]="item.Ten" pInputText />
+            </div>
+        </div>
+        <div class="p-col-12 flex-column flex-lg-row d-flex">
+            <label class="p-col-12 p-lg-2 p-p-0 my-auto">Địa chỉ</label>
+            <div class="p-col-12 p-lg-10 p-p-0">
+                <input type="text" class="p-inputtext-sm" (keyup.enter)="accept()" [(ngModel)]="item.DiaChi" pInputText />
+            </div>
+        </div>
+        <div class="p-col-12 flex-column flex-lg-row d-flex">
+            <label class="p-col-12 p-lg-2 p-p-0 my-auto">Số điện thoại:</label>
+            <div class="p-col-12 p-lg-10 p-p-0">
+                <input type="text" class="p-inputtext-sm" (keyup.enter)="accept()" [(ngModel)]="item.SoDienThoai" pInputText />
+            </div>
+        </div>
+        <div class="p-col-12 flex-column flex-lg-row d-flex">
+            <label class="p-col-12 p-lg-2 p-p-0 my-auto">Fax</label>
+            <div class="p-col-12 p-lg-10 p-p-0">
+                <input type="text" class="p-inputtext-sm" (keyup.enter)="accept()" [(ngModel)]="item.SoFax" pInputText />
+            </div>
+        </div>
+        <div class="p-col-12 flex-column flex-lg-row d-flex">
+            <label class="p-col-12 p-lg-2 p-p-0 my-auto">Tài khoản</label>
+            <div class="p-col-12 p-lg-10 p-p-0">
+                <input type="text" class="p-inputtext-sm" (keyup.enter)="accept()" [(ngModel)]="item.TaiKhoanNganHang" pInputText />
+            </div>
+        </div>
+        <div class="p-col-12 flex-column flex-lg-row d-flex">
+            <label class="p-col-12 p-lg-2 p-p-0 my-auto">Mã số thuế</label>
+            <div class="p-col-12 p-lg-10 p-p-0">
+                <input type="text" class="p-inputtext-sm" (keyup.enter)="accept()" [(ngModel)]="item.MaSoThue" pInputText />
+            </div>
+        </div>
+        <div class="p-col-12 flex-column flex-lg-row d-flex">
+            <label class="p-col-12 p-lg-2 p-p-0 my-auto">Người đại diện</label>
+            <div class="p-col-12 p-lg-10 p-p-0">
+                <input type="text" class="p-inputtext-sm" (keyup.enter)="accept()" [(ngModel)]="item.NguoiDaiDien" pInputText />
+            </div>
+        </div>
+        <div class="p-col-12 flex-column flex-lg-row d-flex">
+            <label class="p-col-12 p-lg-2 p-p-0 my-auto">Chức vụ</label>
+            <div class="p-col-12 p-lg-10 p-p-0">
+                <input type="text" class="p-inputtext-sm" (keyup.enter)="accept()" [(ngModel)]="item.ChucVu" pInputText />
+            </div>
+        </div>
+        <div class="p-col-12 flex-column flex-lg-row d-flex">
+            <label class="p-col-12 p-lg-2 p-p-0 my-auto">Ghi chú</label>
+            <div class="p-col-12 p-lg-10 p-p-0">
+                <input type="text" class="p-inputtext-sm" (keyup.enter)="accept()" [(ngModel)]="item.GhiChu" pInputText />
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal-footer">
+    <button pButton pRipple label="Chấp nhận" class="p-button-sm p-mr-2" (click)="accept()" [disabled]="khongclicknhieu"></button>
+    <button pButton pRipple label="Thoát" class="p-button-sm p-button-outlined p-button-secondary p-mr-2" (click)="activeModal.dismiss()"></button>
+</div>

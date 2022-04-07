@@ -1,0 +1,150 @@
+<div class="p-mb-3 p-mt-3">
+    <h4 style="color:#1f2779">Danh sách vật tư</h4>
+</div>
+<div class="p-d-flex p-ai-center p-jc-between p-mb-3">
+    <button pButton label="Xuất Excel" class="p-button-sm p-mr-2"></button>
+    <div></div>
+    <div class="p-d-flex p-flex-row">
+        <div class="p-mr-2">
+            <p-dropdown [filter]="true" [options]="listBoPhanSuDung" placeholder="Bộ phận sử dụng "
+                [(ngModel)]="filter.IddmLoaiTaiSan" styleClass="p-inputtext-sm" (onChange)="GetList(true)"
+                [showClear]="true" [filter]="true"></p-dropdown>
+        </div>
+        <div class="p-mr-2">
+            <p-dropdown [filter]="true" [options]="listLoaiTaiSan" placeholder="Chọn tài sản "
+                [(ngModel)]="filter.IddmLoaiTaiSan" styleClass="p-inputtext-sm" (onChange)="GetList(true)"
+                [showClear]="true" [filter]="true"></p-dropdown>
+        </div>
+        <div class="p-inputgroup" style="width: 200px;">
+            <input type="text" placeholder="Tìm kiếm" class="p-inputtext-sm" pInputText (keyup.enter)="GetList()"
+                [(ngModel)]="filter.KeyWord" />
+            <button type="button" pButton pRipple icon="pi pi-search"
+                class="p-button-secondary p-button-sm p-button-text" (click)="GetList(true)"></button>
+            <button type="button" pButton pRipple icon="pi pi-refresh"
+                class="p-button-secondary p-button-sm p-button-text" (click)="resetFilter()"></button>
+        </div>
+    </div>
+</div>
+<p-tabView (onChange)="changeTab($event)" styleClass="no-content">
+    <p-tabPanel header="Tồn trong kho">
+    </p-tabPanel>
+    <p-tabPanel header="Cần thay thế">
+    </p-tabPanel>
+</p-tabView>
+<div *ngIf="loaiTab === 0" class="p-mt-3">
+    <p-table [value]="items" styleClass="p-datatable-sm wrap-text p-datatable-striped">
+        <ng-template pTemplate="colgroup">
+            <colgroup>
+                <col>
+                <col>
+                <col>
+                <col>
+                <col>
+                <col>
+                <col>
+                <col>
+            </colgroup>
+        </ng-template>
+        <ng-template pTemplate="header" let-columns>
+            <tr>
+                <th class="text-center" rowspan="2">Mã </th>
+                <th class="text-center" rowspan="2">Tên vật tư</th>
+                <th class="text-center" rowspan="2">Xuất xứ</th>
+                <th class="text-center" rowspan="2">Tuổi thọ</th>
+                <th class="text-center" rowspan="2">Số lượng tồn</th>
+                <th class="text-center" rowspan="2">Số lượng cần thay thế</th>
+                <th class="text-center" rowspan="2">Ngày đưa vào sử dụng</th>
+                <th class="text-center" rowspan="2">Đơn giá</th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-item let-i="rowIndex">
+            <tr>
+                <!-- {{rowData.Ma}}
+                    <p-treeTableToggler [rowNode]="rowNode"></p-treeTableToggler> -->
+                <td class="text-center">{{item.Ma}}</td>
+                <td>{{item.Ten}}</td>
+                <td class="text-center">{{item.NuocSanXuat}}</td>
+                <td class="text-center">{{item.TuoiTho}}</td>
+                <td class="text-center">{{item.TonKho}}</td>
+                <td class="text-center">{{item.SoLuong}}</td>
+                <td class="text-center">{{item.ThoiGianDuaVaoSuDung | date:"dd/MM/yyyy"}}</td>
+                <td style="text-align: right;">{{item.NguyenGia | number:'0.0-0'}}</td>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="summary">
+            <div class="p-d-flex p-ai-center p-jc-between">
+                Tổng số bản ghi {{paging.TotalCount}}.<p-paginator #paginator [totalRecords]="paging.TotalCount"
+                [rows]="20" (onPageChange)="changePage($event)"></p-paginator>
+            </div>
+        </ng-template>
+    </p-table>
+</div>
+<div class="p-mt-3" *ngIf="loaiTab === 1 ">
+    <div class="p-d-flex p-flex-row p-jc-between">
+        <div class="modal-bt p-mb-4 ">
+            <button pButton pRipple type="button" label="Xuất Excel" class="p-mr-2 p-button-sm "></button>
+            <button pButton pRipple type="button" label="Kiểm tra NCC" class="p-mr-2 p-button-sm"
+                (click)="KiemTraNCC()"></button>
+        </div>
+        <div class="p-d-flex p-ai-center p-jc-end p-mb-3">
+            <p-dropdown [filter]="true" [options]="listNam" placeholder="Năm " [(ngModel)]="filter.Nam"
+                styleClass="p-inputtext-sm" (onChange)="GetList(true)" [showClear]="true" [filter]="true"></p-dropdown>
+            <!-- <button pButton pRipple type="button" [label]="item" *ngFor="let item of labelThang" class="p-mr-1 p-button-sm "></button> -->
+            <p-selectButton [options]="labelThang" [(ngModel)]="filter.Thang" styleClass="p-button-primary" (onChange)="GetList(true)">
+            </p-selectButton>
+        </div>
+    </div>
+    <p-table [value]="items" styleClass="p-datatable-sm wrap-text p-datatable-striped">
+        <ng-template pTemplate="colgroup">
+            <colgroup>
+                <!-- <col >
+                <col>
+                <col>
+                <col>
+                <col>
+                <col>
+                <col>
+                <col>
+                <col> -->
+            </colgroup>
+        </ng-template>
+        <ng-template pTemplate="header">
+            <tr>
+                <th class="text-center" style="width: 50px;">
+                    <p-checkbox [(ngModel)]="checkedAll" binary="false" inputId="binaryall"
+                        (onChange)="checkAll($event)"></p-checkbox>
+                </th>
+                <th class="text-center">Mã vật tư</th>
+                <th class="text-center">Tên vật tư</th>
+                <th class="text-center">Nhà cung cấp</th>
+                <th class="text-center">Tuổi thọ</th>
+                <th class="text-center">Số lượng tồn</th>
+                <th class="text-center">Số lượng cần thay</th>
+                <th class="text-center">Đơn giá nhập gần nhất</th>
+                <th class="text-center">Thành tiền</th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-item let-i="rowIndex">
+            <tr>
+                <td class="text-center">
+                    <p-checkbox [(ngModel)]="item.checked" binary="true" inputId="binary" (onChange)="checked()">
+                    </p-checkbox>
+                </td>
+                <td class="text-center">{{item.Ma}} </td>
+                <td>{{item.Ten}}</td>
+                <td class="text-center">{{item.Ma}}</td>
+                <td class="text-center">{{item.TuoiTho}}</td>
+                <td class="text-center">{{item.TonKho}}</td>
+                <td class="text-center">{{item.SoLuong}}</td>
+                <td class="text-center">{{item.NguyenGia}}</td>
+                <td class="text-center"></td>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="summary">
+            <div class="p-d-flex p-ai-center p-jc-between">
+                Tổng số bản ghi {{paging.TotalCount}}.<p-paginator #paginator [totalRecords]="paging.TotalCount"
+                [rows]="20" (onPageChange)="changePage($event)"></p-paginator>
+            </div>
+        </ng-template>
+    </p-table>
+</div>

@@ -1,0 +1,34 @@
+<div class="p-grid p-mb-3">
+  <div class="p-lg-8 text-center p-p-0">Nội dung đánh giá</div>
+  <div class="p-lg-2 text-center p-p-0">Điểm tối đa</div>
+  <div class="p-lg-2 text-center p-p-0">Điểm đánh giá</div>
+</div>
+
+<p-panel *ngFor="let tieuChi of listTieuChi" [toggleable]="tieuChi.toggle" toggler="header" collapseIcon="pi pi-angle-right" expandIcon="pi pi-angle-down" class="p-mb-3">
+  <p-header styleClass="p-panel-titlebar" class="p-col-12 p-grid p-ai-center p-jc-between p-p-0">
+    <div class="p-d-flex p-ai-center p-lg-8 p-p-0">
+      <h5 class="p-mb-0">{{tieuChi.Ten}}</h5>
+    </div>
+    <div class="p-lg-2 text-center p-p-0">
+      <h5 class="p-mb-0">{{tieuChi.DiemToiDa}}</h5>
+    </div>
+    <div class="p-lg-2 text-right p-p-0">
+      <p-inputNumber [disabled]="tieuChi.toggle" [max]="tieuChi.DiemToiDa" [(ngModel)]="tieuChi.DiemDanhGia" (onBlur)="SumDiemDanhGia()"></p-inputNumber>
+      <!-- <h5 class="p-mb-0">{{item.sum}}</h5> -->
+    </div>
+  </p-header>
+  <div *ngFor="let item of tieuChi.listItem" class="p-grid p-p-0">
+    <div class="p-lg-8 p-p-0">{{item.Ten}}</div>
+    <div class="p-lg-2 p-p-0 text-center">
+      {{item.DiemToiDa}}
+    </div>
+    <div class="p-lg-2 p-p-0 text-center">
+      <p-inputNumber [min]="0" [max]="item.DiemToiDa" [(ngModel)]="item.DiemDanhGia" (onBlur)="SumDiemDanhGia()"></p-inputNumber>
+    </div>
+  </div>
+</p-panel>
+
+<div class="p-d-flex p-jc-between p-ai-center">
+  <h3>Tổng</h3>
+  <span><h3>{{sum}}</h3></span>
+</div>

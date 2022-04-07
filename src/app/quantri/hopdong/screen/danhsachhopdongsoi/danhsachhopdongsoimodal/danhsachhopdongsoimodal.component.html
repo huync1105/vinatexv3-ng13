@@ -1,0 +1,51 @@
+<div class="modal-header">
+    <h5 class="modal-title">{{ title }}</h5>
+    <div class="d-flex flex-column flex-lg-row">
+        <div>
+            <span style="font-weight: bold">Số quy trình:</span> {{ item.hopDong.soQuyTrinh }}
+        </div>
+        <div class="ml-lg-3 mr-lg-3">
+            <span style="font-weight: bold">TG Tạo:</span> {{ item.hopDong.created | date: "dd/MM/yyyy HH:mm" }}
+        </div>
+        <div>
+            <span style="font-weight: bold">TG Duyệt:</span> {{ item.hopDong.modified | date: "dd/MM/yyyy HH:mm" }}
+        </div>
+    </div>
+    <button *ngIf="false" type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+
+<div class="modal-body">
+    <div class="p-d-flex p-flex-row p-jc-between">
+        <div class="modal-bt p-mb-4 ">
+            <button pButton pRipple type="button" label="Quay lại" class="p-mr-2 p-button-sm" (click)="activeModal.dismiss('close')"></button>
+        </div>
+    </div>
+    <div class="p-d-flex p-flex-row p-jc-between">
+        <p-tabView>
+            <p-tabPanel header="Thông tin hợp đồng">
+                <app-chitiethopdongbongxo [(item)]="item.hopDong" [(isSoi)]='isSoi' [opt]="opt" [(lstFileUploadCu)]="item.lstFileUploadCu">
+                </app-chitiethopdongbongxo>
+            </p-tabPanel>
+            <p-tabPanel header="Thông tin hàng hóa">
+                <app-chitietdanhsachhanghoa [opt]="opt" [(isXo)]='isXo' [(listHangHoaSoi)]="item.listHangHoa" [(hopDong)]="item.hopDong">
+                </app-chitietdanhsachhanghoa>
+            </p-tabPanel>
+            <p-tabPanel header="Điều khoản thanh toán">
+                <app-chitietdieukhoanthanhtoan [(hopDong)]="item.hopDong" [(listDieuKhoanThanhToan)]="item.listDieuKhoanThanhToan"></app-chitietdieukhoanthanhtoan>
+            </p-tabPanel>
+            <p-tabPanel header="Bảo lãnh">
+                <app-chitietbaolanh [(listBaoLanh)]="item.listBaoLanh"></app-chitietbaolanh>
+            </p-tabPanel>
+            <p-tabPanel header="Thanh toán">
+                <app-chitietthanhtoan [(listThanhToan)]="item.listThanhToan"></app-chitietthanhtoan>
+            </p-tabPanel>
+            <p-tabPanel header="Phạt hợp đồng">
+                <app-chitietphathopdong [(phatHopDong)]="item.phatHopDong"></app-chitietphathopdong>
+            </p-tabPanel>
+        </p-tabView>
+        <div class="modal-footer">
+        </div>
+    </div>
+</div>

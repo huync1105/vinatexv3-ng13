@@ -1,0 +1,118 @@
+<div class="modal-header">
+    <h5 class="modal-title">Đơn giá kế hoạch, thực tế</h5>
+    <!-- <button *ngIf="false" type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+                  <span aria-hidden="true">&times;</span>
+              </button> -->
+    <span class="p-button-sm p-button-sm p-button-text close" aria-hidden="true"
+        (click)="this.activeModal.dismiss()">×</span>
+</div>
+<div class="modal-body">
+    <div class="p-d-flex p-flex-row p-jc-between">
+        <div class="modal-bt p-mb-4">
+            <button pButton pRipple type="button" label="Lưu" class="p-mr-2 p-button-sm "></button>
+        </div>
+    </div>
+    <p-tabView>
+        <p-tabPanel header="Kế hoạch">
+
+            <div class="p-grid">
+                <div class="p-col-12 p-lg-2 p-p-0 d-flex flex-column flex-lg-row">
+                    <p-dropdown [showClear]="true" [options]="listPhanXuong" placeholder="Chọn phân xưởng - nhà máy"
+                        [(ngModel)]="item.IddmPhanXuong" styleClass="p-inputtext-sm">
+                    </p-dropdown>
+                </div>
+                <!-- <div class="p-col-12 p-lg-2 p-p-0 d-flex flex-column flex-lg-row">
+                    <div  class="p-col-12 p-lg-6 p-p-0 d-flex flex-column flex-lg-row">
+                      <div class="p-col-12 p-lg-4 p-p-0">
+                        <p-radioButton name="city" value="Chicago" ></p-radioButton>
+                      </div>
+                      <label class="p-col-12 p-lg-8 p-p-0 ">Chi phí</label>
+                    </div>
+                    <div  class="p-col-12 p-lg-6 p-p-0 d-flex flex-column flex-lg-row">
+                      <div class="p-col-12 p-lg-4 p-p-0">
+                        <p-radioButton name="city" value="Chicago" ></p-radioButton>
+                      </div>
+                      <label class="p-col-12 p-lg-8 p-p-0 ">Tiêu hao</label>
+                    </div>
+                    </div>
+        
+                    <div class="p-col-12 p-lg-5 p-p-0 d-flex flex-column flex-lg-row"></div> 
+        
+                  <div class="p-col-12 p-lg-3 p-p-0 d-flex flex-column flex-lg-row">
+        
+                    <label class="p-col-12 p-lg-8 p-p-0 ">Tên sản phẩm đang chọn: </label>
+                    <div class="p-col-12 p-lg-4 p-p-0">
+                      {{type}}
+                    </div>
+        
+                  </div> -->
+
+            </div>
+            <p-table styleClass="p-datatable-sm wrap-text p-datatable-striped">
+                <ng-template pTemplate="colgroup">
+                    <colgroup>
+                        <col style="width:100px">
+                        <col style="width:100px">
+                        <col style="width:150px">
+                        <col style="width:30px">
+                        <col style="width:30px">
+                        <col style="width:30px">
+                        <col style="width:30px">
+                        <col style="width:30px">
+                        <col style="width:30px">
+                        <col style="width:30px">
+                        <col style="width:30px">
+                        <col style="width:30px">
+                        <col style="width:30px">
+                        <col style="width:30px">
+                        <col style="width:30px">
+                    </colgroup>
+                </ng-template>
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th class="text-center"> Loại </th>
+                        <th class="text-center"> Mã</th>
+                        <th class="text-center"> Tên</th>
+                        <th class="text-center"> T1</th>
+                        <th class="text-center"> T2</th>
+                        <th class="text-center"> T3</th>
+                        <th class="text-center"> T4</th>
+                        <th class="text-center"> T5</th>
+                        <th class="text-center"> T6</th>
+                        <th class="text-center">T7 </th>
+                        <th class="text-center"> T8</th>
+                        <th class="text-center"> T9</th>
+                        <th class="text-center"> T10</th>
+                        <th class="text-center">T11 </th>
+                        <th class="text-center"> T12</th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-item let-i="rowIndex">
+                    <tr>
+                        <td class="text-center"> {{item.ten}}</td>
+                        <td class="text-center"> {{item.ten}}</td>
+                        <td class="text-center"> {{item.ten}}</td>
+                        <td class="text-center"> {{item.ten}}</td>
+                        <td class="text-center"> {{item.ten}}</td>
+                        <td class="text-center"> {{item.ten}}</td>
+                        <td class="text-center"> {{item.ten}}</td>
+                        <td class="text-center"> {{item.ten}}</td>
+                        <td class="text-center"> {{item.ten}}</td>
+                        <td class="text-center"> {{item.ten}}</td>
+                        <td class="text-center"> {{item.ten}}</td>
+                        <td class="text-center"> {{item.ten}}</td>
+                        <td class="text-center"> {{item.ten}}</td>
+                        <td class="text-center"> {{item.ten}}</td>
+                        <td class="text-center"> {{item.ten}}</td>
+
+                    </tr>
+                </ng-template>
+            </p-table>
+        </p-tabPanel>
+
+        <p-tabPanel header="Thực tế ">
+
+        </p-tabPanel>
+
+    </p-tabView>
+</div>

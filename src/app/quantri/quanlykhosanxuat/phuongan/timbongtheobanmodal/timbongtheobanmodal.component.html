@@ -1,0 +1,28 @@
+<div class="modal-header">
+        <h5 class="modal-title">Tự động tìm bông theo bàn</h5>
+        <button *ngIf="false" type="button" class="close" aria-label="Close"
+                (click)="activeModal.dismiss('Cross click')">
+                <span aria-hidden="true">&times;</span>
+        </button>
+</div>
+<div class="modal-body">
+        <div class="p-grid">
+                <div class="col-12">
+                        <label>Mã lô:{{TenLo}}</label>
+                </div>
+                <div class="col-12">
+                        <label>Bàn cuối cùng:</label>
+                </div>
+                <div class="col-12">
+                        <input pInputText type="text" [(ngModel)]="BanBong" (keyup.enter)="accept()">
+                </div>
+        </div>
+        <div>
+                <p style="color: red;">(*)Lưu ý: Nhập số bàn cuối cùng cần tìm tự động.</p>
+        </div>
+</div>
+<div class="modal-footer">
+        <button pButton pRipple label="Chấp nhận" class="p-button-sm p-mr-2" (click)="accept()"></button>
+        <button pButton pRipple label="Đóng" class="p-button-sm p-button-outlined p-mr-2"
+                (click)="activeModal.dismiss()"></button>
+</div>

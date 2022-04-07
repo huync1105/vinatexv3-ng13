@@ -1,0 +1,52 @@
+<div class="p-d-flex p-ai-center p-jc-start ">
+    <button pButton pRipple label="Thêm mới" icon="pi pi-plus" (click)="add()" class="p-button-sm p-mr-2"></button>
+
+</div>
+<div class="p-mt-3">
+    <p-table [value]="listBaoLanh | isXoa" styleClass="p-datatable-sm p-datatable-striped p-datatable-gridlines " [scrollable]="true">
+        <ng-template pTemplate="colgroup">
+            <colgroup>
+                <col>
+                <col>
+                <col style="width: 100px;">
+                <col>
+                <col>
+                <col>
+                <col>
+                <col style="width: 100px;">
+            </colgroup>
+        </ng-template>
+        <ng-template pTemplate="header">
+            <tr>
+                <th>Loại bảo lãnh </th>
+                <th>Số biên bản </th>
+                <th>Giá trị</th>
+                <th>Thời gian hiệu lực bảo lãnh</th>
+                <th>Tình trạng</th>
+                <th>Ghi chú</th>
+                <th>Hồ sơ</th>
+                <th></th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-item let-i="rowIndex">
+            <tr>
+                <td class="text-center">{{item.tendmLoaiBaoLanh}}</td>
+                <td class="text-center">{{item.soQuyTrinh}}</td>
+                <td class="text-right">{{item.giaTri |number:'0.0-2'}}</td>
+                <td class="text-center">{{item.hieuLucBaoLanh|date:'dd/MM/yyyy'}}</td>
+                <td class="text-center">{{item.tendmTinhTrangBaoLanh}}</td>
+                <td class="text-center">{{item.ghiChu}}</td>
+                <td class="text-center">
+                    <div *ngFor="let items of item.listFileDinhKem">
+                        {{items.fileName}}
+                    </div>
+                </td>
+                <td class="text-center date">
+                    <button pButton pRipple type="button" icon="pi pi-pencil" class="p-button-text p-button-sm p-button-secondary p-mr-2" (click)="edit(item, i)"></button>
+                    <button pButton pRipple type="button" icon="pi pi-trash" class="p-button-text p-button-sm p-button-secondary" (click)="delete(i)"></button>
+                </td>
+            </tr>
+        </ng-template>
+
+    </p-table>
+</div>

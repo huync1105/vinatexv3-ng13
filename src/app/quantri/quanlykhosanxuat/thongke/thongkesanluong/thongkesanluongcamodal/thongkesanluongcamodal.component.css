@@ -1,0 +1,133 @@
+.tc-w-100{
+  min-width: 100px !important; 
+  max-width: 100px !important;
+}
+.tc-w-30{
+  min-width: 30px !important; 
+  max-width: 30px !important; 
+}
+.tc-w-50{
+  min-width: 50px !important; 
+  max-width: 50px !important; 
+}
+.tc-w-150{
+  min-width: 180px !important; 
+  max-width: 180px !important; 
+}
+.tc-w-200{
+  min-width: 200px !important; 
+  max-width: 200px !important; 
+}
+.pintable-containertk {
+    width: 100%;
+    overflow: hidden;
+  }
+  
+  .pintable-containertk table {
+    border: 1px solid #ccc;
+    position: relative;
+    border-collapse: separate;
+    border-spacing: 0;
+    table-layout: fixed;
+    display: block;
+    flex-direction: column;
+    height: 100%;
+    width: 100%;
+  }
+  
+  .pintable-containertk thead {
+    position: relative;
+    display: block;
+  }
+  
+  .pintable-containertk thead th {
+    color: white;
+    background-color: #828282;
+    border-bottom: 1px solid #ccc;
+    border-right: 1px solid #ccc;
+  }
+  
+  .pintable-containertk tbody {
+    flex: 1;
+    position: relative;
+    display: block;
+    overflow: auto;
+  }
+  
+  .pintable-containertk tbody td {
+    /* background-color: #fff; */
+    border-bottom: 1px solid #ccc;
+    border-right: 1px solid #ccc;
+  }
+  .pintable-containertk tfoot {
+    position: relative;
+    display: block;
+  }
+  .p-button {
+    margin: 0;
+    display: inline-flex;
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    align-items: center;
+    vertical-align: bottom;
+    text-align: center;
+    overflow: hidden;
+    position: unset;
+}
+.sticky-col {
+  position: -webkit-sticky!important;
+  position: sticky!important;
+}
+.first-col {
+  width: 40px!important;
+  min-width: 40px!important;
+  max-width: 40px!important;
+  left: 0px!important;
+}
+.second-col {
+  width: 100px!important;
+  min-width: 100px!important;
+  max-width: 100px!important;
+  left: 40px!important;
+}
+.third-col {
+  width: 50px!important;
+  min-width: 50px!important;
+  max-width: 50px!important;
+  left: 140px!important;
+}
+.forth-col {
+  width: 200px!important;
+  min-width: 200px!important;
+  max-width: 200px!important;
+  left: 190px!important;
+}
+
+
+.table-bongphe {
+  width: 100%;
+  overflow: hidden;
+}
+
+.table-bongphe table {
+  border: 1px solid #ccc;
+  border-collapse: separate;
+  border-spacing: 0;
+  height: 100%;
+  width: 100%;
+}
+
+.table-bongphe thead th {
+  color: white;
+  background-color: #828282;
+  border-bottom: 1px solid #ccc;
+  border-right: 1px solid #ccc;
+}
+
+.table-bongphe tbody td {
+  border-bottom: 1px solid #ccc;
+  border-right: 1px solid #ccc;
+}

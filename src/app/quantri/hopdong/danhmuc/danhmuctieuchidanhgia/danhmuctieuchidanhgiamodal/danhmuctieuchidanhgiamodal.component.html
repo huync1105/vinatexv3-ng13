@@ -1,0 +1,68 @@
+<div class="modal-header">   
+    <h5 class="modal-title"> {{title}}</h5>
+<button *ngIf="false" type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+    <span aria-hidden="true">&times;</span>
+</button>
+</div>
+<div class="modal-body">
+<div class="col-12 col-lg-12">
+<div class="p-grid">
+    <div class="p-col-12 p-md-6 p-lg-12 flex-column flex-lg-row d-flex">
+        <label class="p-col-12 p-lg-2 p-p-0 my-auto">Mã </label>
+        <div class="p-col-12 p-lg-10 p-p-0">
+            <input type="text" class="p-inputtext-sm" [(ngModel)]="item.ma" pInputText />
+        </div>
+    </div>
+    <div class="p-col-12 p-md-6 p-lg-12 flex-column flex-lg-row d-flex">
+        <label class="p-col-12 p-lg-2 p-p-0 my-auto">Tên </label>
+        <div class="p-col-12 p-lg-10 p-p-0">
+            <input type="text" class="p-inputtext-sm" [(ngModel)]="item.ten" pInputText />
+        </div>
+    </div>
+    <div class="p-col-12 p-md-6 p-lg-12 flex-column flex-lg-row d-flex">
+        <label class="p-col-12 p-lg-2 p-p-0 my-auto">Điểm tối đa </label>
+        <div class="p-col-12 p-lg-10 p-p-0">
+            <p-inputNumber [minFractionDigits]="0" locale="en-EN" [(ngModel)]="item.diemToiDa" #inputNumber></p-inputNumber>
+        </div>
+    </div>
+    <div class="p-col-12 p-md-6 p-lg-12 flex-column flex-lg-row d-flex">
+        <label class="p-col-12 p-lg-2 p-p-0 my-auto">Chọn tiêu chí cha </label>
+        <div class="p-col-12 p-lg-10 p-p-0">
+            <p-dropdown [filter]="true" [options]="listTieuChiCha" placeholder="Chọn tiêu chí cha"
+                    styleClass="p-inputtext-sm" [(ngModel)]="item.iddmTieuChiCha" [showClear]="true">
+                </p-dropdown>
+        </div>
+    </div>
+    <div class="p-col-12 p-md-6 p-lg-12 flex-column flex-lg-row d-flex">
+        <label class="p-col-12 p-lg-2 p-p-0 my-auto">Thứ tự </label>
+        <div class="p-col-12 p-lg-10 p-p-0">
+            <p-inputNumber [minFractionDigits]="0" locale="en-EN" [(ngModel)]="item.thuTu" #inputNumber></p-inputNumber>
+        </div>
+    </div>
+    <div class="p-col-12 p-md-6 p-lg-12  flex-column flex-lg-row d-flex">
+        <label class="p-col-12 p-lg-2 p-p-0 my-auto">Nội dung</label>
+        <div class="p-col-12 p-lg-10 p-p-0">
+            <input type="text" class="p-inputtext-sm" [(ngModel)]="item.noiDung" pInputText />
+        </div>
+    </div>
+    <div class="p-col-12 p-md-6 p-lg-12  flex-column flex-lg-row d-flex">
+        <label class="p-col-12 p-lg-2 p-p-0 my-auto">Ghi chú</label>
+        <div class="p-col-12 p-lg-10 p-p-0">
+            <input type="text" class="p-inputtext-sm" (keyup.enter)="GhiLai()" [(ngModel)]="item.ghiChu" pInputText />
+        </div>
+    </div>
+    <div class="p-col-12 p-md-6 p-lg-12  flex-column flex-lg-row d-flex">
+        <label class="p-col-12 p-lg-2 p-p-0 my-auto">Hoạt động</label>
+        <div class="p-col-12 p-lg-10 p-p-0">
+            <input type="checkbox" class="p-inputtext-sm" [(ngModel)]="item.hoatDong"/>
+        </div>
+    </div>
+</div>
+</div>
+</div>
+<div class="modal-footer">
+<button pButton pRipple label="Lưu" icon="pi pi-save" class="p-button-sm p-mr-2" (click)="GhiLai()"></button>
+<button pButton pRipple label="Đóng" class="p-button-sm p-button-outlined p-button-secondary p-mr-2"
+    (click)="activeModal.dismiss()"></button>
+</div>
+

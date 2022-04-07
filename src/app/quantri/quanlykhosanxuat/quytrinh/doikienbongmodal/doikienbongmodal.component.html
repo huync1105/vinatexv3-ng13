@@ -1,0 +1,99 @@
+<div class="modal-header">
+    <h5 class="modal-title">Danh sách kiện bông</h5>
+    <button *ngIf="false" type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+<div class="modal-body">
+    <div class="p-grid">
+        <div class="p-col-6 p-p-0 d-flex flex-column">
+            <div class="p-d-flex p-flex-row p-jc-between p-mb-3">
+                <div>
+                    <button pButton pRipple label="Chấp nhận" class="p-button-sm p-mr-2" (click)="accept()"></button>
+                    <button pButton pRipple label="Đóng" class="p-button-sm p-mr-2" (click)="cancel()"></button>
+                </div>
+                <div>
+                    <div class="p-inputgroup">
+                        <input type="text" placeholder="Tìm kiếm" class="p-inputtext-sm" pInputText
+                            [(ngModel)]="KeyWord" />
+                        <button type="button" pButton pRipple icon="pi pi-refresh"
+                            class="p-button-secondary p-button-sm p-button-text" ></button>
+                    </div>
+                </div>
+            </div>
+            <p-table [value]="items|filterByKey:'Ten':KeyWord"
+                styleClass="p-datatable-sm wrap-text p-datatable-striped p-datatable-gridlines" [scrollable]="true"
+                [rows]="100" scrollHeight="500px"
+        [virtualScroll]="true" [virtualRowHeight]="41">
+                <ng-template pTemplate="colgroup">
+                    <colgroup>
+                        <!-- <col style="width:50px"> -->
+                        <col>
+                        <col>
+                        <col>
+                        <col>
+                    </colgroup>
+                </ng-template>
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th>Mã</th>
+                        <th>Mic</th>
+                        <th>Bàn</th>
+                        <th></th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-item let-i="rowIndex">
+                    <tr>
+                        <td>{{item.Ten}}</td>
+                        <td>{{item.Mic |number:'0.0-3'}}</td>
+                        <td>{{item.ThuTu}}</td>
+                        <td class="text-center"><button pButton pRipple type="button" icon="pi pi-forward"
+                                class="p-button-rounded" (click)="doiKien(item)"></button></td>
+                        <!-- pi-forward -->
+                    </tr>
+                </ng-template>
+            </p-table>
+        </div>
+        <div class="p-col-6 d-flex flex-column" style="padding-top:46.25px ;">
+            <!-- <div class="p-d-flex p-flex-row p-jc-between p-mb-3">
+                    <div>
+                        <button pButton pRipple label="Chấp nhận" class="p-button-sm p-mr-2" (click)="accept()"></button>
+                    </div>
+                    [rows]="100" scrollHeight="250px"
+        [virtualScroll]="true" [virtualRowHeight]="34"
+                </div> -->
+            <p-table [value]="CurrentItem"
+                styleClass="p-datatable-sm wrap-text p-datatable-striped p-datatable-gridlines" [scrollable]="true"
+                scrollHeight="500px">
+                <ng-template pTemplate="colgroup">
+                    <colgroup>
+                        <!-- <col style="width:50px"> -->
+                        <!-- <col> -->
+                        <col>
+                        <col>
+                        <col>
+                    </colgroup>
+                </ng-template>
+                <ng-template pTemplate="header">
+                    <tr>
+                        <!-- <th></th> -->
+                        <th>Mã</th>
+                        <th>Mic</th>
+                        <th>Bàn</th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-item let-i="rowIndex">
+                    <tr>
+                        <!-- <td class="text-center"><button pButton pRipple type="button" icon="pi pi-backward"
+                                    class="p-button-rounded" (click)="refundItem(item.Id)"></button></td> -->
+                        <td>{{item.Ten}}</td>
+                        <td>{{item.Mic|number:'0.0-3'}}</td>
+                        <td>{{item.ThuTu}}</td>
+                    </tr>
+                </ng-template>
+            </p-table>
+        </div>
+    </div>
+</div>
+<div class="modal-footer">
+</div>

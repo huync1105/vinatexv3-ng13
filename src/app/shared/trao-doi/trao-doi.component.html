@@ -1,0 +1,47 @@
+<div class="comment">
+
+    <!-- title -->
+    <h3 class="title">Trao đổi</h3>
+
+    <p-scrollPanel [style]="{width: '100%', height: '400px', marginBottom: '16px'}" class="p-scrollpanel-bar-y" styleClass="custom" #panel>
+        <!-- content -->
+        <div class="comment-container" [class.right]="comment.userId===currentUserId?true:false" *ngFor="let comment of listComment">
+            <div class="comment-content">
+                <div class="user-img">
+                    <img class="" [src]="comment.userImg" [alt]="comment.userName">
+                </div>
+                <div class="comment-detail">
+                    <div class="time">
+                        <span>{{comment.userName}}, </span>
+                        <span>{{comment.time | date:'MMM d, y, h:mm:ss a'}}</span>
+                    </div>
+                    <div class="comment-text">
+                        <p style="white-space: pre-line">{{comment.message}}</p>
+                        <a *ngFor="let file of comment.uploadFiles" style="color: #fff; text-decoration: underline" href="http://localhost:4200/#/quantri/taisan/bangiaotaisan">
+                            {{file.name}}
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </p-scrollPanel>
+
+    <div class="comment-input">
+        <div class="comment-input-file" #commentInput>
+            <ul class="upload-file-list" [class.display]="uploadedFiles">
+                <li class="upload-file-item" *ngFor="let file of uploadedFiles">
+                    <i (click)="deleteUploadedFile(file.name)" class="delete-file-btn pi pi-times"></i>
+                    <i class="pi pi-file-o" style="margin-bottom: 6px; margin-top: 6px"></i>
+                    <span style="margin-bottom: 6px">{{file.name}}</span>
+                    <span>{{(file.size / 1000)}} KB</span>
+                </li>
+            </ul>
+        </div>
+        <div class="comment-input-type">
+            <textarea [rows]="1" class="message" pInputTextarea autoResize="autoResize" [(ngModel)]="message" [class.message-fixed-radius]="uploadedFiles" ></textarea>
+            <button pButton pRipple [style]="{marginRight: '8px'}" type="button" icon="pi pi-check" class="p-button-rounded" (click)="addNewMessage()"></button>
+            <p-fileUpload mode="basic" name="demo[]" maxFileSize="10000000000" chooseLabel="Tải file lên" [style]="{borderRadius: '20px'}" [customUpload]="true" (uploadHandler)="myuploader($event)" [multiple]="'multiple'" [auto]="true" #fileUpload></p-fileUpload>
+        </div>
+    </div>
+
+</div>

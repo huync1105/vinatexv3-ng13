@@ -1,0 +1,115 @@
+<div class="modal-header">   <h5 class="modal-title">
+    {{title}}</h5>
+<button *ngIf="false" type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+    <span aria-hidden="true">&times;</span>
+</button>
+<!-- <span class="p-button-sm p-button-sm p-button-text close" aria-hidden="true"
+    (click)="activeModal.dismiss('Cross click')">×</span> -->
+</div>
+<div class="modal-body">
+<div class="col-12 col-lg-12">
+<div class="p-grid">
+    <div class="p-col-12 p-lg-6 p-p-3 d-flex flex-column flex-lg-row">
+        <label class="p-col-12 p-lg-6 p-p-0 my-auto">Mã tài sản <span class="required">*</span></label>
+        <div class="p-col-12 p-lg-6 p-p-0">
+          <input type="text" [(ngModel)]="item.Ma" class="p-inputtext-sm" pInputText />
+        </div>
+      </div>
+      <div class="p-col-12 p-lg-6 p-p-3 d-flex flex-column flex-lg-row">
+        <label class="p-col-12 p-lg-6 p-p-0 my-auto">Tên tài sản: <span class="required">*</span></label>
+        <div class="p-col-12 p-lg-6 p-p-0">
+            <input type="text" [(ngModel)]="item.Ten" class="p-inputtext-sm" pInputText />
+        </div>
+      </div>
+      <div class="p-col-12 p-lg-6 p-p-3 d-flex flex-column flex-lg-row">
+        <label class="p-col-12 p-lg-6 p-p-0 my-auto">Nhà máy:</label>
+        <div class="p-col-12 p-lg-6 p-p-0">
+          <p-dropdown [filter]="true" [options]="listNhaMay" placeholder="Chọn nhà máy" styleClass="p-inputtext-sm"
+                [(ngModel)]="item.IdDuAn"></p-dropdown>
+        </div>
+      </div>
+      <div class="p-col-12 p-lg-6 p-p-3 d-flex flex-column flex-lg-row">
+        <label class="p-col-12 p-lg-6 p-p-0 my-auto">Đơn vị tính : </label>
+        <div class="p-col-12 p-lg-6 p-p-0">
+          <!-- <p-inputNumber #inputNumber [(ngModel)]="item.DonViTinh" [minFractionDigits]="0" locale="en-EN">
+          </p-inputNumber> -->
+          <input type="text" class="p-inputtext-sm" (keyup.enter)="GhiLai()" [(ngModel)]="item.DonViTinh" pInputText />
+        </div>
+      </div>
+      <div class="p-col-12 p-lg-6 p-p-3 d-flex flex-column flex-lg-row">
+        <label class="p-col-12 p-lg-6 p-p-0 my-auto">Năm sản xuất: </label>
+        <div class="p-col-12 p-lg-6 p-p-0">
+          <p-inputNumber #inputNumber [(ngModel)]="item.NamSanXuat"  locale="en-EN">
+          </p-inputNumber>
+        </div>
+      </div>
+      <div class="p-col-12 p-lg-6 p-p-3 d-flex flex-column flex-lg-row">
+        <label class="p-col-12 p-lg-6 p-p-0 my-auto">Năm mua: </label>
+        <div class="p-col-12 p-lg-6 p-p-0">
+          <p-inputNumber #inputNumber [(ngModel)]="item.NamMua" [minFractionDigits]="" locale="en-EN">
+          </p-inputNumber>
+        </div>
+      </div>
+      <div class="p-col-12 p-lg-6 p-p-3 d-flex flex-column flex-lg-row">
+        <label class="p-col-12 p-lg-6 p-p-0 my-auto">Thời gian bắt đầu khấu hao:<span class="required">*</span> </label>
+        <div class="p-col-12 p-lg-6 p-p-0">
+          <!-- <p-inputNumber #inputNumber [(ngModel)]="item.ThoiGianBatDauKhauHao" [minFractionDigits]="" locale="en-EN">
+          </p-inputNumber> -->
+          <p-calendar dateFormat="dd/mm/yy" inputStyleClass="p-inputtext-sm"  [monthNavigator]="true"
+            [yearNavigator]="true" [yearRange]="yearRange" [showIcon]="true" [(ngModel)]="item.ThoiGianBatDauKhauHao"  
+            inputId="icon" placeholder="dd/mm/yyyy">
+          </p-calendar>
+        </div>
+      </div>
+      <div class="p-col-12 p-lg-6 p-p-3 d-flex flex-column flex-lg-row">
+        <label class="p-col-12 p-lg-6 p-p-0 my-auto">Số năm khấu hao: </label>
+        <div class="p-col-12 p-lg-6 p-p-0">
+          <p-inputNumber #inputNumber [(ngModel)]="item.SoNamKhauHao" [minFractionDigits]="" locale="en-EN">
+          </p-inputNumber>
+        </div>
+      </div>
+      <div class="p-col-12 p-lg-6 p-p-3 d-flex flex-column flex-lg-row">
+        <label class="p-col-12 p-lg-6 p-p-0 my-auto">Thời gian hết khấu hao: </label>
+        <div class="p-col-12 p-lg-6 p-p-0">
+            <p-calendar disabled="disabled"  dateFormat="dd/mm/yy" inputStyleClass="p-inputtext-sm"  [monthNavigator]="true"
+            [yearNavigator]="true" [yearRange]="yearRange" [showIcon]="true" [(ngModel)]="item.ThoiGianHetKhauHao"  
+            inputId="icon" placeholder="dd/mm/yyyy">
+          </p-calendar>
+          <!-- <p-inputNumber #inputNumber [(ngModel)]="item.ThoiGianHetKhauHao" [minFractionDigits]="" locale="en-EN">
+          </p-inputNumber> -->
+        </div>
+      </div>
+      <div class="p-col-12 p-lg-6 p-p-3 d-flex flex-column flex-lg-row">
+        <label class="p-col-12 p-lg-6 p-p-0 my-auto">Giá trị khấu hao tháng: </label>
+        <div class="p-col-12 p-lg-6 p-p-0">
+          <p-inputNumber #inputNumber [(ngModel)]="item.GiaTriKhauHaoMoiThang" [minFractionDigits]="" locale="en-EN">
+          </p-inputNumber>
+        </div>
+      </div>
+      <div class="p-col-12 p-lg-6 p-p-3 d-flex flex-column flex-lg-row">
+        <label class="p-col-12 p-lg-6 p-p-0 my-auto">Ghi chú: </label>
+        <div class="p-col-12 p-lg-6 p-p-0">
+            <input type="text" class="p-inputtext-sm" (keyup.enter)="GhiLai()" [(ngModel)]="item.GhiChu" pInputText />
+            
+        </div>
+      </div>
+</div>
+</div>
+</div>
+<div class="modal-footer">
+<button pButton pRipple label="Lưu" icon="pi pi-save" class="p-button-sm p-mr-2" (click)="GhiLai()"></button>
+<button pButton pRipple label="Đóng" class="p-button-sm p-button-outlined p-button-secondary p-mr-2"
+    (click)="activeModal.dismiss()"></button>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+

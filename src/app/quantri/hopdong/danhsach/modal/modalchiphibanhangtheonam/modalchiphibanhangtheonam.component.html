@@ -1,0 +1,122 @@
+<div class="modal-header">
+    <h5 class="modal-title">
+      {{title}}</h5>
+    <button *ngIf="false" type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+    <!-- <span class="p-button-sm p-button-sm p-button-text close" aria-hidden="true"
+      (click)="activeModal.dismiss('Cross click')">×</span> -->
+  </div>
+  <div class="modal-body">
+    <div class="p-d-flex p-flex-row p-jc-between">
+      <div class="modal-bt p-mb-4 ">
+       
+        <button pButton pRipple type="button" label="Quay lại" class="p-mr-2 p-button-sm " (click)="activeModal.dismiss()"></button>
+        <button pButton pRipple type="button" label="Ghi lại" class="p-mr-2 p-button-sm " (click)="GhiLai()"></button>
+      </div>
+    </div>
+    <div class="col-12 col-lg-12">
+      <div class="p-grid">
+        <div class="p-col-12 p-lg-4 p-p-3 d-flex flex-column flex-lg-row">
+          <label class="p-col-12 p-lg-4 p-p-0 my-auto">Nhà máy:</label>
+          <div class="p-col-12 p-lg-8 p-p-0">
+            <p-dropdown [filter]="true" [options]="listNhaMay" placeholder="Chọn nhà máy" styleClass="p-inputtext-sm"
+              [(ngModel)]="item.IdDuAn"></p-dropdown>
+          </div>
+        </div>
+        <div class="p-col-12 p-lg-4 p-p-3 d-flex flex-column flex-lg-row">
+          <label class="p-col-12 p-lg-4 p-p-0 my-auto">Năm:</label>
+          <div class="p-col-12 p-lg-8 p-p-0">
+            <p-inputNumber [minFractionDigits]="" locale="en-EN" [(ngModel)]="item.Nam">
+            </p-inputNumber>
+          </div>
+        </div>
+      </div>
+  
+    </div>
+    <p-table [value]="item.listItem|isXoa" styleClass="p-datatable-sm wrap-text p-datatable-striped">
+      <ng-template pTemplate="colgroup">
+        <colgroup>
+          <col style="width:200px">
+          <col style="width:200px">
+          <col style="width:200px">
+          <col style="width:200px">
+          <col style="width:100px">
+        </colgroup>
+      </ng-template>
+      <ng-template pTemplate="header">
+        <tr>
+          <th>Loại chi phí</th>
+          <th>Loại nội địa - xuất khẩu</th>
+          <th>Đơn vị</th>
+          <th>Giá trị </th>
+          <th style="width: 100px;">Edit</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-item let-i="rowIndex">
+        <tr>
+          <td class="text-center">
+            <p-dropdown [disabled]="!item.edit" [filter]="true" [options]=" listChiPhi" placeholder="Chọn loại"
+              styleClass="p-inputtext-sm" [(ngModel)]="item.IddmChiPhiBanHang" (onChange)="ChonHienThi(item)"></p-dropdown>
+          </td>
+          <td class="text-center">
+            <!-- <p-inputNumber [disabled]="!item.edit" [minFractionDigits]="0" locale="en-EN" [(ngModel)]="item.LoaiXuatKhauNoiDia">
+            </p-inputNumber> -->
+            {{item.LoaiXuatKhauNoiDia}}
+          </td>
+          <td class="text-center">
+            <!-- <p-inputNumber [disabled]="!item.edit" [minFractionDigits]="" locale="en-EN" [(ngModel)]="item.ten">
+            </p-inputNumber> -->
+            {{item.DonViTinh}}
+          </td>
+          <td class="text-center">
+            <p-inputNumber [disabled]="!item.edit" [minFractionDigits]="" locale="en-EN" [(ngModel)]="item.GiaTri">
+            </p-inputNumber>
+          </td>
+          <td class="text-center">
+            <button pButton pRipple icon="pi pi-trash" *ngIf="!item.edit"
+                  class="p-button-sm p-button-rounded p-button-secondary p-button-text p-mr-2" (click)="delete(i)"
+                  pTooltip="Xóa" showDelay="1000" tooltipPosition="bottom"></button>
+                <button pButton pRipple icon="pi pi-pencil" *ngIf="!item.edit"
+                  class="p-button-sm p-button-rounded p-button-secondary p-button-text p-mr-2"
+                  (click)="edit(item)"></button>
+                  <button pButton pRipple icon="pi pi-check" *ngIf="item.edit"
+                  class="p-button-sm p-button-rounded p-button-secondary p-button-text p-mr-2"
+                  (click)="save(item)"></button>
+                  <!-- <button pButton pRipple icon="pi pi-times" *ngIf="item.edit"
+                  class="p-button-sm p-button-rounded p-button-secondary p-button-text p-mr-2"
+                  (click)="xoa(item)"></button> -->
+          </td>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="footer">
+        <tr>
+          <td class="text-center">
+            <p-dropdown [filter]="true" [options]="listChiPhi" placeholder="Chọn loại" styleClass="p-inputtext-sm"
+              [(ngModel)]="newitem.IddmChiPhiBanHang" (onChange)="Chon(newitem)"></p-dropdown>
+          </td>
+          <td class="text-center">
+          {{newitem.LoaiXuatKhauNoiDia}}
+          </td>
+          <td class="text-center">
+            {{newitem.DonViTinh}}
+          </td>
+          <td class="text-center">
+            <p-inputNumber [minFractionDigits]="0" locale="en-EN" [(ngModel)]="newitem.GiaTri">
+            </p-inputNumber>
+          </td>
+          <td class="text-center">
+            <button pButton pRipple type="button" icon="pi pi-plus" class="p-button-rounded p-button-sm "
+              (click)="add2()">
+            </button>
+          </td>
+        </tr>
+  
+      </ng-template>
+    </p-table>
+  </div>
+  <!-- <div class="modal-footer">
+  
+    <button pButton pRipple label="Đóng" class="p-button-sm p-button-outlined p-button-secondary p-mr-2"
+      (click)="activeModal.dismiss()"></button>
+  </div> -->

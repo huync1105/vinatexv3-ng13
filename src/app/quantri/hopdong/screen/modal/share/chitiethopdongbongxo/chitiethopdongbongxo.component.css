@@ -1,0 +1,35 @@
+/* .marginleft {
+    margin-right: -4.9rem;
+} */
+:host ::ng-deep .p-toggleable-content.ng-trigger {
+    padding-left: unset !important;
+}
+
+.p-pl-theokieunaodo{
+    padding-left: 4% !important;
+}
+
+
+:host ::ng-deep .p-multiselect {
+    min-width: 15rem;
+    width: 18rem;
+}
+
+:host ::ng-deep .multiselect-custom {
+        padding-top: .25rem;
+        padding-bottom: .25rem;
+        padding: .25rem .5rem;
+        border-radius: 3px;
+        display: inline-flex;
+        margin-right: .5rem;
+        background-color: var(--primary-color);
+        color: var(--primary-color-text);
+        padding: 0.25rem;
+}
+:host ::ng-deep {
+    @media screen and (max-width: 640px) {
+        .p-multiselect {
+            width: 100%;
+        }
+    }
+}

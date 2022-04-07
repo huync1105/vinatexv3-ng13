@@ -1,0 +1,86 @@
+<div class="modal-header">
+  <h5 class="modal-title">Thông tin nhà cung ứng</h5>
+</div>
+
+<div class="modal-body">
+  <p-tabView>
+    <p-tabPanel header="Thông tin chung">
+      <app-thong-tin-chung [item]="item"></app-thong-tin-chung>
+    </p-tabPanel>
+
+    <p-tabPanel header="Thông tin hàng hóa">
+      <app-thong-tin-hang-hoa [item]="item"></app-thong-tin-hang-hoa>
+    </p-tabPanel>
+
+    <p-tabPanel header="Thông tin đánh giá" *ngIf="opt==='update'">
+      <app-thong-tin-danh-gia [item]="item"></app-thong-tin-danh-gia>
+    </p-tabPanel>
+
+    <p-tabPanel header="Thông tin hợp đồng" *ngIf="opt==='updated'"> 
+      <div class="p-grid p-flex-row-reverse">
+        <div class="p-inputgroup p-lg-3 p-p-0">
+          <input type="text" pInputText class="p-inputtext-sm"> 
+          <button pButton pRipple type="button" icon="pi pi-search" class="p-button-rounded p-button-secondary p-button-text"></button>
+          <button pButton pRipple type="button" icon="pi pi-refresh" class="p-button-rounded p-button-secondary p-button-text"></button>
+        </div>
+      </div>
+
+      <div class="p-mt-3">
+        <p-table [value]="items" styleClass="p-datatable-sm p-datatable-gridlines">
+          <ng-template pTemplate="colgroup"> 
+            <colgroup>
+              <col style="width: 50px">
+              <col style="width: 50px">
+              <col style="width: 100px">
+              <col style="width: 100px">
+              <col>
+              <col style="width: 100px">
+              <col style="width: 50px">
+            </colgroup>
+          </ng-template>
+          <ng-template pTemplate="header">
+            <tr>
+              <th>
+                <p-checkbox [(ngModel)]="checkedAll" binary="true" inputId="binary"
+                (onChange)="CheckAllNhaCungUng($event)"></p-checkbox>
+              </th>
+              <th>STT</th>
+              <th>Số quy trình</th>
+              <th>Ngày</th>
+              <th>Kết quả</th>
+              <th>Ghi chú</th>
+              <th></th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-item let-i="rowIndex">
+            <tr>
+              <td class="text-center">
+                <p-checkbox [(ngModel)]="item.checked" binary="true" inputId="binary"></p-checkbox>
+              </td>
+              <td class="text-center">{{i}}</td>
+              <td class="text-center">{{item.Ma}}</td>
+              <td>{{item.Ten}}</td>
+              <td class="text-center">{{item.SoDienThoai}}</td>
+              <td>{{item.NguoiDaiDien}}</td>
+              <td>{{item.GhiChu}}</td>
+              <td class="text-center">
+                <button pButton pRipple type="button" icon="pi pi-pencil" class="p-button-rounded p-button-text" style="border-radius: 2px" (click)="UpdateNhaCungUng(item.Id)"></button>
+              </td>
+            </tr>
+          </ng-template>
+          <!-- <ng-template pTemplate="summary">
+            <div class="p-d-flex p-ai-center p-jc-between p-px-2">
+              Tổng số bản ghi {{paging.TotalCount}}.
+              <p-paginator #paginator [totalRecords]="paging.TotalCount" [rows]="20" (onPageChange)="changePage($event)"></p-paginator>
+            </div>
+          </ng-template> -->
+        </p-table>
+      </div>
+    </p-tabPanel>
+  </p-tabView>
+
+  <div class="p-d-flex p-ai-center p-jc-between">
+    <button pButton pRipple type="button" label="Đóng" class="p-button-outlined" (click)="activeModal.dismiss()"></button>
+    <p-button label="Chấp nhận" class="p-button-sm" (click)="SetNhaCungUng()"></p-button>
+  </div>
+</div>  

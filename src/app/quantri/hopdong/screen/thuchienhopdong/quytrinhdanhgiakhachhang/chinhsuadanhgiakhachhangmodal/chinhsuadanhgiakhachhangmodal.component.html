@@ -1,0 +1,170 @@
+<div class="modal-header">
+    <h5 class="modal-title">Cập nhật thông tin đánh giá</h5>
+</div>
+<div class="modal-body">
+    <div class="p-grid">
+        <div class="p-col-12 p-p-0 d-flex flex-column">
+            <div class="p-d-flex p-flex-row p-jc-between p-mb-3">
+                <div>
+                    <button pButton pRipple label="Chấp nhận" class="p-button-sm p-mr-2" (click)="accept()"></button>
+                    <button pButton pRipple label="Đóng" class="p-button-sm p-mr-2" (click)="Onclose()"></button>
+                </div>
+                <!-- <div>
+                    <div class="p-inputgroup">
+                        <input type="text" placeholder="Tìm kiếm" class="p-inputtext-sm" pInputText (keyup.enter)="filtertable_add()" [(ngModel)]="KeyWord" />
+                        <button type="button" pButton pRipple icon="pi pi-refresh" class="p-button-secondary p-button-sm p-button-text" (click)="resetFilter()"></button>
+                    </div>
+                </div> -->
+            </div>
+            <p-tabView styleClass="no-content">
+                <p-tabPanel header="Thông tin khách hàng">
+                    <div class="p-grid">
+                        <div class="p-col-12 p-lg-12 p-p-3 d-flex flex-column flex-lg-row">
+                            <label class="p-col-12 p-lg-2 p-p-0 my-auto">Mã: </label>
+                            <div class="p-col-12 p-lg-10 p-p-0">
+                                <input type="text" class="p-inputtext-sm" [(ngModel)]="item.khachHang.ma" pInputText disabled/>
+                            </div>
+                        </div>
+                        <div class="p-col-12 p-lg-12 p-p-3 d-flex flex-column flex-lg-row">
+                            <label class="p-col-12 p-lg-2 p-p-0 my-auto">Tên khách hàng: </label>
+                            <div class="p-col-12 p-lg-10 p-p-0">
+                                <input type="text" class="p-inputtext-sm" [(ngModel)]="item.khachHang.ten" pInputText disabled/>
+                            </div>
+                        </div>
+                        <div class="p-col-12 p-lg-12 p-p-3 d-flex flex-column flex-lg-row">
+                            <label class="p-col-12 p-lg-2 p-p-0 my-auto">Địa chỉ: </label>
+                            <div class="p-col-12 p-lg-10 p-p-0">
+                                <input type="text" class="p-inputtext-sm" [(ngModel)]="item.khachHang.diaChi" pInputText disabled/>
+                            </div>
+                        </div>
+                        <div class="p-col-12 p-lg-12 p-p-3 d-flex flex-column flex-lg-row">
+                            <label class="p-col-12 p-lg-2 p-p-0 my-auto">Số điện thoại: </label>
+                            <div class="p-col-12 p-lg-10 p-p-0">
+                                <input type="text" class="p-inputtext-sm" [(ngModel)]="item.khachHang.soDienThoai" pInputText disabled/>
+                            </div>
+                        </div>
+                        <div class="p-col-12 p-lg-12 p-p-3 d-flex flex-column flex-lg-row">
+                            <label class="p-col-12 p-lg-2 p-p-0 my-auto">Fax: </label>
+                            <div class="p-col-12 p-lg-10 p-p-0">
+                                <input type="text" class="p-inputtext-sm" [(ngModel)]="item.khachHang.fax" pInputText disabled/>
+                            </div>
+                        </div>
+                        <div class="p-col-12 p-lg-12 p-p-3 d-flex flex-column flex-lg-row">
+                            <label class="p-col-12 p-lg-2 p-p-0 my-auto">Tài khoản: </label>
+                            <div class="p-col-12 p-lg-10 p-p-0">
+                                <input type="text" class="p-inputtext-sm" [(ngModel)]="item.khachHang.taiKhoan" pInputText disabled/>
+                            </div>
+                        </div>
+                        <div class="p-col-12 p-lg-12 p-p-3 d-flex flex-column flex-lg-row">
+                            <label class="p-col-12 p-lg-2 p-p-0 my-auto">Mã số thuế: </label>
+                            <div class="p-col-12 p-lg-10 p-p-0">
+                                <input type="text" class="p-inputtext-sm" [(ngModel)]="item.khachHang.maSoThue" pInputText disabled/>
+                            </div>
+                        </div>
+                        <div class="p-col-12 p-lg-12 p-p-3 d-flex flex-column flex-lg-row">
+                            <label class="p-col-12 p-lg-2 p-p-0 my-auto">Người đại diện: </label>
+                            <div class="p-col-12 p-lg-10 p-p-0">
+                                <input type="text" class="p-inputtext-sm" [(ngModel)]="item.khachHang.nguoiDaiDien" pInputText disabled/>
+                            </div>
+                        </div>
+                        <div class="p-col-12 p-lg-12 p-p-3 d-flex flex-column flex-lg-row">
+                            <label class="p-col-12 p-lg-2 p-p-0 my-auto">Chức vụ: </label>
+                            <div class="p-col-12 p-lg-10 p-p-0">
+                                <input type="text" class="p-inputtext-sm" [(ngModel)]="item.khachHang.chucVu" pInputText disabled/>
+                            </div>
+                        </div>
+                        <div class="p-col-12 p-lg-12 p-p-3 d-flex flex-column flex-lg-row">
+                            <label class="p-col-12 p-lg-2 p-p-0 my-auto">Ghi chú: </label>
+                            <div class="p-col-12 p-lg-10 p-p-0">
+                                <input type="text" class="p-inputtext-sm" [(ngModel)]="item.khachHang.ghiChu" pInputText disabled/>
+                            </div>
+                        </div>
+                    </div>
+                </p-tabPanel>
+                <p-tabPanel header="Thông tin hợp đồng">
+                    <p-table [lazy]="true" [scrollable]="true" scrollHeight="45vh" [value]="listHopDong" styleClass="p-datatable-gridlines p-datatable-sm wrap-text p-datatable-striped">
+                        <ng-template pTemplate="colgroup">
+                            <colgroup>
+                                <col style="width:50px">
+                                <col>
+                                <col>
+                                <col>
+                                <col>
+                                <col>
+                            </colgroup>
+                        </ng-template>
+                        <ng-template pTemplate="header">
+                            <tr>
+                                <th class="text-center">STT</th>
+                                <th class="text-center">Số- Tên HĐ</th>
+                                <th class="text-center">Ngày ký</th>
+                                <th class="text-center">Giá trị hợp đồng</th>
+                                <th class="text-center">Mặt hàng</th>
+                                <th class="text-center">Tình trạng</th>
+                            </tr>
+                        </ng-template>
+                        <ng-template pTemplate="body" let-item let-i="rowIndex">
+                            <tr>
+                                <td>
+                                    {{ 15 * (paging.CurrentPage - 1) + i + 1 }}
+                                </td>
+                                <td class="text-left"><a href="javascript:void(0)" (click)="viewHopDong(item)">{{item.soTenHopDong}}</a></td>
+                                <td class="text-center">{{item.ngayKy | date:'dd/MM/yyyy'}}</td>
+                                <td class="text-right">{{item.giaTri |number:'0.0-2'}}</td>
+                                <td class="text-left">{{item.matHang}}</td>
+                                <td class="text-left">{{item.tinhTrang}}</td>
+                            </tr>
+                        </ng-template>
+                        <ng-template pTemplate="summary">
+                            <div class="p-d-flex p-ai-center p-jc-between">
+                                Tổng số bản ghi {{paging.TotalItem}}.
+                                <p-paginator #paginator [totalRecords]="paging.TotalItem" [rows]="15" (onPageChange)="changePage($event)"></p-paginator>
+                            </div>
+                        </ng-template>
+                    </p-table>
+                </p-tabPanel>
+                <p-tabPanel header="Thông tin đánh giá">
+                    <p-treeTable [lazy]="true" [scrollable]="true" scrollHeight="45vh" [value]="listTieuChiDanhGia" styleClass="p-datatable-gridlines p-datatable-sm wrap-text p-datatable-striped">
+                        <ng-template pTemplate="colgroup">
+                            <colgroup>
+                                <col style="width:50px">
+                                <col>
+                                <col style="width:150px">
+                                <col style="width:150px">
+                            </colgroup>
+                        </ng-template>
+                        <ng-template pTemplate="header">
+                            <tr>
+                                <th class="text-center"></th>
+                                <th class="text-center">Nội dung đánh giá</th>
+                                <th class="text-center">Điểm tối đa</th>
+                                <th class="text-center">Điểm đánh giá</th>
+                            </tr>
+                        </ng-template>
+                        <ng-template pTemplate="body" let-rowNode let-rowData="rowData">
+                            <tr [ngStyle]="{'font-weight': rowData.isCon === false?'bold':'normal'}">
+                                <td class="text-center">
+                                    <p-treeTableToggler [rowNode]="rowNode"></p-treeTableToggler>
+                                    {{rowData.thuTu}}</td>
+                                <td class="text-left">{{rowData.ten}}</td>
+                                <td class="text-right">{{rowData.diemToiDa}}</td>
+                                <td class="text-right" *ngIf="rowData.isCon === false">{{rowData.diem|number:'0.2'}}</td>
+                                <td *ngIf="rowData.isCon === true">
+                                    <p-inputNumber [minFractionDigits]="2" locale="en-EN" [(ngModel)]="rowData.diem" (ngModelChange)="tinhDiemDanhGia(rowData)">
+                                </p-inputNumber></td>
+                            </tr>
+                        </ng-template>
+                        <ng-template pTemplate="footer">
+                            <tr>
+                                <td colspan="3">TỔNG:</td>
+                                <td class="text-right">
+                                    {{listTieuChiCha|isXoa|SumByKey:'diem'|number:'0.2'}}
+                                </td>
+                            </tr>
+                        </ng-template>
+                    </p-treeTable>
+                </p-tabPanel>
+            </p-tabView>
+        </div>
+    </div>
+</div>

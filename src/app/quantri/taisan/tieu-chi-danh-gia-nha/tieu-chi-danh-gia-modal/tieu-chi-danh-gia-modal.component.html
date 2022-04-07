@@ -1,0 +1,77 @@
+<div class="modal-header">
+  <h5 class="modal-title">{{title}}</h5>
+</div>
+
+<div class="modal-body">
+  <div class="p-grid">
+    <label class="p-m-0 p-lg-3 p-md-12 p-sm-12 p-d-flex p-ai-center">
+      Mã: <span class="required"> *</span>:
+    </label>
+    <div class="p-lg-7 p-md-9 p-sm-12">
+      <input type="text" pInputText [(ngModel)]="item.Ma"> 
+    </div>
+    <div class="p-d-flex p-ai-center p-jc-center p-lg-2 p-md-3 p-sm-12">
+      <p-checkbox class="p-mr-2" binary="true" inputId="binary" [(ngModel)]="item.HoatDong"></p-checkbox>
+      <label class="p-m-0" for="">Hoạt động</label>
+    </div>
+  </div>
+
+  <div class="p-grid">
+    <label class="p-m-0 p-lg-3 p-md-12 p-sm-12 p-d-flex p-ai-center" >
+      Tên:
+    </label>
+    <div class="p-lg-9 p-md-9 p-sm-12">
+      <input type="text" pInputText [(ngModel)]="item.Ten"> 
+    </div>
+  </div>
+
+  <div class="p-grid">
+    <label class="p-m-0 p-lg-3 p-md-12 p-sm-12 p-d-flex p-ai-center">
+      Diểm tối đa:
+    </label>
+    <div class="p-lg-9 p-md-9 p-sm-12">
+      <input type="text" pInputText [(ngModel)]="item.DiemToiDa"> 
+    </div>
+  </div>
+
+  <div class="p-grid">
+    <label class="p-m-0 p-lg-3 p-md-12 p-sm-12 p-d-flex p-ai-center">
+      Chọn tiêu chí cha:
+    </label>
+    <div class="p-lg-9 p-md-9 p-sm-12">
+      <p-dropdown [options]="listTieuChiCha" [(ngModel)]="item.IdParent" placeholder="Chọn tiêu chí"></p-dropdown>
+    </div>
+  </div>
+
+  <div class="p-grid">
+    <label class="p-m-0 p-lg-3 p-md-12 p-sm-12 p-d-flex p-ai-center">
+      Thứ tự:
+    </label>
+    <div class="p-lg-9 p-md-9 p-sm-12">
+      <input type="text" pInputText [(ngModel)]="item.ThuTu"> 
+    </div>
+  </div>
+
+  <div class="p-grid">
+    <label class="p-m-0 p-lg-3 p-md-12 p-sm-12 p-d-flex p-ai-center">
+      Nội dung:
+    </label>
+    <div class="p-lg-9 p-md-9 p-sm-12">
+      <input type="text" pInputText [(ngModel)]="item.NoiDung"> 
+    </div>
+  </div>
+
+  <div class="p-grid">
+    <label class="p-m-0 p-lg-3 p-md-12 p-sm-12 p-d-flex p-ai-center">
+      Ghi chú:
+    </label>
+    <div class="p-lg-9 p-md-9 p-sm-12">
+      <input type="text" pInputText [(ngModel)]="item.GhiChu"> 
+    </div>
+  </div>
+
+  <div class="p-d-flex p-ai-center p-jc-between p-mt-3">
+    <button pButton pRipple type="button" label="Đóng" class="p-button-outlined" (click)="activeModal.dismiss()"></button>
+    <p-button label="Chấp nhận" class="p-button-sm" (click)="AddTieuChi()"></p-button>
+  </div>
+</div>

@@ -1,0 +1,49 @@
+<div class="modal-header">
+    <h5 class="modal-title">{{title}}</h5>
+    <button *ngIf="false" type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+    </button>
+    <!-- <span class="p-button-sm p-button-sm p-button-text close" aria-hidden="true"
+    (click)="activeModal.dismiss('Cross click')">×</span> -->
+</div>
+<div class="modal-body">
+    <div class="p-col-4">
+        <div class="p-d-flex p-flex-row">
+            <div class="p-col-3">Chọn năm:</div>
+            <div class="p-col-9">
+                <p-dropdown [filter]="true" [options]="listNam" [(ngModel)]="Nam" placeholder="Chọn năm"
+                    (onChange)="GetData()" styleClass="p-inputtext-sm">
+                </p-dropdown>
+            </div>
+
+        </div>
+
+    </div>
+    <div class="p-col-12 p-0">
+
+
+        <p-table [value]="data.lstTienTe" styleClass="p-datatable-sm wrap-text p-datatable-striped">
+            <ng-template pTemplate="header">
+                <tr>
+                    <th>Ngoại tệ</th>
+                    <th *ngFor="let item of listProp;let i = index">Tháng {{i+1}}</th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-tiente let-i="rowIndex">
+                <tr>
+                    <td class="text-center">{{tiente.Ten}}</td>
+                    <td *ngFor="let prop of listProp">
+                        <p-inputNumber [minFractionDigits]="0" locale="en-EN" [(ngModel)]="tiente[prop]">
+                        </p-inputNumber>
+                    </td>
+                </tr>
+            </ng-template>
+        </p-table>
+    </div>
+</div>
+<div class="modal-footer">
+    <button pButton pRipple label="Lưu" icon="pi pi-save" class="p-button-sm p-mr-2" (click)="GhiLai()"
+        ></button>
+    <button pButton pRipple label="Đóng" class="p-button-sm p-button-outlined p-button-secondary p-mr-2"
+        (click)="activeModal.dismiss()"></button>
+</div>

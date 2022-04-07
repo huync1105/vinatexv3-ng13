@@ -1,0 +1,306 @@
+<div class="modal-header">
+    <!-- <h5 class="modal-title">{{opt==='add'?'Thêm mới':'Cập nhật'}} phiếu nhập {{nametype}}</h5> -->
+    <h5 class="modal-title">Phiếu nhập {{nametype}}</h5>
+    <!-- <div class="p-col-12 p-lg-4 p-p-0 d-flex flex-column flex-lg-row">
+        <label class="p-col-12 p-lg-4 p-p-0 my-auto">Nhà máy:</label>
+        <div class="p-col-12 p-lg-8 p-p-0">
+            <p-dropdown [filter]="true" [options]="listNhaMay" placeholder="Chọn nhà máy" styleClass="p-inputtext-sm"
+                [(ngModel)]="item.NhaMay"></p-dropdown>
+        </div>
+    </div> -->
+    <div class="d-flex flex-column flex-lg-row">
+        <div>
+            <span style="font-weight: bold;">Số phiếu:</span> {{item.SoQuyTrinh}}
+        </div>
+        <div class="ml-lg-3 mr-lg-3">
+            <span style="font-weight: bold;">TG Tạo:</span> {{item.Created|date:"dd/MM/yyyy HH:mm"}}
+        </div>
+        <div>
+            <span style="font-weight: bold;">TG Duyệt:</span> {{item.Modified|date:"dd/MM/yyyy HH:mm"}}
+        </div>
+    </div>
+    <button *ngIf="false" type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+<div class="modal-body">
+    <div class="p-d-flex p-flex-row p-jc-between">
+        <div class="modal-bt p-mb-4 ">
+            <button pButton pRipple type="button" label="Quay lại" class="p-mr-2 p-button-sm" (click)="Onclose()"></button>
+            <button pButton pRipple type="button" label="Lưu nháp" class="p-mr-2 p-button-sm " (click)="GhiLai()" *ngIf="checkbutton.Ghi"></button>
+            <button pButton pRipple type="button" label="Xóa" class="p-mr-2 p-button-sm" *ngIf="checkbutton.Xoa" (click)="XoaQuyTrinh()"></button>
+            <!-- <button pButton pRipple type="button" label="Không duyệt" class="p-mr-2 p-button-sm" (click)="KhongDuyet()"
+                *ngIf="checkbutton.KhongDuyet"></button> -->
+            <!-- <button pButton pRipple type="button" label="" class="p-mr-2 p-button-sm"
+                (click)="GhiLai()" *ngIf="checkbutton.ChuyenTiep"></button> -->
+            <button pButton pRipple type="button" label="Xác nhận" class="p-mr-2 p-button-sm" (click)="ChuyenTiep()" *ngIf="checkbutton.ChuyenTiep"></button>
+            <button pButton pRipple type="button" label="Xuất excel" class="p-mr-2 p-button-sm" (click)="exportExcel()"></button>
+            <button pButton pRipple type="button" label="Xuất hóa đơn" class="p-mr-2 p-button-sm" (click)="exportHoaDon()"></button>
+            <!-- <button pButton pRipple type="button" label="Kết xuất" class="p-mr-2 p-button-sm"></button> -->
+        </div>
+
+    </div>
+    <div class="p-grid">
+        <!-- <div class="p-col-12 p-lg-6 p-p-3 d-flex flex-column flex-lg-row" *ngIf="this.type==='bong'"> -->
+        <div class="p-col-12 p-lg-6 p-p-3 d-flex flex-column flex-lg-row">
+            <label class="p-col-12 p-lg-4 p-p-0 my-auto">Đợt nhập :</label>
+            <div class="p-col-12 p-lg-8 p-p-0">
+                <p-dropdown [filter]="true" [options]="listKeHoach" *ngIf="item.isTuDong===true" placeholder="Chọn kế hoạch" styleClass="p-inputtext-sm" [(ngModel)]="item.IdKeHoachNhapNguyenLieuInvoice_Item" (onChange)="getKeHoach($event)"></p-dropdown>
+                <p-dropdown [filter]="true" [options]="listKeHoach" *ngIf="item.isTuDong===false" placeholder="Chọn kế hoạch" styleClass="p-inputtext-sm" [(ngModel)]="item.IdKeHoachNhapNguyenLieuInvoice_Item" (onChange)="getKeHoach($event)"></p-dropdown>
+            </div>
+        </div>
+        <!-- <div class="p-col-12 p-lg-6 p-p-3 d-flex flex-column flex-lg-row">
+            <label class="p-col-12 p-lg-4 p-p-0 my-auto">Mã Invoice:</label>
+            <div class="p-col-12 p-lg-8 p-p-0">
+                <input type="text" class="p-inputtext-sm" [(ngModel)]="item.MaInvoice" pInputText />
+            </div>
+        </div>
+        <div class="p-col-12 p-lg-6 p-p-3 d-flex flex-column flex-lg-row">
+            <label class="p-col-12 p-lg-4 p-p-0 my-auto">Nội dung Invoice:</label>
+            <div class="p-col-12 p-lg-8 p-p-0">
+                <input type="text" class="p-inputtext-sm" [(ngModel)]="item.NoiDung" pInputText />
+            </div>
+        </div> -->
+        <div class="p-col-12 p-lg-6 p-p-3 d-flex flex-column flex-lg-row">
+            <label *ngIf="this.type!=='xo'" class="p-col-12 p-lg-4 p-p-0 my-auto">Loại bông <span class="text-danger">*</span>:</label>
+            <label *ngIf="this.type==='xo'" class="p-col-12 p-lg-4 p-p-0 my-auto">Loại xơ <span class="text-danger">*</span>:</label>
+            <div class="p-col-12 p-lg-8 p-p-0">
+                <p-dropdown [filter]="true" [options]="listLoaiBong" placeholder="Chọn loại" styleClass="p-inputtext-sm" [(ngModel)]="item.IddmLoaiBong"></p-dropdown>
+            </div>
+        </div>
+        <div class="p-col-12 p-lg-6 p-p-3 d-flex flex-column flex-lg-row">
+            <label *ngIf="this.type!=='xo'" class="p-col-12 p-lg-4 p-p-0 my-auto">Cấp bông <span class="text-danger">*</span>:</label>
+            <label *ngIf="this.type==='xo'" class="p-col-12 p-lg-4 p-p-0 my-auto">Cấp xơ:</label>
+            <div class="p-col-12 p-lg-8 p-p-0">
+                <p-dropdown [filter]="true" [options]="listCapBong" placeholder="Chọn cấp" styleClass="p-inputtext-sm" [(ngModel)]="item.IddmCapBong"></p-dropdown>
+            </div>
+        </div>
+        <div class="p-col-12 p-lg-6 p-p-3 d-flex flex-column flex-lg-row">
+            <label *ngIf="this.type==='bong'" class="p-col-12 p-lg-4 p-p-0 my-auto">Lô bông:</label>
+            <label *ngIf="this.type==='xo'" class="p-col-12 p-lg-4 p-p-0 my-auto">Lô xơ:</label>
+            <div class="p-col-12 p-lg-8 p-p-0">
+                <p-dropdown [filter]="true" [options]="listLoBong" placeholder="Chọn lô bông" [(ngModel)]="item.IdLoBong" styleClass="p-inputtext-sm"></p-dropdown>
+            </div>
+        </div>
+        <div class="p-col-12 p-lg-6 p-p-3 d-flex flex-column flex-lg-row">
+            <label class="p-col-12 p-lg-4 p-p-0 my-auto">Ngày chứng từ <span class="text-danger">*</span>:</label>
+            <div class="p-col-12 p-lg-8 p-p-0">
+                <p-calendar dateFormat="dd/mm/yy" inputStyleClass="p-inputtext-sm" [locale]="lang" [monthNavigator]="true" [yearNavigator]="true" [yearRange]="yearRange" [showIcon]="true" [(ngModel)]="item.Ngay" inputId="icon" placeholder="dd/mm/yyyy">
+                </p-calendar>
+            </div>
+        </div>
+        <div class="p-col-12 p-lg-6 p-p-3 d-flex flex-column flex-lg-row">
+            <label class="p-col-12 p-lg-4 p-p-0 my-auto">Kho <span class="text-danger">*</span>:</label>
+            <div class="p-col-12 p-lg-8 p-p-0">
+                <p-dropdown [filter]="true" [options]="listKho" placeholder="Chọn kho" [(ngModel)]="item.IddmKho" styleClass="p-inputtext-sm"></p-dropdown>
+            </div>
+        </div>
+        <div class="p-col-12 p-lg-6 p-p-3 d-flex flex-column flex-lg-row">
+            <label class="p-col-12 p-lg-4 p-p-0 my-auto">Số hợp đồng:</label>
+            <div class="p-col-12 p-lg-8 p-p-0">
+                <input type="text" class="p-inputtext-sm" [(ngModel)]="item.SoHopDong" pInputText />
+            </div>
+        </div>
+
+        <div class="p-col-12 p-lg-6 p-p-3 d-flex flex-column flex-lg-row">
+            <label class="p-col-12 p-lg-4 p-p-0 my-auto" *ngIf="this.type==='bong'">Đơn giá bông/Kg (USD):</label>
+            <label class="p-col-12 p-lg-4 p-p-0 my-auto" *ngIf="this.type==='xo'">Đơn giá xơ/Kg (VND):</label>
+            <div class="p-col-12 p-lg-8 p-p-0">
+                <p-inputNumber [minFractionDigits]="2" locale="en-EN" [(ngModel)]="item.GiaBong">
+                </p-inputNumber>
+            </div>
+        </div>
+        <!-- <div class="p-col-12 p-lg-6 p-p-3 d-flex flex-column flex-lg-row" *ngIf="this.type==='xo'">
+            <label class="p-col-12 p-lg-4 p-p-0 my-auto">Đơn giá Xơ/Kg (VND):</label>
+            <div class="p-col-12 p-lg-8 p-p-0">
+                <p-inputNumber [minFractionDigits]="2" locale="en-EN" [(ngModel)]="item.GiaXo">
+                </p-inputNumber>
+            </div>
+        </div> -->
+        <!-- <div class="p-col-12 p-lg-6 p-p-3 d-flex flex-column flex-lg-row" *ngIf="this.type==='xo'">
+            <label class="p-col-12 p-lg-4 p-p-0 my-auto">Khách hàng <span class="text-danger">*</span>:</label>
+            <div class="p-col-12 p-lg-8 p-p-0">
+                <p-dropdown [filter]="true" [options]="listKhachHang" placeholder="Chọn khách hàng" [(ngModel)]="item.IddmKhachHang"
+                styleClass="p-inputtext-sm"></p-dropdown>
+            </div>
+        </div> -->
+        <div class="p-col-12 p-lg-6 p-p-3 d-flex flex-column flex-lg-row">
+            <label class="p-col-12 p-lg-4 p-p-0 my-auto">Ghi chú:</label>
+            <div class="p-col-12 p-lg-8 p-p-0">
+                <input type="text" class="p-inputtext-sm" [(ngModel)]="item.GhiChu" pInputText />
+            </div>
+        </div>
+        <div class="p-col-12 p-lg-6 p-p-3 d-flex flex-column flex-lg-row" *ngIf="this.type==='bong'">
+            <label class="p-col-12 p-lg-4 p-p-0 my-auto">Gộp phiếu:</label>
+            <div class="p-col-12 p-lg-8 p-p-0">
+                <input type="checkbox" class="p-inputtext-sm" [(ngModel)]="item.isGopPhieu" (ngModelChange)="CheckGopPhieu($event)"/>
+            </div>
+        </div>
+        <div class="p-col-12 p-p-0 d-flex flex-column">
+            <p-table [value]="item.listItem|isXoa" styleClass="p-datatable-sm wrap-text p-datatable-striped p-datatable-gridlines">
+                <ng-template pTemplate="colgroup">
+                    <colgroup>
+                        <col style="width:50px">
+                        <col>
+                        <col>
+                        <col>
+                        <col *ngIf="this.type==='bong'">
+                        <col *ngIf="this.type==='bong'">
+                        <col *ngIf="this.type==='bong'">
+                        <col *ngIf="this.type==='bong'">
+                        <col *ngIf="this.type==='bong'">
+                        <col style="width:100px">
+                    </colgroup>
+                </ng-template>
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th rowspan="2">#</th>
+                        <th rowspan="2">Container</th>
+                        <th rowspan="2">Tổng khối lượng (kg)</th>
+                        <th rowspan="2">Số kiện (kiện)</th>
+                        <th *ngIf="this.type==='bong'" colspan="2">Số kiện ngắn (kiện)</th>
+                        <th *ngIf="this.type==='bong'" colspan="2">Số kiện dài (kiện)</th>
+                        <th *ngIf="this.type==='bong'" rowspan="2">Vị trí</th>
+                        <th rowspan="2"></th>
+                    </tr>
+                    <tr *ngIf="this.type==='bong'">
+                        <th class="text-center">Số kiện</th>
+                        <th class="text-center">Tổng khối lượng (kg)</th>
+                        <th class="text-center">Số kiện</th>
+                        <th class="text-center">Tổng khối lượng (kg)</th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-item let-i="rowIndex">
+                    <tr>
+                        <td class="text-center">{{i+1}}</td>
+                        <td class="text-center">
+                            <input pInputText type="text" [(ngModel)]="item.Ten">
+                        </td>
+                        <td class="text-center">
+                            <p-inputNumber [minFractionDigits]="2" locale="en-EN" [(ngModel)]="item.SoCan">
+                            </p-inputNumber>
+                        </td>
+                        <td class="text-center">
+                            <p-inputNumber [minFractionDigits]="0" locale="en-EN" [(ngModel)]="item.SoKien">
+                            </p-inputNumber>
+                        </td>
+                        <td class="text-center" *ngIf="this.type==='bong'">
+                            <p-inputNumber [minFractionDigits]="0" locale="en-EN" [(ngModel)]="item.SoKienNgan" [max]="item.SoKien" (ngModelChange)="TinhSoKienNgan(item)">
+                            </p-inputNumber>
+                        </td>
+                        <td class="text-center" *ngIf="this.type==='bong'">
+                            <p-inputNumber [minFractionDigits]="2" locale="en-EN" [(ngModel)]="item.SoCanNgan" [max]="item.SoCan" (ngModelChange)="TinhSoCanNgan(item)">
+                            </p-inputNumber>
+                        </td>
+                        <td class="text-center" *ngIf="this.type==='bong'">
+                            <p-inputNumber [minFractionDigits]="0" locale="en-EN" [(ngModel)]="item.SoKienDai" [max]="item.SoKien" (ngModelChange)="TinhSoKienDai(item)">
+                            </p-inputNumber>
+                        </td>
+                        <td class="text-center" *ngIf="this.type==='bong'">
+                            <p-inputNumber [minFractionDigits]="2" locale="en-EN" [(ngModel)]="item.SoCanDai" [max]="item.SoCan" (ngModelChange)="TinhSoCanDai(item)">
+                            </p-inputNumber>
+                        </td>
+                        <td class="text-center" *ngIf="this.type==='bong'">
+                            <p-dropdown [filter]="true" [options]="listdmViTri" placeholder="Chọn vị trí" styleClass="p-inputtext-sm" [(ngModel)]="item.IddmViTri"></p-dropdown>
+                        </td>
+                        <!-- <td class="text-center">
+                            <p-dropdown [filter]="true" [options]="listKho" placeholder="Chọn kho" styleClass="p-inputtext-sm"
+                                    [(ngModel)]="item.IddmKho"></p-dropdown>
+                        </td> -->
+                        <td>
+                            <button pButton pRipple icon="pi pi-trash" class="p-button-sm p-button-rounded p-button-secondary p-button-text p-mr-2" (click)="delete(i)" pTooltip="Xóa" showDelay="1000" tooltipPosition="bottom"></button>
+                        </td>
+                    </tr>
+
+                </ng-template>
+                <ng-template pTemplate="footer" *ngIf="opt!=='modal'">
+                    <tr>
+                        <td>
+                        </td>
+                        <td>
+                            <input pInputText type="text" [(ngModel)]="newTableItem.Ten">
+                        </td>
+                        <td>
+                            <div class="p-inputgroup">
+                                <p-inputNumber [minFractionDigits]="2" locale="en-EN" [(ngModel)]="newTableItem.SoCan">
+                                </p-inputNumber>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="p-inputgroup">
+                                <p-inputNumber [minFractionDigits]="0" locale="en-EN" [(ngModel)]="newTableItem.SoKien" [min]="0">
+                                </p-inputNumber>
+                            </div>
+                        </td>
+                        <td *ngIf="this.type==='bong'">
+                            <div class="p-inputgroup">
+                                <p-inputNumber [minFractionDigits]="0" locale="en-EN" [(ngModel)]="newTableItem.SoKienNgan" (ngModelChange)="TinhSoKienNgan(newTableItem)" [min]="0">
+                                </p-inputNumber>
+                            </div>
+                        </td>
+                        <td *ngIf="this.type==='bong'">
+                            <div class="p-inputgroup">
+                                <p-inputNumber [minFractionDigits]="0" locale="en-EN" [(ngModel)]="newTableItem.SoCanNgan" (ngModelChange)="TinhSoCanNgan(newTableItem)" [min]="0">
+                                </p-inputNumber>
+                            </div>
+                        </td>
+                        <td *ngIf="this.type==='bong'">
+                            <div class="p-inputgroup">
+                                <p-inputNumber [minFractionDigits]="0" locale="en-EN" [(ngModel)]="newTableItem.SoKienDai" (ngModelChange)="TinhSoKienDai(newTableItem)" [min]="0">
+                                </p-inputNumber>
+                            </div>
+                        </td>
+                        <td *ngIf="this.type==='bong'">
+                            <div class="p-inputgroup">
+                                <p-inputNumber [minFractionDigits]="0" locale="en-EN" [(ngModel)]="newTableItem.SoCanDai" (ngModelChange)="TinhSoCanDai(newTableItem)" [min]="0">
+                                </p-inputNumber>
+                            </div>
+                        </td>
+                        <td *ngIf="this.type==='bong'">
+                            <p-dropdown [filter]="true" [options]="listdmViTri" placeholder="Chọn vị trí" styleClass="p-inputtext-sm" [(ngModel)]="newTableItem.IddmViTri"></p-dropdown>
+                        </td>
+                        <!-- <td class="text-center">
+                            <p-dropdown [filter]="true" [options]="listKho" placeholder="Chọn kho" styleClass="p-inputtext-sm"
+                                    [(ngModel)]="newTableItem.IddmKho"></p-dropdown>
+                        </td> -->
+                        <td class="text-center">
+                            <button pButton pRipple type="button" icon="pi pi-plus" class="p-button-rounded p-button-sm " (click)="add()"></button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td class="text-right">
+                            {{item.listItem|isXoa|SumByKey:'SoCan'|number:'0.2-2'}}
+                        </td>
+                        <td class="text-right">
+                            {{item.listItem|isXoa|SumByKey:'SoKien'|number:'0.0'}}
+                        </td>
+                        <td class="text-right" *ngIf="this.type==='bong'">
+                            {{item.listItem|isXoa|SumByKey:'SoKienNgan'|number:'0.0'}}
+                        </td>
+                        <td class="text-right" *ngIf="this.type==='bong'">
+                            {{item.listItem|isXoa|SumByKey:'SoCanNgan'|number:'0.0'}}
+                        </td>
+                        <td class="text-right" *ngIf="this.type==='bong'">
+                            {{item.listItem|isXoa|SumByKey:'SoKienDai'|number:'0.0'}}
+                        </td>
+                        <td class="text-right" *ngIf="this.type==='bong'">
+                            {{item.listItem|isXoa|SumByKey:'SoCanDai'|number:'0.0'}}
+                        </td>
+                        <td *ngIf="this.type==='bong'"></td>
+                        <td></td>
+                    </tr>
+                </ng-template>
+                <!-- <ng-template pTemplate="footer">
+                    
+                </ng-template> -->
+            </p-table>
+        </div>
+    </div>
+</div>
+<div class="modal-footer">
+    <!-- <button pButton pRipple label="Chấp nhận" class="p-button-sm p-mr-2" (click)="accept()"></button>
+    <button pButton pRipple label="Thoát" class="p-button-sm p-button-outlined p-button-secondary p-mr-2"
+        (click)="activeModal.dismiss()"></button> -->
+</div>

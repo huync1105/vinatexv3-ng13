@@ -1,0 +1,218 @@
+<div class="modal-header">
+  <h5 class="modal-title">Tính doanh thu kế hoạch:{{item.SoQuyTrinh}} - {{item.TenKeHoach}} - {{item.Nam}}</h5>
+  <div class="d-flex flex-column flex-lg-row">
+    <!-- <div>
+        <span style="font-weight: bold;">Số phiếu:</span> <span>{{item.SoQuyTrinh}}</span>
+      </div>
+      <div class="ml-lg-3 mr-lg-3">
+        <span style="font-weight: bold;">TG Tạo:</span>
+      </div>
+      <div>
+        <span style="font-weight: bold;">TG Duyệt:</span>
+      </div> -->
+  </div>
+</div>
+<div class="modal-body">
+  <div class="p-d-flex p-flex-row p-jc-between">
+    <div class="modal-bt p-mb-4">
+      <button pButton pRipple type="button" label="Quay lại" class="p-mr-2 p-button-sm"
+        (click)="activeModal.dismiss('close')"></button>
+      <button pButton *ngIf="checkbutton.Ghi" pRipple type="button" label="Lưu nháp" class="p-mr-2 p-button-sm "
+        (click)="GhiLai()"></button>
+      <!-- <button pButton *ngIf="checkbutton.ChuyenTiep" pRipple type="button" label="Chấp nhận" class="p-mr-2 p-button-sm "
+          (click)="ChapNhan()"></button>
+        <button pButton *ngIf="checkbutton.KhongDuyet" pRipple type="button" label="Không duyệt"
+          class="p-mr-2 p-button-sm " (click)="KhongDuyet()"></button>
+        <button pButton *ngIf="item.isKetThuc" pRipple type="button" label="Điều chỉnh kế hoạch"
+          class="p-mr-2 p-button-sm" (click)="DieuChinhKeHoach()"></button>
+          <button pButton pRipple type="button" label="Danh mục đơn giá" class="p-mr-2 p-button-sm"
+              (click)="DanhMucDonGia()"></button>
+            <button pButton pRipple type="button" label="Tính doanh thu" class="p-mr-2 p-button-sm"
+              (click)="TinhDoanhThu()"></button> -->
+    </div>
+
+  </div>
+  <div class="p-d-flex p-flex-row">
+    <div class="p-col-12 p-p-0 pintable-container" style="height: 77vh;" voiPintable [pinnedCols]="1">
+      <table>
+        <thead>
+          <tr>
+            <th class="tc-w-260" rowspan="2">Sản phẩm</th>
+            <th class="tc-w-260" rowspan="2">Tổng doanh thu</th>
+            <th *ngFor="let thang of propThang;let i = index" colspan="4" class="tc-w-400">Tháng {{i+1}}</th>
+          </tr>
+          <tr>
+            <ng-container *ngFor="let thang of propThang">
+              <th class="tc-w-100">Tổng SL theo KHKD</th>
+              <th class="tc-w-100">Sản lượng đã tính doanh thu</th>
+              <th class="tc-w-140">DoanhThu</th>
+              <th class="tc-w-60"></th>
+            </ng-container>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="tc-w-260 text-center" style="background-color: white;">
+              Tổng
+            </td>
+            <td class="tc-w-260 text-center" style="background-color: white;">
+              {{TongDoanhThuNam|number:'0.0-2'}}
+            </td>
+            <ng-container *ngFor="let thang of propThang">
+              <td class="tc-w-100 text-right">
+              <td class="tc-w-100 text-right"></td>
+              <td class="tc-w-140 text-right"></td>
+              <td class="tc-w-60 text-center"></td>
+            </ng-container>
+          </tr>
+          <tr *ngFor="let sanpham of item.lstSanPham">
+            <td class="tc-w-260 text-center" style="background-color: white;">
+              {{sanpham.TenSanPham}}
+            </td>
+            <td class="tc-w-260 text-center" style="background-color: white;">
+              {{sanpham.TongDoanhThuNamSanPham|number:'0.0-2'}}
+            </td>
+            <ng-container *ngFor="let thang of sanpham.lstDoanhThuSanPhamThang;let i=index">
+              <td class="tc-w-100 text-right">
+                {{thang.TongSanLuongTheoKeHoach|number:'0.0-2'}}</td>
+              <td class="tc-w-100 text-right">{{thang.TongSanLuong|number:'0.0-2'}}</td>
+              <td class="tc-w-140 text-right">{{thang.TongDoanhThu|number:'0.0-2'}}</td>
+              <td class="tc-w-60 text-center"><a href="javascript:void(0)"
+                  (click)="ChiTietSanPhamThang(thang,sanpham)">Chi tiết</a></td>
+            </ng-container>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <p-dialog [header]="headerChiTietModal" [(visible)]="showChiTietThang" [modal]="true" [closable]='false'
+    [style]="{width: '70vw', height:'auto',border:'1px solid #ccc'}" [contentStyle]="{height:'60vh'}"
+    [baseZIndex]="10000" [draggable]="false" [resizable]="false" (onHide)="cleanForm()" [closeOnEscape]="false">
+    <div class="p-d-flex p-flex-row" style="padding-bottom: 1rem;">
+      <button pButton pRipple type="button" label="Quay lại" class="p-mr-2 p-button-sm " (click)="QuayLai()"></button>
+      <button pButton pRipple type="button" label="Lưu" class="p-mr-5 p-button-sm " (click)="GhiLai()"></button>
+      <div class="p-d-flex p-flex-row">
+        <div style="width: 150px;">
+          <p-multiSelect [options]="listThang" [(ngModel)]="thangApDung" [maxSelectedLabels]="8"
+            [selectedItemsLabel]="'Đã chọn {0} tháng'" defaultLabel="Chọn tháng">
+          </p-multiSelect>
+        </div>
+        <button pButton pRipple type="button" label="Áp dụng" class="p-mr-2 p-button-sm " (click)="ApDung()"></button>
+      </div>
+    </div>
+    <div>
+      <div class="p-mr-3">
+        Tổng sản lượng theo kế hoạch:<b>{{itemChiTietThang.TongSanLuongTheoKeHoach|number:'0.0-2'}} tấn</b>
+      </div>
+      <div class="p-mr-3">
+        Tổng sản lượng:<b>{{itemChiTietThang.TongSanLuong|number:'0.0-2'}} tấn</b>
+      </div>
+      <div>
+        Tổng sản lượng doanh thu:<b>{{itemChiTietThang.TongDoanhThu|number:'0.0-2'}} VNĐ</b>
+      </div>
+    </div>
+    <p-table [value]="itemChiTietThang.lstDoanhThuSanPhamThang" styleClass="p-datatable-gridlines p-datatable-sm">
+      <ng-template pTemplate="header">
+        <tr>
+          <th>Số lượng</th>
+          <th>Chọn giá</th>
+          <th>Giá</th>
+          <th>Tỷ giá</th>
+          <th>Doanh Thu</th>
+          <th style="width: 90px;"></th>
+        </tr>
+        <tr>
+          <td>
+            <p-inputNumber [disabled]="false" [minFractionDigits]="0" locale="en-EN"
+              [(ngModel)]="newDoanhThuChiTiet.SanLuong" (onBlur)="tinhDoanhThu(newDoanhThuChiTiet)">
+            </p-inputNumber>
+          </td>
+          <td class="text-center">
+            <div
+              style="height:40px;display: flex;flex-direction: column;justify-content: flex-end; padding-bottom: 2px;">
+              <div>
+                <p-dropdown [filter]="true" [options]="listGia" placeholder="Chọn giá"
+                  [(ngModel)]="newDoanhThuChiTiet.IdGiaSanPham" (onChange)="changeGia($event,newDoanhThuChiTiet)"
+                  styleClass="p-inputtext-sm">
+                </p-dropdown>
+              </div>
+            </div>
+          </td>
+          <td class="text-center">
+            <div class="p-inputgroup">
+              <p-inputNumber [disabled]="true" [minFractionDigits]="0" locale="en-EN"
+                [(ngModel)]="newDoanhThuChiTiet.Gia" (onBlur)="tinhDoanhThu(newDoanhThuChiTiet)">
+              </p-inputNumber>
+              <span class="p-inputgroup-addon">{{newDoanhThuChiTiet.MadmTienTe}}</span>
+            </div>
+          </td>
+          <td class="text-center">
+            <p-inputNumber [disabled]="true" [minFractionDigits]="0" locale="en-EN"
+              [(ngModel)]="newDoanhThuChiTiet.TyGia" (onBlur)="tinhDoanhThu(newDoanhThuChiTiet)">
+            </p-inputNumber>
+          </td>
+          <td class="text-center">
+            <p-inputNumber [disabled]="true" [minFractionDigits]="0" locale="en-EN"
+              [(ngModel)]="newDoanhThuChiTiet.DoanhThu">
+            </p-inputNumber>
+          </td>
+          <td class="text-center"><button pButton pRipple icon="pi pi-plus"
+              class="p-button-sm p-button-rounded p-button-secondary p-button-text"
+              (click)="ThemDoanhThuChiTiet()"></button></td>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-item let-i="rowIndex">
+        <!-- <tr>
+          <td style="width: 60px;" class="text-right">{{i+1}}</td>
+          <td class="text-right">{{item.ThoiGianKetThucHopDong|date:'dd/MM/yyyy'}}</td>
+          <td class="text-right">{{item.TenHopDong}}</td>
+          <td class="text-right">{{item.TenHopDong}}</td>
+          <td class="text-right">{{item.GhiChu}}</td>
+          <td class="text-center"><button *ngIf="!item.IdHopDong" pButton pRipple icon="pi pi-trash"
+              class="p-button-sm p-button-rounded p-button-secondary p-button-text"
+              (click)="XoaDoanhThuChiTiet(i)"></button></td>
+        </tr> -->
+        <tr>
+          <td>
+            <p-inputNumber [disabled]="false" [minFractionDigits]="0" locale="en-EN" [(ngModel)]="item.SanLuong"
+              (onBlur)="tinhDoanhThu(item)">
+            </p-inputNumber>
+          </td>
+          <td class="text-center">
+            <div
+              style="height:40px;display: flex;flex-direction: column;justify-content: flex-end; padding-bottom: 2px;">
+              <div>
+                <p-dropdown [filter]="true" [options]="listGia" placeholder="Chọn giá" [(ngModel)]="item.IdGiaSanPham"
+                  (onChange)="changeGia($event,item)" styleClass="p-inputtext-sm">
+                </p-dropdown>
+              </div>
+            </div>
+          </td>
+          <td class="text-center">
+            <div class="p-inputgroup">
+              <p-inputNumber [disabled]="true" [minFractionDigits]="0" locale="en-EN" [(ngModel)]="item.Gia"
+                (onBlur)="tinhDoanhThu(item)">
+              </p-inputNumber>
+              <span class="p-inputgroup-addon">{{item.MadmTienTe}}</span>
+            </div>
+          </td>
+          <td class="text-center">
+            <p-inputNumber [disabled]="true" [minFractionDigits]="0" locale="en-EN" [(ngModel)]="item.TyGia"
+              (onBlur)="tinhDoanhThu(item)">
+            </p-inputNumber>
+          </td>
+          <td class="text-center">
+            <p-inputNumber [disabled]="true" [minFractionDigits]="0" locale="en-EN" [(ngModel)]="item.DoanhThu">
+            </p-inputNumber>
+          </td>
+          <td class="text-center"><button pButton pRipple icon="pi pi-trash"
+              class="p-button-sm p-button-rounded p-button-secondary p-button-text"
+              (click)="XoaDoanhThuChiTiet(i)"></button></td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </p-dialog>
+</div>
+<div class="modal-footer">
+
+</div>

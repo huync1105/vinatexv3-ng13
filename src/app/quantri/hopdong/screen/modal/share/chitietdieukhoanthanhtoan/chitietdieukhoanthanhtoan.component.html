@@ -1,0 +1,59 @@
+<div class="p-d-flex p-ai-center p-jc-start p-mb-3 ">
+    <button pButton pRipple label="Thêm mới" (click)="add()" icon="pi pi-plus" class="p-button-sm p-mr-2"></button>
+    <div></div>
+</div>
+<div class="p-mt-3">
+    <p-table [value]="listDieuKhoanThanhToan | isXoa" styleClass="p-datatable-sm p-datatable-striped" [scrollable]="true">
+        <ng-template pTemplate="colgroup">
+            <colgroup>
+                <col style="width: 50px" />
+
+                <col style="width: 100px" />
+                <col style="width: 100px" />
+                <col style="width: 100px" />
+                <col style="width: 100px" />
+                <col style="width: 100px" />
+                <col style="width: 100px" />
+
+
+            </colgroup>
+        </ng-template>
+        <ng-template pTemplate="header">
+            <tr>
+                <th class="text-center">#</th>
+                <th class="text-center"> Loại thanh toán </th>
+                <th class="text-center">Nội dung thanh toán </th>
+                <th class="text-center">Ngày thanh toán</th>
+                <th class="text-center">Giá trị thanh toán</th>
+                <th class="text-center">Phần trăm thanh toán</th>
+                <th></th>
+
+            </tr>
+
+        </ng-template>
+        <ng-template pTemplate="body" let-item let-i="rowIndex">
+            <tr>
+                <td class="text-center"> {{ 20 * (paging.CurrentPage - 1) + i + 1 }} </td>
+                <td class="text-center">{{item.tenLoaiThanhToan}}</td>
+
+                <td class="text-center">{{item.noiDung}}</td>
+
+                <td class="text-center">{{item.ngayThanhToan|date:'dd/MM/yyyy'}}</td>
+                <td class="text-center">{{item.giaTri|number:'0.0'}}</td>
+                <td class="text-center">{{item.tyLe|number:'0.0'}}</td>
+                <td class="text-center date">
+                    <button pButton pRipple type="button" icon="pi pi-pencil" class="p-button-text p-button-sm p-button-secondary p-mr-2" (click)="edit(item, i)"></button>
+                    <button pButton pRipple type="button" icon="pi pi-trash" class="p-button-text p-button-sm p-button-secondary" (click)="delete(i)"></button>
+                </td>
+            </tr>
+
+        </ng-template>
+        <ng-template pTemplate="summary">
+            <div class="p-d-flex p-ai-center">
+
+                <!--p-jc-between <p-paginator [totalRecords]="paging.TotalItem" [rows]="10"
+                        (onPageChange)="changePage($event)"></p-paginator> -->
+            </div>
+        </ng-template>
+    </p-table>
+</div>

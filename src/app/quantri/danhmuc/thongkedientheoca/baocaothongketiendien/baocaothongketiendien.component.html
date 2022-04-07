@@ -1,0 +1,147 @@
+<div class="p-d-flex p-ai-center p-jc-between p-mb-3">
+    <div class=" d-flex flex-column flex-lg-row p-ai-center p-jc-between p-col-12">
+        <div class="p-mr-2">
+            <h4 style="color:#1f2779">Thống kê tiền điện</h4>
+        </div>
+    </div>
+</div>
+<div class="p-d-flex p-ai-center p-jc-between p-mb-3">
+    <div class=" d-flex flex-column flex-lg-row p-ai-center p-jc-between p-col-12">
+        <div></div>
+        <div class="d-flex flex-column flex-lg-row">
+            <p-button styleClass="p-button-sm p-mr-2" label="Xuất báo cáo" icon="fas fa-file-excel"
+                                                (click)="xuatBaoCaoTienDien()"></p-button>
+            <div style="width:200px; margin-right:10px ;">
+                <div class="p-col-12 p-p-0">
+                    <p-dropdown [filter]="true" [options]="listdmPhanXuong"
+                        styleClass="p-inputtext-sm" [(ngModel)]="filter.IddmPhanXuong" (onChange)="GetListQuyTrinhFull()"></p-dropdown>
+                </div>
+            </div>
+            <div style="width:200px; margin-right:10px ;">
+                <div class="p-col-12 p-p-0">
+                    <p-dropdown [filter]="true" [options]="listThang"
+                        styleClass="p-inputtext-sm" [(ngModel)]="filter.nThang" (onChange)="GetListQuyTrinhThang()"></p-dropdown>
+                </div>
+            </div>
+            <div style="width:200px; margin-right:10px ;">
+                <div class="p-col-12 p-p-0">
+                    <p-dropdown [filter]="true" [options]="listNam"
+                        styleClass="p-inputtext-sm" [(ngModel)]="filter.nNam" (onChange)="GetListQuyTrinhThang()"></p-dropdown>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+<div class="p-grid">
+    <div class="p-col-12">
+        <p-table [value]="itemThangs" styleClass="p-datatable-sm p-datatable-striped p-datatable-gridlines">
+            <ng-template pTemplate="header">
+                <tr>
+                    <th class="text-center" colspan="2" *ngFor="let col of listKhungGio">{{col.Ten}}</th>
+                    <th rowspan="2">Tổng kWh/ ngày</th>
+                    <th rowspan="2">Tổng tiền điện/ ngày</th>
+                </tr>
+                <tr>
+                    <ng-container *ngFor="let col of listKhungGio">
+                        <th class="text-center">kWh</th>
+                        <th class="text-center">Tiền điện</th>
+                    </ng-container>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-item let-i="rowIndex">
+                <tr>
+                    <ng-container *ngFor="let col of item.listItem">
+                        <td class="text-right">
+                            {{col.TongSoDien|number:'0.0-2'}}
+                        </td>
+                        <td class="text-right">
+                            {{col.TongTienDien|number:'0.0-2'}}
+                        </td>
+                    </ng-container>
+                    <td class="text-right">
+                        {{item.TongSoDien|number:'0.0-2'}}
+                    </td>
+                    <td class="text-right">
+                        {{item.TongTienDien|number:'0.0-2'}}
+                    </td>
+                </tr>
+            </ng-template>
+        </p-table>
+    </div>
+</div>
+<div class="p-d-flex p-ai-center p-jc-between p-mb-3">
+    <div class=" d-flex flex-column flex-lg-row p-ai-center p-jc-between p-col-12">
+        <div></div>
+        <div class="d-flex flex-column flex-lg-row">
+            <div class="p-mr-2">
+                <p-calendar dateFormat="dd/mm/yy" inputStyleClass="p-inputtext-sm" [showIcon]="true"
+                    [(ngModel)]="filter.TuNgay" inputId="icon" placeholder="Từ ngày" (onSelect)="GetListQuyTrinh()">
+                </p-calendar>
+            </div>
+            <div class="p-mr-2">
+                <p-calendar dateFormat="dd/mm/yy" inputStyleClass="p-inputtext-sm" [showIcon]="true"
+                    [(ngModel)]="filter.DenNgay" inputId="icon" placeholder="Đến ngày" (onSelect)="GetListQuyTrinh()">
+                </p-calendar>
+            </div>
+        </div>
+    </div>
+
+</div>
+<div class="p-grid">
+    <div class="p-col-12">
+        <p-table [value]="items" styleClass="p-datatable-sm p-datatable-striped p-datatable-gridlines">
+            <!-- <ng-template pTemplate="colgroup">
+                <colgroup>
+                    <col style="width:10rem">
+                    <col style="width:10rem">
+                    <col style="width:10rem">
+                    <col style="width:10rem">
+                    <col style="width:10rem">
+                    <col style="width: 5rem;">
+                </colgroup>
+            </ng-template> -->
+            <ng-template pTemplate="header">
+                <tr>
+                    <th class="text-center" rowspan="2">Ngày</th>
+                    <th class="text-center" colspan="2" *ngFor="let col of listKhungGio">{{col.Ten}}</th>
+                    <th rowspan="2">Tổng kWh/ ngày</th>
+                    <th rowspan="2">Tổng tiền điện/ ngày</th>
+                    <th rowspan="2"></th>
+                </tr>
+                <tr>
+                    <ng-container *ngFor="let col of listKhungGio">
+                        <th class="text-center">kWh</th>
+                        <th class="text-center">Tiền điện</th>
+                    </ng-container>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-item let-i="rowIndex">
+                <tr>
+                    <td class="text-center">
+                        {{item.NgayNhap| date:'dd/MM/yyyy'}}
+                    </td>
+                    <ng-container *ngFor="let col of item.listItem">
+                        <td class="text-right">
+                            {{col.TongSoDien|number:'0.0-2'}}
+                        </td>
+                        <td class="text-right">
+                            {{col.TongTienDien|number:'0.0-2'}}
+                        </td>
+                    </ng-container>
+                    <td class="text-right">
+                        {{item.TongSoDien|number:'0.0-2'}}
+                    </td>
+                    <td class="text-right">
+                        {{item.TongTienDien|number:'0.0-2'}}
+                    </td>
+                    <td class="text-center">
+                        <button pButton pRipple type="button" icon="pi pi-eye"
+                            class="p-button-text p-button-sm p-button-secondary p-mr-2"
+                            (click)="GetBaoCao(item)"></button>
+                    </td>
+                </tr>
+            </ng-template>
+        </p-table>
+    </div>
+</div>

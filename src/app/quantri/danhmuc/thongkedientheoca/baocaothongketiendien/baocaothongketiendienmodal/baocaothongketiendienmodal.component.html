@@ -1,0 +1,48 @@
+<div class="modal-header">
+    <h4 style="color:#1f2779">Chi tiết ngày {{NgayNhap |date:'dd/MM/yyyy'}}</h4>
+</div>
+<div class="modal-body">
+    <div class="p-d-flex p-ai-center p-jc-between p-mb-3">
+        <div class="modal-bt p-mb-4 ">
+            <button pButton pRipple type="button" label="Quay lại" class="p-mr-2 p-button-sm"
+            (click)="activeModal.dismiss('Cross click')"></button>
+        </div>
+    </div>
+    <p-table [value]="items" styleClass="p-datatable-sm wrap-text p-datatable-striped p-datatable-gridlines">
+        <ng-template pTemplate="header">
+            <tr>
+                <th class="text-center" rowspan="2">Tên máy</th>
+                <th class="text-center" colspan="2" *ngFor="let col of listKhungGio">{{col.Ten}}</th>
+                <th rowspan="2">Tổng kWh/ ngày</th>
+                <th rowspan="2">Tổng tiền điện/ ngày</th>
+            </tr>
+            <tr>
+                <ng-container *ngFor="let col of listKhungGio">
+                    <th class="text-center">kWh</th>
+                    <th class="text-center">Tiền điện</th>
+                </ng-container>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body"  let-item let-i="rowIndex">
+            <tr>
+                <td class="text-left">
+                    {{(item.TendmCongTo)}}
+                </td>
+                <ng-container *ngFor="let col of item.listItem">
+                    <td class="text-right">
+                        {{col.TongSoDien|number:'0.0-2'}}
+                    </td>
+                    <td class="text-right">
+                        {{col.TongTienDien|number:'0.0-2'}}
+                    </td>
+                </ng-container>
+                <td class="text-right">
+                    {{item.TongSoDien|number:'0.0-2'}}
+                </td>
+                <td class="text-right">
+                    {{item.TongTienDien|number:'0.0-2'}}
+                </td>
+            </tr>
+        </ng-template>
+    </p-table>
+</div>

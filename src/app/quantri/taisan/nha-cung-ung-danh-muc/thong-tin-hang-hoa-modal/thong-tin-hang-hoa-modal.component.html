@@ -1,0 +1,66 @@
+
+<div class="modal-header">
+  <h5 class="modal-title">Lựa chọn hàng hóa</h5>
+</div>
+
+<div class="modal-body">
+  <div class="p-d-flex p-ai-center p-jc-between p-mb-3">
+    <div></div>
+    <div class="p-inputgroup" style="width: 200px;">
+      <input type="text" placeholder="Tìm kiếm" class="p-inputtext-sm" pInputText [(ngModel)]="filter.keyWord" (keyup.enter)="GetListHangHoa(true)"/>
+      <button type="button" pButton pRipple icon="pi pi-search"
+          class="p-button-secondary p-button-sm p-button-text" (click)="GetListHangHoa(true)"></button>
+      <button type="button" pButton pRipple icon="pi pi-refresh"
+          class="p-button-secondary p-button-sm p-button-text" (click)="ResetFilter()"></button>
+  </div>
+  </div>
+  <div>
+    <p-table [value]="items" styleClass="p-datatable-sm p-datatable-gridlines">
+      <ng-template pTemplate="colgroup">
+        <colgroup>
+          <col style="width: 50px">
+          <col>
+          <col>
+          <col>
+          <col>
+          <col>
+        </colgroup>
+      </ng-template>
+      <ng-template pTemplate="header">
+        <tr>
+          <th>
+            <p-checkbox [(ngModel)]="checkedAll" binary="true" inputId="binary" (onChange)="CheckAllHangHoa()"></p-checkbox>
+          </th>
+          <th>Mã</th>
+          <th>Tên</th>
+          <th>Nguyên giá</th>
+          <th>Giá trị còn lại</th>
+          <th>Ghi chú</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body"  let-item let-i="rowIndex">
+        <tr>
+          <td class="text-center">
+            <p-checkbox [(ngModel)]="item.checked" binary="true" inputId="binary"></p-checkbox>
+          </td>
+          <td class="text-center">{{item.Ma}}</td>
+          <td>{{item.Ten}}</td>
+          <td class="text-right"></td>
+          <td class="text-right"></td>
+          <td></td>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="summary">
+        <div class="p-d-flex p-ai-center p-jc-between"> Tổng số bản ghi {{paging.totalCount}}.
+            <p-paginator #paginator [totalRecords]="paging.totalCount" [rows]="20" (onPageChange)="changePage($event)">
+            </p-paginator>
+        </div>
+    </ng-template>
+    </p-table>
+  </div>
+
+  <div class="p-d-flex p-ai-center p-jc-between p-mt-3">
+    <button pButton pRipple type="button" label="Đóng" class="p-button-outlined" (click)="activeModal.dismiss()"></button>
+    <p-button label="Chấp nhận" class="p-button-sm" (click)="SelectHangHoa()"></p-button>
+  </div>
+</div>

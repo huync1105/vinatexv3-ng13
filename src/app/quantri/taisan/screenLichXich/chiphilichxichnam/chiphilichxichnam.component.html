@@ -1,0 +1,56 @@
+<div class="p-d-flex p-flex-row p-jc-end p-grid flex-d">
+    <div class="modal-bt p-mb-4 p-col-12 p-lg-2  p-p-3 d-flex flex-column flex-lg-row">
+        <label class="p-col-12 p-lg-4 p-p-0 my-auto"> </label>
+        <div class="p-col-12 p-lg-8 p-p-0">
+            Tổng số:thiết bị
+        </div>
+    </div>
+</div>
+<p-table  styleClass="p-datatable-sm wrap-text p-datatable-striped">
+    <ng-template pTemplate="colgroup">
+        <colgroup>
+            <col style="width:100px">
+            <col style="width:50px">
+            <col style="width:50px">
+            <col style="width:50px">
+            <col style="width:50px">
+            <col style="width:50px">
+            <col style="width:50px">
+            <col style="width:50px">
+            <col style="width:50px">
+            <col style="width:50px">
+            <col style="width:50px">
+            <col style="width:50px">
+            <col style="width:50px">
+        </colgroup>
+    </ng-template>
+    <ng-template pTemplate="header">
+        <tr>
+            <th class="text-center">Tài sản/vật tư</th>
+            <th class="text-center">Tháng 1</th>
+            <th class="text-center">Tháng 2</th>
+            <th class="text-center">Tháng 3</th>
+            <th class="text-center">Tháng 4</th> 
+            <th class="text-center">Tháng 5</th>
+            <th class="text-center">Tháng 6</th>
+            <th class="text-center">Tháng 7</th>
+            <th class="text-center">Tháng 8</th>
+            <th class="text-center">Tháng 9</th>
+            <th class="text-center">Tháng 10</th>
+            <th class="text-center">Tháng 11</th>
+            <th class="text-center">Tháng 12</th>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="body" >
+        <tr>
+           <!-- <td class="text-center"> {{item.TenTaiSan}}</td>
+            <td class="text-center" *ngFor="let baoduong of item.listBaoDuong"
+                (click)="Chon(baoduong,item.listLichBaoDuong)">
+                <p *ngFor="let bd of baoduong.listChiTiet"
+                >{{bd.TendmLoaiBaoDuong}}</p>
+                <a href="javascript:void(0)">Chọn</a>
+            </td> -->
+        </tr> 
+    </ng-template>
+</p-table>
+

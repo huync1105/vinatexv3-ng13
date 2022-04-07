@@ -1,0 +1,116 @@
+<div class="p-mb-3 p-mt-3">
+    <h4 style="color:#1f2779">Danh sách tài sản</h4>
+</div>
+<div class="p-d-flex p-ai-center p-jc-between p-mb-3">
+    <!-- <button pButton lab el="Thêm mới" icon="pi pi-plus" class="p-button-sm p-mr-2" (click)="add()"
+        *ngIf="checkQuyen.ThemMoi"></button> -->
+        
+        
+    <div></div>
+    <div class="p-d-flex p-flex-row">
+        <div class="p-mr-2">
+            <div class="p-field-checkbox">
+                <p-checkbox [binary]="true"  value="" (onChange)="Loaddata(true)" [(ngModel)]="filter.isGiaTriCao" ></p-checkbox>
+                <label for="">Giá trị cao</label>
+            </div>
+        </div>
+        <div class="p-mr-2">
+            <div class="p-field-checkbox">
+                <p-checkbox [binary]="true"  value="" (onChange)="Loaddata(true)" [(ngModel)]="filter.isCanDuTru" ></p-checkbox>
+                <label for="">Cần dự trữ</label>
+            </div>
+        </div>
+        <div class="p-mr-2">
+            <p-dropdown [filter]="true" [options]="listPhanXuong" placeholder="Chọn bộ phận sử dụng " [(ngModel)]="filter.IdBoPhanSuDung"
+                styleClass="p-inputtext-sm" (onChange)="Loaddata(true)" [showClear]="true" [filter]="true"></p-dropdown>
+        </div>
+        <div class="p-mr-2">
+            <p-dropdown [filter]="true" [options]="listLoaiTaiSan" placeholder="Chọn loại tài sản " [(ngModel)]="filter.IddmLoaiTaiSan"
+                styleClass="p-inputtext-sm" (onChange)="Loaddata(true)" [showClear]="true" [filter]="true"></p-dropdown>
+        </div>
+        <div class="p-mr-2">
+            <p-calendar dateFormat="dd/mm/yy" inputStyleClass="p-inputtext-sm" [showIcon]="true"
+                [(ngModel)]="filter.TuNgay" inputId="icon" placeholder="Từ ngày" (onSelect)="Loaddata(true)">
+            </p-calendar>
+        </div>
+        <div class="p-mr-2">
+            <p-calendar dateFormat="dd/mm/yy" inputStyleClass="p-inputtext-sm" [showIcon]="true"
+                [(ngModel)]="filter.DenNgay" inputId="icon" placeholder="Đến ngày" (onSelect)="Loaddata(true)">
+            </p-calendar>
+        </div>
+        <div class="p-inputgroup" style="width: 200px;">
+            <input type="text" placeholder="Tìm kiếm" class="p-inputtext-sm" pInputText (keyup.enter)="Loaddata(true)"
+                [(ngModel)]="Keyword" />
+            <button type="button" pButton pRipple icon="pi pi-search"
+                class="p-button-secondary p-button-sm p-button-text" (click)="Loaddata(true)"></button>
+            <button type="button" pButton pRipple icon="pi pi-refresh"
+                class="p-button-secondary p-button-sm p-button-text" (click)="resetFilter()"></button>
+        </div>
+    </div>
+</div>
+<p-tabView (onChange)="changeTab($event)" styleClass="no-content">
+    <p-tabPanel header="Tổng hợp"></p-tabPanel>
+    <p-tabPanel header="Đến hạn"></p-tabPanel>
+    <p-tabPanel header="Quá hạn"></p-tabPanel>
+</p-tabView>
+<p-treeTable [value]="items" styleClass="p-treetable p-treetable-caption MY-tree-table-class">
+    <ng-template pTemplate="colgroup">
+        <colgroup>
+            <!-- <col style="width:50px"> -->
+            <col style="width:200px">
+            <col>
+            <col>
+            <col>
+            <col>
+            <col>
+            <col>
+            <col>
+            <col>  
+        </colgroup>
+    </ng-template>
+    <ng-template pTemplate="header" let-columns>
+        <tr>
+            <!-- <th class="text-center" rowspan="2">STT</th> -->
+            <th class="text-center" rowspan="2">Mã</th>
+            <th class="text-center" rowspan="2">Tên</th>
+            <th class="text-center" rowspan="2">Loại tài sản</th>
+            <th class="text-center" rowspan="2">Hãng sản xuất</th>
+            <th class="text-center" rowspan="2">Nguyên giá</th>
+            <th class="text-center" rowspan="2">Giá trị còn lại</th>
+            <th class="text-center" rowspan="2">Ngày đưa vào sử dụng</th>
+            <th class="text-center" rowspan="2">Tình trạng</th>              
+            <th class="text-center" rowspan="2">Thao tác</th>                
+        </tr>
+        <!-- <tr>              
+            <th class="text-center">Năm</th>
+            <th class="text-center">Tháng</th>                
+        </tr> -->
+    </ng-template>
+    <ng-template pTemplate="body" let-rowNode let-rowData="rowData">
+        <tr>
+            <td>
+                <p-treeTableToggler [rowNode]="rowNode"></p-treeTableToggler> {{rowData.Ma}}
+              
+            </td>
+            <td class="text-center">{{rowData.Ten}}</td>
+            <td class="text-center">{{rowData.TendmLoaiTaiSan}}</td>
+            <td class="text-center">{{rowData.HangSanXuat}}</td>
+            <!-- <td class="text-center">{{rowData.TendmPhanXuong}}</td> -->
+            <td class="text-center">{{rowData.NguyenGia|number:'0.0'}}</td>
+            <td class="text-center">{{rowData.GiaTriConLai|number:'0.0'}}</td>   
+            <td class="text-center">{{rowData.ThoiGianSuDung| date:'dd/MM/yyyy'}}</td>    
+            <td class="text-center">{{rowData.TrangThai}}</td>     
+            <td class="text-center">
+                <button pButton pRipple type="button" icon="pi pi-bars" class="p-button-text p-button-sm p-button-secondary p-mr-2" pTooltip="Xem Thông tin tài sản" (click)="ChiTietThongTin(rowData)"></button>
+                <!-- <button pButton pRipple type="button" icon="pi pi-pencil" class="p-button-text p-button-sm p-button-secondary p-mr-2" pTooltip="Chỉnh sửa" (click)="edit(rowData)"></button>
+                <button pButton pRipple type="button" icon="pi pi-trash" class="p-button-text p-button-sm p-button-secondary p-mr-2" pTooltip="Xóa" (click)="delte(rowData)"></button> -->
+            </td>            
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="summary">
+        <div class="p-d-flex p-ai-center p-jc-between">
+            Tổng số bản ghi {{paging.TotalCount}}.<p-paginator #paginator [totalRecords]="paging.TotalCount"
+            [rows]="20" (onPageChange)="changePage($event)"></p-paginator>
+        </div>
+    </ng-template>
+</p-treeTable>

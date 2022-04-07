@@ -1,0 +1,250 @@
+<div class="modal-header">
+    <h5 class="modal-title">Kế hoạch sản xuất năm</h5>
+    <!-- <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button> -->
+    <!-- <span class="p-button-sm p-button-sm p-button-text close" aria-hidden="true"
+        (click)="this.activeModal.dismiss()">×</span>  -->
+    <div class="d-flex flex-column flex-lg-row">
+      <div>
+        <span style="font-weight: bold;">Số phiếu:</span> <span>{{item.SoQuyTrinh}}</span>
+      </div>
+      <div class="ml-lg-3 mr-lg-3">
+        <span style="font-weight: bold;">TG Tạo:</span>
+      </div>
+      <div>
+        <span style="font-weight: bold;">TG Duyệt:</span>
+      </div>
+    </div>
+  </div>
+  <div class="modal-body">
+    <div class="p-d-flex p-flex-row p-jc-between">
+      <div class="modal-bt p-mb-4">
+        <button pButton pRipple type="button" label="Quay lại" class="p-mr-2 p-button-sm"
+          (click)="activeModal.dismiss('close')"></button>
+        <button pButton *ngIf="checkbutton.Ghi" pRipple type="button" label="Lưu nháp" class="p-mr-2 p-button-sm "
+          (click)="GhiLai()"></button>
+        <button pButton *ngIf="checkbutton.ChuyenTiep" pRipple type="button" label="Chấp nhận" class="p-mr-2 p-button-sm "
+          (click)="ChapNhan()"></button>
+        <button pButton *ngIf="checkbutton.KhongDuyet" pRipple type="button" label="Không duyệt"
+          class="p-mr-2 p-button-sm " (click)="KhongDuyet()"></button>
+          <button pButton *ngIf="item.isKetThuc" pRipple type="button" label="Điều chỉnh kế hoạch"
+          class="p-mr-2 p-button-sm" (click)="DieuChinhKeHoach()"></button>
+          
+      </div>
+    </div>
+    <p-panel header="Thông tin chung">
+      <div class="p-col-12 p-0">
+        <div class="p-grid">
+          <div class="p-col-12 p-lg-6 p-p-3 d-flex flex-column flex-lg-row">
+            <label class="p-col-12 p-lg-3 p-p-0 my-auto">Tên kế hoạch: </label>
+            <div class="p-col-12 p-lg-9 p-p-0">
+              <input type="text" class="p-inputtext-sm" [(ngModel)]="item.TenKeHoach" pInputText />
+            </div>
+          </div>
+          <div class="p-col-12 p-lg-6 p-p-3 d-flex flex-column flex-lg-row">
+            <label class="p-col-12 p-lg-3 p-p-0 my-auto">Kế hoạch kinh doanh:</label>
+            <div class="p-col-12 p-lg-9 p-p-0">
+              <p-dropdown [filter]="true" [options]="listKeHoachKinhDoanh" placeholder="Chọn kế hoạch kinh doanh" [(ngModel)]="item.IdKeHoachKinhDoanh" (onChange)="getData()"
+                styleClass="p-inputtext-sm">
+              </p-dropdown>
+            </div>
+          </div>
+          <div class="p-col-12 p-lg-6 p-p-3 d-flex flex-column flex-lg-row">
+            <label class="p-col-12 p-lg-3 p-p-0 my-auto">Nhà máy:</label>
+            <div class="p-col-12 p-lg-9 p-p-0">
+              <p-dropdown [filter]="true" [options]="listNhaMay" placeholder="Chọn nhà máy" [(ngModel)]="item.IdDuAn"
+              (onChange)="getData()" styleClass="p-inputtext-sm">
+              </p-dropdown>
+            </div>
+          </div>
+          <div class="p-col-12 p-lg-6 p-p-3 d-flex flex-column flex-lg-row">
+            <label class="p-col-12 p-lg-3 p-p-0 my-auto">Năm kế hoạch :</label>
+            <div class="p-col-12 p-lg-9 p-p-0">
+              <input type="text" class="p-inputtext-sm text-right" [(ngModel)]="item.Nam" pInputText  disabled/>
+            </div>
+          </div>
+          <div class="p-col-12 p-lg-6 p-p-3 d-flex flex-column flex-lg-row">
+            <label class="p-col-12 p-lg-3 p-p-0 my-auto">Người lập: </label>
+            <div class="p-col-12 p-lg-9 p-p-0">
+              {{item.TenNguoiLap}}
+            </div>
+          </div>
+          <div class="p-col-12 p-lg-6 p-p-3 d-flex flex-column flex-lg-row">
+            <label class="p-col-12 p-lg-3 p-p-0 my-auto">Ngày lập: </label>
+            <div class="p-col-12 p-lg-9 p-p-0">
+              <p-calendar dateFormat="dd/mm/yy" inputStyleClass="p-inputtext-sm" [monthNavigator]="true" [locale]="lang"
+                [yearNavigator]="true" [yearRange]="yearRange" [showIcon]="true" inputId="icon" [(ngModel)]="item.NgayLap"
+                placeholder="dd/mm/yyyy">
+              </p-calendar>
+            </div>
+          </div>
+          <div class="p-col-12 p-lg-6 p-p-3 d-flex flex-column flex-lg-row">
+            <label class="p-col-12 p-lg-3 p-p-0 my-auto">Nội dung: </label>
+            <div class="p-col-12 p-lg-9 p-p-0">
+              <input type="text" class="p-inputtext-sm" [(ngModel)]="item.NoiDung" pInputText />
+            </div>
+          </div>
+          <div class="p-col-12 p-lg-6 p-p-3 d-flex flex-column flex-lg-row">
+            <label class="p-col-12 p-lg-3 p-p-0 my-auto">Ghi chú: </label>
+            <div class="p-col-12 p-lg-9 p-p-0">
+              <input type="text" class="p-inputtext-sm" [(ngModel)]="item.GhiChu" pInputText />
+            </div>
+          </div>
+          <div class="p-col-12 p-lg-6 p-p-3 d-flex flex-column flex-lg-row" *ngIf="item.isDieuChinhKeHoach">
+            <label class="p-col-12 p-lg-3 p-p-0 my-auto">Người điều chỉnh: </label>
+            <div class="p-col-12 p-lg-9 p-p-0">
+              {{userInfo.TenNhanVien}}
+            </div>
+          </div>
+          <div class="p-col-12 p-lg-6 p-p-3 d-flex flex-column flex-lg-row" *ngIf="item.isDieuChinhKeHoach">
+            <label class="p-col-12 p-lg-3 p-p-0 my-auto">Ngày điều chỉnh: </label>
+            <div class="p-col-12 p-lg-9 p-p-0">
+              <p-calendar dateFormat="dd/mm/yy" inputStyleClass="p-inputtext-sm" [monthNavigator]="true" [locale]="lang"
+                [yearNavigator]="true" [yearRange]="yearRange" [showIcon]="true" inputId="icon"
+                [(ngModel)]="item.NgayDieuChinh" placeholder="dd/mm/yyyy">
+              </p-calendar>
+            </div>
+          </div>
+          <div class="p-col-12 p-lg-6 p-p-3 d-flex flex-column flex-lg-row" *ngIf="item.isDieuChinhKeHoach">
+            <label class="p-col-12 p-lg-3 p-p-0 my-auto">Số phiếu gốc: </label>
+            <div class="p-col-12 p-lg-9 p-p-0">
+              {{item.SoQuyTrinhGoc}}
+            </div>
+          </div>
+          <div class="p-col-12 p-lg-6 p-p-3 d-flex flex-column flex-lg-row" *ngIf="item.isDieuChinhKeHoach">
+            <label class="p-col-12 p-lg-3 p-p-0 my-auto">Tên kế hoạch gốc: </label>
+            <div class="p-col-12 p-lg-9 p-p-0">
+              {{item.TenKeHoachKinhDoanhGoc}}
+            </div>
+          </div>
+        </div>
+      </div>
+    </p-panel>
+    <p-panel header="Danh sách sản phẩm">
+      <div class="p-col-12 p-p-0 pintable-container" style="height: 77vh;" voiPintable [pinnedCols]="1">
+        <table>
+          <thead>
+            <tr>
+              <th class="tc-w-200">Sản phẩm</th>
+              <th class="tc-w-121">Tổng kế hoạch kinh doanh</th>
+              <th class="tc-w-121">Tổng kế hoạch sản xuất</th>
+              <th class="tc-w-200">Phân xưởng</th>
+              <th *ngFor="let label of labelThang" class="tc-w-100">{{label}}</th>
+            </tr>
+          </thead>
+          <tbody>
+            <ng-container *ngFor="let sanPham of item.lstKeHoachSanXuatNam_SanPham;let i = index">
+              <tr>
+                <td class="text-center tc-w-200" style="background-color: white;z-index: 999">
+                      {{sanPham.TenSanPham}}
+                </td>
+                <td class="text-center tc-w-121">
+                  <p-inputNumber [disabled]="true" [minFractionDigits]="0" locale="en-EN" [(ngModel)]="sanPham.TongKeHoach">
+                  </p-inputNumber>
+                </td>
+                <td class="text-center tc-w-121">
+                  <p-inputNumber [disabled]="true" [minFractionDigits]="0" locale="en-EN" [(ngModel)]="sanPham.SoLuongDaLapKeHoach">
+                  </p-inputNumber>
+                </td>
+                <td class="text-center tc-w-200">
+                  <!-- <p-multiSelect [options]="listNhaMay" [(ngModel)]="item.selectedNhaMay" (onChange)="changeNhaMay(item)"
+                    defaultLabel="Chọn nhà máy"></p-multiSelect> -->
+                </td>
+                <td class="text-center tc-w-100" *ngFor="let prop of propThang">
+                  <p-inputNumber [disabled]="true" [minFractionDigits]="0" locale="en-EN" [ngModel]="sanPham[prop]">
+                  </p-inputNumber>
+                </td>
+              </tr>
+              <tr *ngFor="let phanXuong of sanPham.lstKH_KeHoachSanXuat_SanPham_PhanXuong">
+                <td class="text-center tc-w-200" style="background-color: white;z-index: 999">
+                </td>
+                <td class="text-center tc-w-121">
+                  <!-- <p-inputNumber [minFractionDigits]="0" [disabled]="true" locale="en-EN"
+                    [ngModel]="phanXuong.SoLuongDaLapKeHoach">
+                  </p-inputNumber> -->
+                </td>
+                <td class="text-center tc-w-121">
+                  <p-inputNumber [minFractionDigits]="0" [disabled]="true" locale="en-EN"
+                    [ngModel]="phanXuong.SoLuongDaLapKeHoach">
+                  </p-inputNumber>
+                </td>
+                <td class="text-center tc-w-200">
+                  {{phanXuong.TenPhanXuong}}
+                </td>
+                <td class="text-center tc-w-100" *ngFor="let prop of propThang">
+                  <p-inputNumber [minFractionDigits]="0" locale="en-EN" (onBlur)="TinhSoLuongDaLapKeHoach(phanXuong,sanPham)"
+                    [(ngModel)]="phanXuong[prop]">
+                  </p-inputNumber>
+                </td>
+              </tr>
+              <tr>
+                <td class="text-center tc-w-200" style="background-color: white; z-index: 999"></td>
+                <td class="text-center tc-w-121"></td>
+                <td class="text-center tc-w-121"></td>
+                <td class="text-center tc-w-200"></td>
+                <td class="text-center tc-w-100" *ngFor="let prop of propThang">
+                  <p-inputNumber [minFractionDigits]="0" locale="en-EN" [disabled]="true"
+                    [(ngModel)]="sanPham.SanXuat[prop]">
+                  </p-inputNumber>
+                </td>
+              </tr>
+            </ng-container>
+            <tr *ngFor="let dummy of dummyList" style="height: 40px;">
+              <td class="tc-w-200" style="background-color: white;"></td>
+              <td class="tc-w-121"></td>
+              <td class="tc-w-121"></td>
+              <td class="tc-w-200"></td>
+              <td *ngFor="let label of labelThang" class="tc-w-100">
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <!-- <p-dialog [header]="'Thời gian hợp đồng'" [(visible)]="showThoiGianHopDong" [modal]="true"
+        [style]="{width: '50vw', height:'auto',border:'1px solid #ccc'}" [contentStyle]="{height:'60vh'}" [baseZIndex]="10000" [draggable]="false"
+        [resizable]="false">
+        <p-table [value]="lstThoiGianCurrent" styleClass="p-datatable-gridlines p-datatable-sm">
+          <ng-template pTemplate="header">
+            <tr>
+              <th style="width: 60px;">STT</th>
+              <th>Ngày</th>
+              <th>Hợp đồng</th>
+              <th>Ghi chú</th>
+              <th style="width: 90px;"></th>
+            </tr>
+            <tr>
+              <td style="width: 60px;" class="text-center">#</td>
+              <td class="text-center">
+                <p-calendar dateFormat="dd/mm/yy" inputStyleClass="p-inputtext-sm" [monthNavigator]="true" [locale]="lang"
+                  [yearNavigator]="true" [yearRange]="yearRange" [showIcon]="true" inputId="icon"
+                  [(ngModel)]="newHopDong.ThoiGianKetThucHopDong" placeholder="dd/mm/yyyy">
+                </p-calendar>
+              </td>
+              <td class="text-center">
+                <input type="text" class="p-inputtext-sm" [(ngModel)]="newHopDong.TenHopDong" pInputText />
+              </td>
+              <td class="text-center"><input type="text" class="p-inputtext-sm" [(ngModel)]="newHopDong.GhiChu" pInputText /></td>
+              <td class="text-center"><button pButton pRipple icon="pi pi-plus"
+                  class="p-button-sm p-button-rounded p-button-secondary p-button-text"
+                  (click)="ThemThoiGianHopDong()"></button></td>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-item let-i="rowIndex">
+            <tr>
+              <td style="width: 60px;" class="text-center">{{i+1}}</td>
+              <td class="text-center">{{item.ThoiGianKetThucHopDong|date:'dd/MM/yyyy'}}</td>
+              <td class="text-center">{{item.TenHopDong}}</td>
+              <td class="text-center">{{item.GhiChu}}</td>
+              <td class="text-center"><button *ngIf="!item.IdHopDong" pButton pRipple icon="pi pi-trash"
+                  class="p-button-sm p-button-rounded p-button-secondary p-button-text"
+                  (click)="XoaThoiGianHopDong(i)"></button></td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </p-dialog> -->
+    </p-panel>
+  </div>
+  <div class="modal-footer">
+  
+  </div>

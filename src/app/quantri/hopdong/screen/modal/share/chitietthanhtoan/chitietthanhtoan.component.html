@@ -1,0 +1,35 @@
+<div class="p-mt-3">
+    <p-table styleClass="p-datatable-sm p-datatable-striped p-datatable-gridlines" 
+    [scrollable]="true" [value]="listThanhToan">
+    <ng-template pTemplate="colgroup">
+        <colgroup>
+            <col style="width:50px">
+            <col>
+            <col>
+            <col>
+        </colgroup>
+    </ng-template>
+        <ng-template pTemplate="header">
+            <tr>
+                <th class="text-center">STT</th>
+                <th>Đợt thanh toán </th>
+                <th>Ngày thanh toán</th>
+                <th>Giá trị </th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-item let-i="rowIndex">
+            <tr [ngStyle]="{'background-color': item.isQuaHan ?'#f5d3ce':''}">
+                <td class="text-center"> {{ 20 * (paging.CurrentPage - 1) + i + 1 }} </td>
+                <td class="text-left"><a href="javascript:void(0)" (click)="viewThanhToan(item)">{{item.noiDung}}</a></td>
+                <td class="text-center">{{item.ngayThanhToan|date:'dd/MM/yyyy'}}</td>
+                <td class="text-right">{{item.giaTriThanhToan|number:'0.0-2'}}</td>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="summary">
+            <!-- <div class="p-d-flex p-ai-center p-jc-between">
+                Tổng số bản ghi {{paging.TotalItem}}.<p-paginator #paginator [totalRecords]="paging.TotalItem"
+                    [rows]="20" (onPageChange)="changePage($event)"></p-paginator>
+            </div> -->
+        </ng-template>
+    </p-table>
+</div>

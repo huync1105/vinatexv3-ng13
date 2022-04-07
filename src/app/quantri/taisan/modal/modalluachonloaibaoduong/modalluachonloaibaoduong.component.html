@@ -1,0 +1,60 @@
+<div class="modal-header">
+    <h5 class="modal-title">Lựa chọn loại bảo dưỡng</h5>
+</div>
+<div class="modal-body">
+    <div class="p-d-flex p-flex-row p-jc-between">
+        <div class="modal-bt p-mb-4 ">
+            <button pButton pRipple type="button" label="Quay lại" class="p-mr-2 p-button-sm"
+                (click)="activeModal.dismiss('close')"></button>
+            <button pButton pRipple type="button" label="Chấp nhận" class="p-mr-2 p-button-sm "
+                (click)="GhiLai()"></button>
+        </div>
+    </div>
+    <p-table [value]="items" styleClass="p-datatable-sm wrap-text p-datatable-striped">
+        <ng-template pTemplate="colgroup">
+            <colgroup>
+                <col style="width:50px">
+                <col>
+                <col>
+                <col>
+                <col>
+                <col>
+                <col>
+            </colgroup>
+        </ng-template>
+        <ng-template pTemplate="header" let-columns>
+
+            <tr>
+                <th class="text-center">
+                    <p-checkbox [(ngModel)]="checkedAll" binary="true" inputId="binaryall"
+                        (onChange)="checkAll($event)"></p-checkbox>
+                </th>
+                <th class="text-center">Mã</th>
+                <th class="text-center">Loại bảo dưỡng</th>
+                <th class="text-center">Theo thời gian</th>
+                <th class="text-center">Theo năng suất</th>
+                <th class="text-center">Nội dung</th>
+                <th class="text-center">Thời gian và số người thực hiện</th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-item let-i="rowIndex">
+            <tr>
+                <td class="text-center">
+                    <p-checkbox [(ngModel)]="item.checked" binary="true" inputId="binary" (onChange)="checked()">
+                    </p-checkbox>
+                </td>
+                <td class="text-center">
+                    {{item.MadmLoaiBaoDuong}}
+                </td>
+                <td class="text-center"> {{item.MadmLoaiBaoDuong}}</td>
+                <td class="text-center"> {{item.TendmLoaiBaoDuong}}</td>
+                <td class="text-center"> {{item.MadmLoaiBaoDuong}}</td>
+                <td class="text-center"> {{item.MadmLoaiBaoDuong}}</td>
+                <td class="text-center"> {{item.MadmLoaiBaoDuong}}</td>
+            </tr>
+        </ng-template>
+    </p-table>
+</div>
+<div class="modal-footer">
+
+</div>

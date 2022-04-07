@@ -1,0 +1,48 @@
+<div class="modal-header">
+    <h5 class="modal-title">{{opt==='add'?'Thêm mới':'Cập nhật'}} chi số triển khai</h5>
+    <button *ngIf="false" type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+<div class="modal-body">
+    <div class="p-grid">
+        <div class="p-col-12 flex-column flex-lg-row d-flex">
+            <label class="p-col-12 p-lg-2 p-p-0 my-auto">Chi số Ne từ</label>
+            <div class="p-col-12 p-lg-10 p-p-0">
+                <div class="p-inputgroup">
+                    <p-inputNumber [minFractionDigits]="2" locale="en-EN" [(ngModel)]="item.Tu">
+                    </p-inputNumber>
+                </div>
+            </div>
+        </div>
+        <div class="p-col-12 flex-column flex-lg-row d-flex">
+            <label class="p-col-12 p-lg-2 p-p-0 my-auto">Cho số Ne đến</label>
+            <div class="p-col-12 p-lg-10 p-p-0">
+                <div class="p-inputgroup">
+                    <p-inputNumber [minFractionDigits]="2" locale="en-EN" [(ngModel)]="item.Den">
+                    </p-inputNumber>
+                </div>
+            </div>
+        </div>
+        <div class="p-col-12 flex-column flex-lg-row d-flex">
+            <label class="p-col-12 p-lg-2 p-p-0 my-auto">Mặt hàng</label>
+            <div class="p-col-12 p-lg-10 p-p-0">
+                <p-dropdown [options]="listMatHang" placeholder="Chọn mặt hàng" styleClass="p-inputtext-sm" [filter]="true"
+                    [(ngModel)]="item.IddmItem" [showClear]="true"></p-dropdown>
+            </div>
+        </div>
+        <div class="p-col-12 flex-column flex-lg-row d-flex">
+            <label class="p-col-12 p-lg-2 p-p-0 my-auto">Chi số thô</label>
+            <div class="p-col-12 p-lg-10 p-p-0">
+                <div class="p-inputgroup">
+                    <p-inputNumber [minFractionDigits]="2" locale="en-EN" [(ngModel)]="item.ChiSo">
+                    </p-inputNumber>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal-footer">
+    <button pButton pRipple label="Chấp nhận" class="p-button-sm p-mr-2" (click)="accept()" [disabled]="khongclicknhieu"></button>
+    <button pButton pRipple label="Thoát" class="p-button-sm p-button-outlined p-button-secondary p-mr-2" (click)="activeModal.dismiss()"></button>
+</div>

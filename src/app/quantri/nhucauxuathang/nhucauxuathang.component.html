@@ -1,0 +1,406 @@
+<!-- <p-chart type="bar" [data]=monthlyConfig></p-chart> -->
+<div class="p-d-flex p-ai-center p-jc-between">
+    <div class="p-d-flex flex-column flex-lg-row p-pl-3">
+        <div class="p-mr-2">
+            <p-calendar dateFormat="dd/mm/yy" inputStyleClass="p-inputtext-sm" [showIcon]="true"
+                [(ngModel)]="filter._tuNgay" inputId="icon" placeholder="Từ ngày" (onSelect)="ChangeOpt()">
+            </p-calendar>
+        </div>
+        <div class="p-mr-2">
+            <p-calendar dateFormat="dd/mm/yy" inputStyleClass="p-inputtext-sm" [showIcon]="true"
+                [(ngModel)]="filter._denNgay" inputId="icon" placeholder="Đến ngày" (onSelect)="ChangeOpt()">
+            </p-calendar>
+        </div>
+    </div>
+</div>
+<div class="p-grid" style="align-self: stretch;">
+    <div class="p-col-12 p-xl-8 p-lg-8 p-p-3">
+        <div class="chart">
+            <div class="p-d-flex flex-column flex-lg-row p-jc-between">
+                <div>
+                    <h5>
+                        Nhu cầu xuất hàng
+                    </h5>
+                </div>
+                <div class="p-d-flex flex-column flex-lg-row">
+                    <div class="p-mr-2">
+                        <p-dropdown [filter]="true" [options]="listKho" placeholder="Chọn kho"
+                            styleClass="p-inputtext-sm" [(ngModel)]="filter.IddmKho" (onChange)="getMatHang()">
+                        </p-dropdown>
+                    </div>
+                    <div class="p-mr-2">
+                        <p-dropdown [filter]="true" [options]="listMatHang" placeholder="Tổng hợp"
+                            styleClass="p-inputtext-sm" [(ngModel)]="filter.IddmItem" (onChange)="ChangeOpt()">
+                        </p-dropdown>
+                    </div>
+                    <!-- <div style="display:table;height:100%">
+                        <a style="display: table-cell; vertical-align: middle;" href="javascript:void(0)">Cân đối
+                            tồn</a>
+                    </div> -->
+                </div>
+            </div>
+            <p-chart type="line" [data]=dataSet1 [options]="option1"></p-chart>
+        </div>
+    </div>
+
+    <div class="p-col-12 p-xl-4 p-lg-4 p-p-3">
+        <div class="chart text-left">
+            <h5>Cơ cấu mặt hàng theo thực xuất</h5>
+            <p-chart type="pie" [data]="dataPie" [options]='optionPie'></p-chart>
+        </div>
+    </div>
+</div>
+<div class="p-grid" style="align-self: stretch;">
+    <div class="p-col-12 p-p-3">
+        <div class="chart text-left" style="display: flex;flex-direction: column;">
+            <div class="p-d-flex flex-column flex-md-row">
+                <h5 class="p-mb-0 p-mr-2 p-mt-2">
+                    Cân đối tồn
+                </h5>
+                <div class="p-mr-2">
+                    <p-calendar dateFormat="dd/mm/yy" inputStyleClass="p-inputtext-sm" [showIcon]="true"
+                        [(ngModel)]="filterAll._tuNgay" inputId="icon" placeholder="Từ ngày"
+                        (onSelect)="getMatHangAll()">
+                    </p-calendar>
+                </div>
+                <div class="p-mr-2">
+                    <p-calendar dateFormat="dd/mm/yy" inputStyleClass="p-inputtext-sm" [showIcon]="true"
+                        [(ngModel)]="filterAll._denNgay" inputId="icon" placeholder="Đến ngày"
+                        (onSelect)="getMatHangAll()">
+                    </p-calendar>
+                </div>
+                <div class="p-mr-2">
+                    <p-dropdown [filter]="true" [options]="listKhoAll" placeholder="Chọn kho"
+                        styleClass="p-inputtext-sm" [(ngModel)]="filterAll.IddmKho" (onChange)="getMatHangAll()">
+                    </p-dropdown>
+                </div>
+                <div class="p-mr-2">
+                    <p-dropdown [filter]="true" [options]="listMatHangAll" placeholder="Tổng hợp"
+                        styleClass="p-inputtext-sm" [(ngModel)]="filterAll.IddmItem" (onChange)="ChangeOptCanDoiTon()">
+                    </p-dropdown>
+                </div>
+                <div class="p-mr-2" style="display:table;height:100%">
+                    <a style="display: table-cell; vertical-align: middle;" href="javascript:void(0)"
+                        (click)="xemTruySuatNguonGoc()">Truy xuất nguồn gốc</a>
+                </div>
+                <div style="display:table;height:100%">
+                    <a style="display: table-cell; vertical-align: middle;" href="javascript:void(0)"
+                        (click)="XuatBaoCaoCanDoiTon()">Xuất báo cáo</a>
+                </div>
+            </div>
+            <div class="pintable-container" style="height: calc( 50vh - 72.25px );width: 100%;" voiPintable
+                [pinnedCols]="colsNum">
+                <table>
+                    <thead>
+                        <tr>
+                            <th rowspan="2" class="width-35">#</th>
+                            <th rowspan="2" class="width-180">Mặt hàng</th>
+                            <th rowspan="2" class="width-220">Mã</th>
+                            <th rowspan="2" class="width-180">Lô</th>
+                            <th colspan="3">Tồn đầu</th>
+                            <th colspan="3">Nhập trong kỳ</th>
+                            <th colspan="3">Xuất trong kỳ</th>
+                            <th colspan="3">Tồn cuối kỳ</th>
+                        </tr>
+                        <tr>
+                            <th style="display: none;"></th>
+                            <th style="display: none;"></th>
+                            <th style="display: none;"></th>
+                            <th style="display: none;"></th>
+                            <th class="width-180">Số quả sợi</th>
+                            <th class="width-180">Số kiện</th>
+                            <th class="width-180">KL</th>
+                            <th class="width-180">Số quả sợi</th>
+                            <th class="width-180">Số kiện</th>
+                            <th class="width-180">KL</th>
+                            <th class="width-180">Số quả sợi</th>
+                            <th class="width-180">Số kiện</th>
+                            <th class="width-180">KL</th>
+                            <th class="width-180">Số quả sợi</th>
+                            <th class="width-180">Số kiện</th>
+                            <th class="width-180">KL</th>
+                        </tr>
+                        <tr>
+                            <td class="width-35"></td>
+                            <td class="width-180">Tổng</td>
+                            <td class="width-220"></td>
+                            <td class="width-180"></td>
+                            <td class="text-right width-180">{{Tong.DauSoQuaSoi|number:'0.0-0' }}</td>
+                            <td class="text-right width-180">{{Tong.DauSoKien|number:'0.0-0' }}</td>
+                            <td class="text-right width-180">{{Tong.DauSoCan > 0 ? Tong.DauSoCan : 0|number:'0.2-2' }}</td>
+                            <td class="text-right width-180">{{Tong.NhapSoQuaSoi|number:'0.0-0' }}</td>
+                            <td class="text-right width-180">{{Tong.NhapSoKien|number:'0.0-0' }}</td>
+                            <td class="text-right width-180">{{Tong.NhapSoCan > 0 ? Tong.NhapSoCan : 0|number:'0.2-2' }}</td>
+                            <td class="text-right width-180">{{Tong.XuatSoQuaSoi|number:'0.0-0' }}</td>
+                            <td class="text-right width-180">{{Tong.XuatSoKien|number:'0.0-0' }}</td>
+                            <td class="text-right width-180">{{Tong.XuatSoCan > 0 ? Tong.XuatSoCan : 0|number:'0.2-2' }}</td>
+                            <td class="text-right width-180">{{Tong.CuoiSoQuaSoi|number:'0.0-0' }}</td>
+                            <td class="text-right width-180">{{Tong.CuoiSoKien|number:'0.0-0' }}</td>
+                            <td class="text-right width-180">{{Tong.CuoiSoCan > 0 ? Tong.CuoiSoCan : 0|number:'0.2-2' }}</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <ng-container *ngFor="let item of listItem;let i = index">
+                            <tr [ngStyle]="{'font-weight':item.TendmItem !== null?'normal':'bold'}">
+                                <td class="text-center width-35 bg-white">
+                                    <p-checkbox [ngModel]="item.checked" (onChange)="checkMatHang($event,item,i)"
+                                        binary="true" inputId="binary" *ngIf="item.TendmItem!==null"></p-checkbox>
+                                </td>
+                                <td class="width-180 bg-white">
+                                    {{item.TendmItem!==null?item.TendmItem:item.TendmLoaiBong}} </td>
+                                <td class="width-220 bg-white">{{item.TendmItem!==null?item.MadmItem:item.MadmLoaiBong}}
+                                </td>
+                                <td class="width-180 bg-white">{{item.TenLoHang}}</td>
+                                <td class="text-right width-180">{{item.DauSoQuaSoi|number:'0.0-0' }}</td>
+                                <td class="text-right width-180">{{item.DauSoKien|number:'0.0-0' }}</td>
+                                <td class="text-right width-180">{{item.DauSoCan > 0 ? item.DauSoCan : 0|number:'0.2-2' }}</td>
+                                <td class="text-right width-180">{{item.NhapSoQuaSoi|number:'0.0-0' }}</td>
+                                <td class="text-right width-180">{{item.NhapSoKien|number:'0.0-0' }}</td>
+                                <td class="text-right width-180">
+                                    <a href="javascript:void(0)" *ngIf="item.TendmItem!==null"
+                                        (click)="callDataXuatNhap('Nhap', item)"> {{item.NhapSoCan > 0 ? item.NhapSoCan : 0|number:'0.2-2' }}</a>
+                                    <ng-container *ngIf="item.TendmItem===null">{{item.NhapSoCan > 0 ? item.NhapSoCan : 0|number:'0.2-2' }}
+                                    </ng-container>
+                                </td>
+                                <td class="text-right width-180">{{item.XuatSoQuaSoi|number:'0.0-0' }}</td>
+                                <td class="text-right width-180">{{item.XuatSoKien|number:'0.0-0' }}</td>
+                                <td class="text-right width-180">
+                                    <a href="javascript:void(0)" *ngIf="item.TendmItem!==null"
+                                        (click)="callDataXuatNhap('Xuat', item)">{{item.XuatSoCan > 0 ? item.XuatSoCan : 0|number:'0.2-2' }}</a>
+                                    <ng-container *ngIf="item.TendmItem===null">{{item.XuatSoCan > 0 ? item.XuatSoCan : 0|number:'0.2-2' }}
+                                    </ng-container>
+                                </td>
+                                <td class="text-right width-180">{{item.CuoiSoQuaSoi|number:'0.0-0' }}</td>
+                                <td class="text-right width-180">{{item.CuoiSoKien|number:'0.0-0' }}</td>
+                                <td class="text-right width-180">
+                                    {{item.CuoiSoCan > 0 ? item.CuoiSoCan : 0|number:'0.2-2' }}
+                                </td>
+                            </tr>
+                        </ng-container>
+
+                    </tbody>
+                </table>
+
+            </div>
+            <!-- <p-table [value]="listItem" [frozenValue]="Tong"
+                styleClass="p-datatable-sm wrap-text p-datatable-striped p-datatable-gridlines minimize-font"
+                [scrollable]="true" scrollHeight="260px">
+                <ng-template pTemplate="colgroup">
+                    <colgroup>
+                        <col style="width: 35px !important;">
+                        <col style="width:180px">
+                        <col style="width:15rem">
+                        <col style="width:8rem">
+                        <col style="width:6rem">
+                        <col style="width: 6rem;">
+                        <col style="width:8rem">
+                        <col style="width:6rem">
+                        <col style="width: 6rem;">
+                        <col style="width:8rem">
+                        <col style="width:6rem">
+                        <col style="width: 6rem;">
+                        <col style="width:8rem">
+                        <col style="width:6rem">
+                        <col style="width: 6rem;">
+                        <col style="width:8rem">
+                    </colgroup>
+                </ng-template>
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th  rowspan="2">#</th>
+                        <th rowspan="2">Mặt hàng</th>
+                        <th rowspan="2">Mã</th>
+                        <th rowspan="2">Lô</th>
+                        <th colspan="3">Tồn đầu</th>
+                        <th colspan="3">Nhập trong kỳ</th>
+                        <th colspan="3">Xuất trong kỳ</th>
+                        <th colspan="3">Tồn cuối kỳ</th>
+                    </tr>
+                    <tr>
+                        <th>Số quả sợi</th>
+                        <th>Số kiện</th>
+                        <th>KL</th>
+                        <th>Số quả sợi</th>
+                        <th>Số kiện</th>
+                        <th>KL</th>
+                        <th>Số quả sợi</th>
+                        <th>Số kiện</th>
+                        <th>KL</th>
+                        <th>Số quả sợi</th>
+                        <th>Số kiện</th>
+                        <th>KL</th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-item let-i="rowIndex">
+                    <tr [ngClass]="{'p-text-bold': item.TendmItem===null}">
+                        <td class="text-center" style="width: 35px !important;">
+                            <p-checkbox [ngModel]="item.checked" (onChange)="checkMatHang($event,item,i)" binary="true"
+                                inputId="binary" *ngIf="item.TendmItem!==null"></p-checkbox>
+                        </td>
+                        <td>{{item.TendmItem!==null?item.TendmItem:item.TendmLoaiBong}} </td>
+                        <td>{{item.TendmItem!==null?item.MadmItem:item.MadmLoaiBong}} </td>
+                        <td>{{item.TenLoHang}}</td>
+                        <td class="text-right">{{item.DauSoQuaSoi|number:'0.0-0' }}</td>
+                        <td class="text-right">{{item.DauSoKien|number:'0.0-0' }}</td>
+                        <td class="text-right">{{item.DauSoCan|number:'0.2-2' }}</td>
+                        <td class="text-right">{{item.NhapSoQuaSoi|number:'0.0-0' }}</td>
+                        <td class="text-right">{{item.NhapSoKien|number:'0.0-0' }}</td>
+                        <td class="text-right">
+                            <a href="javascript:void(0)" *ngIf="item.TendmItem!==null"
+                                (click)="callDataXuatNhap('Nhap', item)"> {{item.NhapSoCan|number:'0.2-2' }}</a>
+                            <ng-container *ngIf="item.TendmItem===null">{{item.NhapSoCan|number:'0.2-2' }}
+                            </ng-container>
+                        </td>
+                        <td class="text-right">{{item.XuatSoQuaSoi|number:'0.0-0' }}</td>
+                        <td class="text-right">{{item.XuatSoKien|number:'0.0-0' }}</td>
+                        <td class="text-right">
+                            <a href="javascript:void(0)" *ngIf="item.TendmItem!==null"
+                                (click)="callDataXuatNhap('Xuat', item)">{{item.XuatSoCan|number:'0.2-2' }}</a>
+                            <ng-container *ngIf="item.TendmItem===null">{{item.XuatSoCan|number:'0.2-2' }}
+                            </ng-container>
+                        </td>
+                        <td class="text-right">{{item.CuoiSoQuaSoi|number:'0.0-0' }}</td>
+                        <td class="text-right">{{item.CuoiSoKien|number:'0.0-0' }}</td>
+                        <td class="text-right">{{item.CuoiSoCan|number:'0.2-2' }}</td>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="frozenrows" let-item let-i="rowIndex">
+                    <tr [ngClass]="{'p-text-bold': item.TendmItem===null}">
+                        <td class="text-center" style="width: 35px !important;">
+                            <p-checkbox [ngModel]="item.checked" (onChange)="checkMatHang($event,item,i)" binary="true"
+                                inputId="binary" *ngIf="item.TendmItem!==null"></p-checkbox>
+                        </td>
+                        <td>{{item.TendmItem!==null?item.TendmItem:item.TendmLoaiBong}} </td>
+                        <td>{{item.TendmItem!==null?item.MadmItem:item.MadmLoaiBong}} </td>
+                        <td>{{item.TenLoHang}}</td>
+                        <td class="text-right">{{item.DauSoQuaSoi|number:'0.0-0' }}</td>
+                        <td class="text-right">{{item.DauSoKien|number:'0.0-0' }}</td>
+                        <td class="text-right">{{item.DauSoCan|number:'0.2-2' }}</td>
+                        <td class="text-right">{{item.NhapSoQuaSoi|number:'0.0-0' }}</td>
+                        <td class="text-right">{{item.NhapSoKien|number:'0.0-0' }}</td>
+                        <td class="text-right">
+                            <a href="javascript:void(0)" *ngIf="item.TendmItem!==null"
+                                (click)="callDataXuatNhap('Nhap', item)"> {{item.NhapSoCan|number:'0.2-2' }}</a>
+                            <ng-container *ngIf="item.TendmItem===null">{{item.NhapSoCan|number:'0.2-2' }}
+                            </ng-container>
+                        </td>
+                        <td class="text-right">{{item.XuatSoQuaSoi|number:'0.0-0' }}</td>
+                        <td class="text-right">{{item.XuatSoKien|number:'0.0-0' }}</td>
+                        <td class="text-right">
+                            <a href="javascript:void(0)" *ngIf="item.TendmItem!==null"
+                                (click)="callDataXuatNhap('Xuat', item)">{{item.XuatSoCan|number:'0.2-2' }}</a>
+                            <ng-container *ngIf="item.TendmItem===null">{{item.XuatSoCan|number:'0.2-2' }}
+                            </ng-container>
+                        </td>
+                        <td class="text-right">{{item.CuoiSoQuaSoi|number:'0.0-0' }}</td>
+                        <td class="text-right">{{item.CuoiSoKien|number:'0.0-0' }}</td>
+                        <td class="text-right">{{item.CuoiSoCan|number:'0.2-2' }}</td>
+                    </tr>
+                </ng-template>
+            </p-table> -->
+        </div>
+    </div>
+</div>
+<p-dialog [header]="SelectItem.TendmItem" [(visible)]="showTruySuatNguonGoc" [modal]="true" [style]="{width: '85vw'}"
+    [baseZIndex]="10000" [draggable]="false" [resizable]="false">
+    <p-table [value]="listTruySuatNguonGoc" styleClass="p-datatable-sm p-datatable-gridlines wrap-text"
+        [scrollable]="true" scrollHeight="500px">
+        <ng-template pTemplate="colgroup">
+            <colgroup>
+                <!-- <col style="width:50px"> -->
+                <col style="width:50px">
+                <col style="width: 7rem;">
+                <col style="width: 10rem;">
+                <col>
+                <col>
+                <col>
+            </colgroup>
+        </ng-template>
+        <ng-template pTemplate="header">
+            <tr class="normal">
+                <th style="width: 50px !important;">STT</th>
+                <th>Số lô</th>
+                <th>Số HĐ</th>
+                <th>Ngày xuất hàng</th>
+                <th>Kế hoạch giao</th>
+                <th>Kế hoạch triển khai</th>
+                <th>Phương án pha bông</th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-item let-i="rowIndex">
+            <tr>
+                <td class="text-center" style="width: 50px !important;">{{i+1}}</td>
+                <td>{{item.TenLoHang}}</td>
+                <td>{{item.HopDong}}</td>
+                <td class="text-center">{{item.Ngay|date:"dd/MM/yyyy"}}</td>
+                <td>
+                    <a [href]="item.herfgiaokehoachsanxuat" target="_blank">{{item.TenGiaoKeHoach}}</a>
+                </td>
+                <td>
+                    <a [href]="item.herftrienkhaikehoachsanxuat" target="_blank">{{item.TenTrienKhaiKeHoach}}</a>
+                </td>
+                <td>
+                    <a [href]="item.herfphabong" target="_blank">{{item.TenPhuongAnPhaBong}}</a>
+                </td>
+            </tr>
+        </ng-template>
+    </p-table>
+</p-dialog>
+<p-dialog [header]="selectedXuatNhap.Ten" [(visible)]="showXuatNhap" [modal]="true" [style]="{width: '85vw'}"
+    [baseZIndex]="10000" [draggable]="false" [resizable]="false">
+    <p-table [value]="listXuatNhap" styleClass="p-datatable-sm p-datatable-gridlines wrap-text" [scrollable]="true"
+        scrollHeight="500px">
+        <ng-template pTemplate="colgroup">
+            <colgroup>
+                <!-- <col style="width:50px"> -->
+                <col style="width:50px">
+                <col>
+                <col>
+                <col>
+                <col>
+            </colgroup>
+        </ng-template>
+        <ng-template pTemplate="header">
+            <tr class="normal">
+                <th style="width: 50px !important;">STT</th>
+                <th>Số phiếu {{selectedXuatNhap.TenOpt| lowercase}}</th>
+                <th>Số phiếu kiểm kê</th>
+                <th>Ngày</th>
+                <th>Số quả sợi</th>
+                <th>Số kiện</th>
+                <th>Trọng lượng(kg)</th>
+                <th>Tên kho</th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-item let-i="rowIndex">
+            <tr>
+                <td class="text-center" style="width: 50px !important;">{{i+1}}</td>
+                <td><a href="javascript:void(0)" (click)="navigateXuatNhap(item)">{{item[selectedXuatNhap.field]}}</a>
+                </td>
+                <td><a href="javascript:void(0)" (click)="navigateKiemKe(item)">{{item.SoPhieuKiemKe}}</a></td>
+                <td class="text-center">{{item.Ngay|date:'dd/MM/yyyy'}}</td>
+                <td class="text-right">{{item.SoLuong|number:'0.0-0'}}</td>
+                <td class="text-right">{{item.SoKien|number:'0.2-2'}}</td>
+                <td class="text-right">
+                    {{item.TongTrongLuong|number:'0.2-2'}}
+                    <!-- <a [href]="item.herfgiaokehoachsanxuat" target="_blank">{{item.TenGiaoKeHoach}}</a> -->
+                </td>
+                <td>
+                    {{item.TendmKho}}
+                </td>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="footer">
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td class="text-right">{{listXuatNhap|SumByKey:'SoLuong'|number:'0.0-0'}}</td>
+                <td class="text-right">{{listXuatNhap|SumByKey:'SoKien'|number:'0.2-2'}}</td>
+                <td class="text-right">{{listXuatNhap|SumByKey:'TongTrongLuong'|number:'0.2-2'}}</td>
+                <td></td>
+            </tr>
+        </ng-template>
+    </p-table>
+</p-dialog>

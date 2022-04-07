@@ -1,0 +1,75 @@
+<div class="p-mb-3 p-mt-3">
+  <h4 style="color:#1f2779">Danh mục nhóm nhà cung ứng</h4>
+</div>
+
+<!-- toolbar -->
+<div class="p-d-flex p-ai-center p-jc-between p-mb-3">
+  <!-- button container -->
+  <div>
+    <p-button label="Thêm mới" class="p-mr-2" (click)="AddNhomCungUng()"></p-button>
+    <p-button label="Xóa" class="p-mr-2" (click)="DeleteListNhomCungUng()"></p-button>
+    <p-button label="Xuất Excel" class="p-mr-2" (click)="ExportNhomCungUng()"></p-button>
+    <p-button label="Nhập Excel" (click)="ImportNhomCungUng()"></p-button>
+  </div>
+
+  <!-- searching -->
+  <div class="p-inputgroup" style="width: 200px"> 
+    <input type="text" pInputText class="p-inputtext-sm" [(ngModel)]="filter.keyword" (keyup.enter)="LoadListNhomCungUng()"> 
+    <button pButton pRipple type="button" icon="pi pi-search" class="p-button-rounded p-button-secondary p-button-text" (click)="LoadListNhomCungUng()"></button>
+    <button pButton pRipple type="button" icon="pi pi-refresh" class="p-button-rounded p-button-secondary p-button-text" (click)="LoadListNhomCungUng()"></button>
+  </div>
+</div>
+
+<!-- table -->
+<div>
+  <p-table [value]="items" styleClass="p-datatable-sm p-datatable-gridlines">
+    <ng-template pTemplate="colgroup"> 
+      <colgroup>
+        <col style="width: 50px">
+        <col style="width: 50px">
+        <col style="width: 200px">
+        <col>
+        <col>
+        <col>
+        <col style="width: 50px">
+      </colgroup>
+    </ng-template>
+    <ng-template pTemplate="header">
+      <tr>
+        <th>
+          <p-checkbox [(ngModel)]="checkedAll" binary="true" inputId="binary"
+          (onChange)="CheckAllNhomCungUng($event)"></p-checkbox>
+        </th>
+        <th>STT</th>
+        <th>Mã </th>
+        <th>Tên</th>
+        <th>Ghi chú</th>
+        <th>Trạng thái</th>
+        <th></th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-item let-i="rowIndex">
+      <tr>
+        <td class="text-center">
+          <p-checkbox [(ngModel)]="item.checked" binary="true" inputId="binary"></p-checkbox>
+        </td>
+        <td class="text-center">  {{ 20 * (paging.currentPage - 1) + i + 1 }}</td>
+        <td class="text-center">{{item.Ma}}</td>
+        <td >{{item.Ten}}</td>
+        <td>{{item.GhiChu}}</td>
+        <td class="text-center">
+          <p-checkbox [(ngModel)]="item.HoatDong" binary="true" [disabled]="true" inputId="binary"></p-checkbox>
+        </td>
+        <td class="text-center">
+          <button pButton pRipple type="button" icon="pi pi-pencil" class="p-button-rounded p-button-text" style="border-radius: 2px" (click)="UpdateNhomCungUng(item.Id)"></button>
+        </td>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="summary">
+      <div class="p-d-flex p-ai-center p-jc-between p-px-2">
+        Tổng số bản ghi {{paging.TotalCount}}.
+        <p-paginator #paginator [totalRecords]="paging.TotalCount" [rows]="20" (onPageChange)="changePage($event)"></p-paginator>
+      </div>
+    </ng-template>
+  </p-table>
+</div>

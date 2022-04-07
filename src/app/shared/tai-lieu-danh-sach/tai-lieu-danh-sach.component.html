@@ -1,0 +1,58 @@
+<div class="list-danh-sach">
+
+    <!-- title -->
+    <header>
+        <h3 class="title">Danh sách tài liệu</h3>
+        <span class="pc-upload">
+            <p>Tải lên từ máy tính</p>
+            <input type="file">
+        </span>
+        <span class="self-upload">
+            <a>
+                Tải lên từ tủ hồ sơ
+            </a>
+        </span>
+    </header>
+
+    <!-- Content -->
+    <p-table [columns]="cols" [value]="listTaiLieu" styleClass="p-datatable-gridlines p-datatable-sm">
+        <ng-template pTemplate="header" let-columns>
+            <tr>
+                <th style="width: 50px">#</th>
+                <th style="width: 50px">STT</th>
+                <th *ngFor="let col of columns">
+                    {{col}}
+                </th>
+                <th style="width: 50px">
+
+                </th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-tailieu let-columns="columns" let-i="rowIndex">
+            <tr>
+                <td class="text-center">{{tailieu.id}}</td>
+                <td class="text-center">{{i+1}}</td>
+                <td>{{tailieu.ten}}</td>
+                <td>{{tailieu.loai}}</td>
+                <td>{{tailieu.tacgia}}</td>
+                <td class="text-center">{{tailieu.ngaytao | date:'dd/MM/yyyy'}}</td>
+                <td>{{tailieu.ghichu}}</td>
+                <td class="text-center">
+                    <button pButton pRipple type="button" icon="pi pi-trash" class="p-button-rounded p-button-danger p-button-text" (click)="deleteTaiLieu(tailieu.ten)"></button>
+                </td>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" *ngIf="listTaiLieu.length===0">
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+        </ng-template>
+    </p-table>
+
+</div>

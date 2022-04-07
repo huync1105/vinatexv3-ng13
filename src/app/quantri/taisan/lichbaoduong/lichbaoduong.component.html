@@ -1,0 +1,74 @@
+<p-table [value]="items" styleClass="p-datatable-customers p-datatable-gridlines p-datatable-sm" [scrollable]="true">
+    <ng-template pTemplate="colgroup">
+        <colgroup>
+            <col>
+            <col>
+            <col>
+            <col>
+            <col>
+            <col>
+            <col>
+            <col>
+            <col>
+            <col>
+            <col>
+            <col>
+            <col>
+            <col>
+            <col>
+            <col>
+            <col>
+            <col>
+        </colgroup>
+    </ng-template>
+    <ng-template pTemplate="header">
+        <tr>
+            <th rowspan="2" class="text-center">Chu kỳ bảo dưỡng</th>
+            <th colspan="16" class="text-center">Số tháng</th>
+        </tr>
+        <tr>
+            <th class="text-center">3</th>
+            <th class="text-center">6</th>
+            <th class="text-center">9</th>
+            <th class="text-center">12</th>
+            <th class="text-center">15</th>
+            <th class="text-center">18</th>
+            <th class="text-center">21</th>
+            <th class="text-center">24</th>
+            <th class="text-center">27</th>
+            <th class="text-center">30</th>
+            <th class="text-center">33</th>
+            <th class="text-center">36</th>
+            <th class="text-center">39</th>
+            <th class="text-center">42</th>
+            <th class="text-center">45</th>
+            <th class="text-center">48</th>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-item let-i="rowIndex">
+        <!-- <tr>
+            <td class="text-center">
+                {{ 20 * (paging.CurrentPage - 1) + i + 1 }}
+            </td>
+            <td class="text-center">{{item.soQuyTrinh}}</td>
+            <td class="text-center">{{item.created|date:'dd/MM/yyyy'}}</td>
+            <td class="text-center">{{item.noiDung}}</td>
+            <td class="text-center">{{item.tenPhanXuong}}</td>
+            <td class="text-center">{{item.ngayBatDau|date:'dd/MM/yyyy'}}</td>
+            <td class="text-center">{{item.ngayKetThuc|date:'dd/MM/yyyy'}}</td>
+            <td class="text-center" *ngFor="let col of cols">
+                {{item[col.field]}}
+            </td>
+            <td class="text-center"> 
+                <button pButton pRipple type="button" icon="pi pi-pencil"
+                    class="p-button-text p-button-sm p-button-secondary p-mr-2" pTooltip="Chỉnh sửa" (click)="changeParam(item.id)"></button>
+            </td>
+        </tr> -->
+    </ng-template>
+    <ng-template pTemplate="summary">
+        <!-- <div class="p-d-flex p-ai-center p-jc-between">
+            Tổng số bản ghi {{paging.TotalItem}}.<p-paginator #paginator [totalRecords]="paging.TotalItem" [rows]="20"
+                (onPageChange)="changePage($event)"></p-paginator>
+        </div> -->
+    </ng-template>
+</p-table>

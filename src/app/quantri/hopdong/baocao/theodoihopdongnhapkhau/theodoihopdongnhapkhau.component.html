@@ -1,0 +1,158 @@
+<div class="p-mb-3 p-mt-3">
+    <h4 style="color:#1f2779">Theo dõi hợp đồng nhập khẩu</h4>
+</div>
+
+<p-toolbar styleClass=" p-p-2">
+    <ng-template pTemplate="left"></ng-template>
+     <ng-template pTemplate="right">
+        <div class="p-d-flex p-ai-center p-jc-between p-mb-3 flex-column flex-lg-row">
+    
+            <div class="d-flex flex-column flex-lg-row">
+                <div class="p-mr-2">
+                    <p-dropdown [options]="listNhaCungCap" placeholder="Nhà cung cấp" styleClass="p-inputtext-sm"
+                        [(ngModel)]="filter.NhaCungCap" optionLabel="name" [showClear]="true"></p-dropdown>
+                </div>
+                <div class="p-mr-2">
+                    <p-calendar dateFormat="dd/mm/yy" inputStyleClass="p-inputtext-sm" [showIcon]="true"
+                        [(ngModel)]="filter.TuNgay" inputId="icon" placeholder="Từ ngày">
+                    </p-calendar>
+                </div>
+                <div class="p-mr-2">
+                    <p-calendar dateFormat="dd/mm/yy" inputStyleClass="p-inputtext-sm" [showIcon]="true"
+                        [(ngModel)]="filter.DenNgay" inputId="icon" placeholder="Đến ngày">
+                    </p-calendar>
+                </div>
+                <div class="p-inputgroup" style="width:200px">
+                    <input type="text" placeholder="Tìm kiếm" class="p-inputtext-sm" pInputText (keyup.enter)="GetListQuyTrinh" [(ngModel)]="filter.KeyWord"/>
+                    <button type="button" pButton pRipple icon="pi pi-refresh" class="p-button-secondary p-button-sm p-button-text"(click)="resetFilter()"></button>
+                </div>
+                <div>
+                    <button pButton pRipple type="button" label="Xuất báo cáo" class="p-button-sm"
+                        (click)="XuatBaoCao()"></button>
+                </div>
+                
+            </div>
+        </div>
+         </ng-template>
+    </p-toolbar>
+
+    <p-tabView (onChange)="changeTab($event)">
+        <p-tabPanel header="Đang giao dịch">
+
+        </p-tabPanel>
+        <p-tabPanel header="Đã kết thúc">
+
+        </p-tabPanel>
+    </p-tabView>
+
+
+<div class="p-mt-3">
+    <p-table [value]="items"  styleClass="p-datatable-customers p-datatable-gridlines p-datatable-sm" [rowHover]="true">
+        <ng-template pTemplate="colgroup">
+            <colgroup>
+                <!-- <col style="width:50px">
+                <col *ngFor="let col of cols" [ngStyle]="{width:col.width}">
+                <col style="width:500px"> -->
+                <col  style="width:5%;">
+                <col  style="width:5%;">
+                <col  style="width:5%;">
+                <col  style="width:5%;">
+                <col  style="width:5%;">
+                <col  style="width:5%;">
+                <col  style="width:5%;">
+                <col  style="width:8%;">
+                <col  style="width:15%;">
+                <col style="width:10%;">
+                <col  style="width:10%;">
+                <col  style="width:10%;">
+                <col style="width:10%;">
+                <col  style="width:10%;">
+                <col  style="width:10%;">
+                <col  style="width:5%;">
+                <col  style="width:8%;">
+                <col  style="width:6%;">
+
+            </colgroup>
+        </ng-template>
+        <ng-template pTemplate="header">
+            <tr>
+                <!-- <th rowspan="2" class="text-center">STT</th>
+                <th rowspan="2" *ngFor="let header of cols">
+                    {{header.header}}
+                </th> -->
+                <th rowspan="2">STT</th>
+                <th rowspan="2">Số hợp đồng</th>
+                <th rowspan="2">Ngày ký</th>
+                <th rowspan="2">Đại lý</th>
+                <th rowspan="2">Nhà cung cấp</th>
+                <th rowspan="2">Loại bông</th>
+                <th rowspan="2">Chỉ tiêu chất lượng</th>
+                <th rowspan="4">Số lượng ký HĐ(Tấn)</th>
+                <th rowspan="2">Đơn giá CIF HP(USD/Kg)</th>
+                <th rowspan="2">Thanh toán</th>
+                <th rowspan="2">Dự kiến giao hàng</th>
+                <th rowspan="2">Dự kiến về HP</th>
+                <th rowspan="2">Dự kiến đơn vị</th>
+                <th colspan="3">Số lượng(Kg)</th>
+                <th colspan="2">Chất lượng thực tế kho</th>
+                              
+            </tr>
+            <tr>
+                <th>Invoice</th>
+                <th>Nhập kho</th>
+                <th>Chênh lệnh</th>
+                <th>Đánh giá</th>
+                <th>Kết luận</th>
+               
+                
+             </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-item let-i="rowIndex">
+            <tr>
+                <!-- <td class="text-center">
+                    {{ 10 * (paging.CurrentPage - 1) + i + 1 }}
+                </td>
+                <td class="text-center" *ngFor="let col of cols">
+                    {{item[col.field]}}
+                </td> -->
+
+
+                <td class="text-center">
+                    {{ 10 * (paging.CurrentPage - 1) + i + 1 }}
+                </td>
+                <td class="text-center">{{ item.SoHopDong }}</td>
+                <td class="text-center">{{ item.NgayKy }}</td>
+                <td class="text-center">{{ item.DaiLy }}</td>
+                <td class="text-center">{{ item.NhaCungCap }}</td>
+                <td class="text-center">{{ item.LoaiBong}}</td>
+                <td class="text-center">{{ item.ChiTieuChatLuong }}</td>
+                <td class="text-center">{{ item.SoLuongKiHD }}</td>
+                <td class="text-center">{{ item.DonGiaCIF }}</td>
+                <td class="text-center">{{ item.ThanhToan }}</td>
+                <td class="text-center">{{ item.DuKienGiaoHang }}</td>
+                <td class="text-center">{{ item.DuKienVeHP }}</td>
+                <td class="text-center">{{ item.DuKienVeDonVi }}</td>
+                <td class="text-center">{{ item.Invoice }}</td>
+                <td class="text-center">{{ item.NhapKho }}</td>
+                <td class="text-center">{{ item.ChenhLenh }}</td>
+                <td class="text-center">{{ item.DanhGia }}</td>
+                <td class="text-center">{{ item.KetLuan }}</td>
+                
+
+                
+
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="summary">
+            <div class="p-d-flex p-ai-center p-jc-between">
+                Tổng số bản ghi {{paging.TotalItem}}.<p-paginator #paginator [totalRecords]="paging.TotalItem" [rows]="20"
+                    (onPageChange)="changePage($event)"></p-paginator>
+            </div>
+        </ng-template>
+    </p-table>
+</div>
+
+
+
+
+

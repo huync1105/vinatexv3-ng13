@@ -1,0 +1,143 @@
+.comment {
+    width: 100%;
+    padding: 20px;
+}
+
+.title {
+    font-size: 16px;
+    font-weight: bold;
+    margin-bottom: 16px;
+}
+
+.comment-container {
+    width: 100%;
+    display: flex;
+}
+
+.comment-content {
+    min-width: 400px;
+    width: 40%;
+    display: flex;
+    justify-content: flex-start;
+    margin-bottom: 16px;
+}
+
+.user-img {
+    margin-right: 16px;
+    width: 60px;
+    height: 100%;
+}
+
+.user-img img {
+    display: block;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+}
+
+.comment-detail {
+    display: flex;
+    flex-direction: column;
+}
+
+.time {
+    margin-bottom: 4px;
+}
+
+.comment-text {
+    display: flex;
+    flex-direction: column;
+    padding: 12px;
+    background-color: #3d7eff;
+    border-radius: 2px 10px 10px 10px;
+}
+
+.comment-text p {
+    color: #fff;
+    margin-bottom: 0;
+}
+
+.right {
+    justify-content: flex-end;
+}
+
+.right .comment-content {
+    flex-direction: row-reverse;
+}
+
+.right .comment-detail {
+    align-items: flex-end;
+}
+
+.right .comment-text {
+    border-radius: 10px 2px 10px 10px;
+}
+
+.comment-input {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.message {
+    max-width: 88%!important;
+    min-width: 50%!important;
+    padding: 8px 16px;
+    margin-right: 8px;
+    border-radius: 20px;
+    border: none;
+    outline: none;
+    background-color: rgb(204, 204, 204);
+    white-space: pre;
+}
+
+.comment-input-type {
+    display: flex;
+}
+
+.upload-file-list {
+    position: relative;
+    display: none;
+    max-width: 88%;
+    margin-bottom: 0;
+    padding: 10px;
+    list-style-type: none;
+    background-color: rgb(204, 204, 204);   
+    border-radius: 20px 20px 0 0;
+}
+
+.upload-file-list::after {
+    position: absolute;
+    content: '';
+    bottom: 0;
+    left: 10px;
+    width: 98%;
+    height: 1px;
+    background-color: rgb(136, 136, 136);
+}
+
+.display {
+    display: flex;
+}
+
+.upload-file-item {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+    margin-right: 6px;
+    height: 100px;
+    color: #fff;
+    background-color: rgb(124, 124, 124);
+    border-radius: 10px;
+}
+
+.delete-file-btn {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+}
+
+.message-fixed-radius {
+    border-radius: 0 0 20px 20px;
+}

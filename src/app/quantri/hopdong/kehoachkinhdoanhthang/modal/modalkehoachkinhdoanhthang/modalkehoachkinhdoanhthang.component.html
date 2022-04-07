@@ -1,0 +1,213 @@
+<div class="modal-header">
+    <h5 class="modal-title">Kế hoạch kinh doanh tháng</h5>
+    <div class="d-flex flex-column flex-lg-row">
+        <div>
+            <span style="font-weight: bold;">Số phiếu:</span> <span>{{item.SoQuyTrinh}}</span>
+        </div>
+        <div class="ml-lg-3 mr-lg-3">
+            <span style="font-weight: bold;">TG Tạo:</span>
+        </div>
+        <div>
+            <span style="font-weight: bold;">TG Duyệt:</span>
+        </div>
+    </div>
+</div>
+<div class="modal-body">
+    <div class="p-d-flex p-flex-row p-jc-between">
+        <div class="modal-bt p-mb-4">
+            <button pButton pRipple type="button" label="Quay lại" class="p-mr-2 p-button-sm"
+                (click)="activeModal.dismiss('close')"></button>
+            <button pButton *ngIf="checkbutton.Ghi" pRipple type="button" label="Lưu nháp" class="p-mr-2 p-button-sm "
+                (click)="GhiLai()"></button>
+            <button pButton *ngIf="checkbutton.ChuyenTiep" pRipple type="button" label="Chấp nhận"
+                class="p-mr-2 p-button-sm " (click)="ChapNhan()"></button>
+            <button pButton *ngIf="checkbutton.KhongDuyet" pRipple type="button" label="Không duyệt"
+                class="p-mr-2 p-button-sm " (click)="KhongDuyet()"></button>
+        </div>
+    </div>
+    <p-panel header="Thông tin chung">
+        <div class="p-col-12 p-0">
+            <div class="p-grid">
+                <div class="p-col-12 p-lg-6 p-p-3 d-flex flex-column flex-lg-row">
+                    <label class="p-col-12 p-lg-3 p-p-0 my-auto">Chọn kế hoạch năm đã duyệt:</label>
+                    <div class="p-col-12 p-lg-9 p-p-0">
+                        <p-dropdown [filter]="true" [options]="listKeHoachNam" placeholder="Chọn kế hoạch năm đã duyệt"
+                            [(ngModel)]="item.IdKeHoachKinhDoanhNamGoc" (onChange)="GetThongTinChoKeHoachThang()"
+                            styleClass="p-inputtext-sm">
+                        </p-dropdown>
+                    </div>
+                </div>
+                <div class="p-col-12 p-lg-6 p-p-3 d-flex flex-column flex-lg-row">
+                    <label class="p-col-12 p-lg-3 p-p-0 my-auto">Năm kế hoạch:</label>
+                    <div class="p-col-12 p-lg-9 p-p-0">
+                        <p-dropdown [disabled]="true" [filter]="true" [options]="listNam" placeholder="----"
+                            [(ngModel)]="item.Nam" styleClass="p-inputtext-sm">
+                        </p-dropdown>
+                    </div>
+                </div>
+                <div class="p-col-12 p-lg-6 p-p-3 d-flex flex-column flex-lg-row">
+                    <label class="p-col-12 p-lg-3 p-p-0 my-auto">Tháng kế hoạch:</label>
+                    <div class="p-col-12 p-lg-9 p-p-0">
+                        <p-dropdown [filter]="true" [options]="listThang" placeholder="Chọn tháng"
+                            [(ngModel)]="item.Thang" (onChange)="GetThongTinChoKeHoachThang()"
+                            styleClass="p-inputtext-sm">
+                        </p-dropdown>
+                    </div>
+                </div>
+
+                <div class="p-col-12 p-lg-6 p-p-3 d-flex flex-column flex-lg-row">
+                    <label class="p-col-12 p-lg-3 p-p-0 my-auto">Người lập: </label>
+                    <div class="p-col-12 p-lg-9 p-p-0">
+                        {{item.TenNguoiLap}}
+                    </div>
+                </div>
+                <div class="p-col-12 p-lg-6 p-p-3 d-flex flex-column flex-lg-row">
+                    <label class="p-col-12 p-lg-3 p-p-0 my-auto">Ngày lập: </label>
+                    <div class="p-col-12 p-lg-9 p-p-0">
+                        <p-calendar dateFormat="dd/mm/yy" inputStyleClass="p-inputtext-sm" [monthNavigator]="true"
+                            [locale]="lang" [yearNavigator]="true" [yearRange]="yearRange" [showIcon]="true"
+                            inputId="icon" [(ngModel)]="item.NgayLap" placeholder="dd/mm/yyyy">
+                        </p-calendar>
+                    </div>
+                </div>
+                <div class="p-col-12 p-lg-6 p-p-3 d-flex flex-column flex-lg-row">
+                    <label class="p-col-12 p-lg-3 p-p-0 my-auto">Nội dung: </label>
+                    <div class="p-col-12 p-lg-9 p-p-0">
+                        <input type="text" class="p-inputtext-sm" [(ngModel)]="item.NoiDung" pInputText />
+                    </div>
+                </div>
+                <div class="p-col-12 p-lg-6 p-p-3 d-flex flex-column flex-lg-row">
+                    <label class="p-col-12 p-lg-3 p-p-0 my-auto">Ghi chú: </label>
+                    <div class="p-col-12 p-lg-9 p-p-0">
+                        <input type="text" class="p-inputtext-sm" [(ngModel)]="item.GhiChu" pInputText />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </p-panel>
+    <p-panel header="Chọn sản phẩm">
+        <div class="p-col-12 p-p-0 pintable-container" style="height: 77vh;" voiPintable [pinnedCols]="1">
+            <table>
+                <thead>
+                    <tr>
+                        <th class="tc-w-200">Sản phẩm</th>
+                        <th class="tc-w-200">Nhà máy</th>
+                        <th class="tc-w-200">Phân xưởng</th>
+                        <th class="tc-w-160">Kế hoạch tháng {{item.Thang}}</th>
+                        <th class="tc-w-160">Theo kế hoạch năm {{item.Nam}}</th>
+                        <th class="tc-w-160">Thực tế</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <ng-container *ngFor="let item of item.lstKH_KeHoachKinhDoanhThang_SanPham">
+                        <tr>
+                            <td class="text-center tc-w-200" style="background-color: white;">
+                                {{item.TenSanPham}}
+                            </td>
+                            <td class="text-center tc-w-200">
+                                {{item.firstNhaMay.TenNhaMay}}
+                            </td>
+                            <td class="text-center tc-w-200">
+
+                            </td>
+                            <td class="text-center tc-w-160">
+                                <p-inputNumber [disabled]="true" [minFractionDigits]="0" locale="en-EN"
+                                    [(ngModel)]="item.firstNhaMay.TongSanLuongThangTheoKeHoachThang">
+                                </p-inputNumber>
+                            </td>
+                            <td class="text-center tc-w-160">
+                                <p-inputNumber [disabled]="true" [minFractionDigits]="0" locale="en-EN"
+                                    [(ngModel)]="item.firstNhaMay.TongSanLuongThangTheoKeHoachNam">
+                                </p-inputNumber>
+                            </td>
+                            <td class="text-center tc-w-160">
+                                <p-inputNumber [disabled]="true" [minFractionDigits]="0" locale="en-EN"
+                                    [(ngModel)]="item.firstNhaMay.TongSanLuongThangTheoThucTeSanXuat">
+                                </p-inputNumber>
+                            </td>
+                        </tr>
+                        <tr *ngFor="let phanxuong of item.firstNhaMay.lstKH_KeHoachKinhDoanhThang_SanPham_PhanXuong">
+                            <td class="text-center tc-w-200" style="background-color: white;">
+                            </td>
+                            <td class="text-center tc-w-200">
+                            </td>
+                            <td class="text-center tc-w-200">
+                                {{phanxuong.TenPhanXuong}}
+                            </td>
+                            <td class="text-center tc-w-160">
+                                <p-inputNumber [minFractionDigits]="0" locale="en-EN"
+                                    [(ngModel)]="phanxuong.SanLuongThang" (onBlur)="TinhTongSanLuongKeHoachNhaMay(item.firstNhaMay)">
+                                </p-inputNumber>
+                            </td>
+                            <td class="text-center tc-w-160">
+                            </td>
+                            <td class="text-center tc-w-160">
+                                <p-inputNumber [disabled]="true" [minFractionDigits]="0" locale="en-EN"
+                                    [(ngModel)]="phanxuong.SanLuongThucTe">
+                                </p-inputNumber>
+                            </td>
+                        </tr>
+                        <ng-container *ngFor="let nhaMay of item.lstKH_KeHoachKinhDoanhThang_SanPham_NhaMay">
+                            <tr>
+                                <td class="text-center tc-w-200" style="background-color: white;">
+                                </td>
+                                <td class="text-center tc-w-200">
+                                    {{nhaMay.TenNhaMay}}
+                                </td>
+                                <td class="text-center tc-w-200">
+                                </td>
+                                <td class="text-center tc-w-160">
+                                    <p-inputNumber [minFractionDigits]="0" [disabled]="true" locale="en-EN"
+                                        [ngModel]="nhaMay.TongSanLuongThangTheoKeHoachThang">
+                                    </p-inputNumber>
+                                </td>
+                                <td class="text-center tc-w-160">
+                                    <p-inputNumber [minFractionDigits]="0" [disabled]="true" locale="en-EN"
+                                        [ngModel]="nhaMay.TongSanLuongThangTheoKeHoachNam">
+                                    </p-inputNumber>
+                                </td>
+                                <td class="text-center tc-w-160">
+                                    <p-inputNumber [minFractionDigits]="0" [disabled]="true" locale="en-EN"
+                                        [ngModel]="nhaMay.TongSanLuongThangTheoThucTeSanXuat">
+                                    </p-inputNumber>
+                                </td>
+                            </tr>
+                            <tr *ngFor="let phanxuong of nhaMay.lstKH_KeHoachKinhDoanhThang_SanPham_PhanXuong">
+                                <td class="text-center tc-w-200" style="background-color: white;">
+                                </td>
+                                <td class="text-center tc-w-200">
+                                </td>
+                                <td class="text-center tc-w-200">
+                                    {{phanxuong.TenPhanXuong}}
+                                </td>
+                                <td class="text-center tc-w-160">
+                                    <p-inputNumber [minFractionDigits]="0" locale="en-EN"
+                                        [(ngModel)]="phanxuong.SanLuongThang" (onBlur)="TinhTongSanLuongKeHoachNhaMay(nhaMay)">
+                                    </p-inputNumber>
+                                </td>
+                                <td class="text-center tc-w-160">
+                                </td>
+                                <td class="text-center tc-w-160">
+                                    <p-inputNumber [disabled]="true" [minFractionDigits]="0" locale="en-EN"
+                                        [(ngModel)]="phanxuong.SanLuongThucTe">
+                                    </p-inputNumber>
+                                </td>
+                            </tr>
+                        </ng-container>
+                    </ng-container>
+                    <tr *ngFor="let dummy of dummyList" style="height: 40px;">
+                        <td class="tc-w-200" style="background-color: white;"></td>
+                        <td class="tc-w-200"></td>
+                        <td class="tc-w-200"></td>
+                        <td class="tc-w-160"></td>
+                        <td class="tc-w-160"></td>
+                        <td class="tc-w-160"></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </p-panel>
+</div>
+<div class="modal-footer">
+
+</div>

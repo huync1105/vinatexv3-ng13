@@ -1,0 +1,55 @@
+<div class="p-grid" (mouseover)="ChangeData()">
+    <p-table [value]="item|isXoa" styleClass="p-datatable-customers p-datatable-gridlines p-datatable-sm" [scrollable]="true">
+        <ng-template pTemplate="colgroup">
+            <colgroup>
+                <col>
+                <col>
+                <col>
+            </colgroup>
+        </ng-template>
+        <ng-template pTemplate="header">
+            <tr>
+                <th class="text-center">Số lượng</th>
+                <th class="text-center">Số lượng cảnh báo</th>
+                <th class="text-center">Loại cảnh báo</th>
+                <th class="text-center"></th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-item let-i="rowIndex">
+            <tr>
+                <td>
+                    <p-inputNumber [minFractionDigits]="0" locale="en-EN" [(ngModel)]="item.SoLuong">
+                    </p-inputNumber>
+                </td>
+                <td>
+                    <p-inputNumber [minFractionDigits]="0" locale="en-EN" [(ngModel)]="item.SoLuongCanhBao">
+                    </p-inputNumber>
+                </td>
+                <td class="text-center" *ngFor="let data of item.listChiTiet">
+                    <p-checkbox [(ngModel)]="data.isBaoDuong" binary="true" inputId="binary" (onChange)="checked($event,data)">
+                    </p-checkbox>
+                </td>
+                <td class="text-center">
+                    <button pButton pRipple type="button" icon="pi pi-trash" class="p-button-text p-button-sm p-button-secondary p-mr-2" pTooltip="Xóa" (click)="Xoa(item,i)"></button>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <p-inputNumber [minFractionDigits]="0" locale="en-EN" [(ngModel)]="newTableItem.SoLuong">
+                    </p-inputNumber>
+                </td>
+                <td>
+                    <p-inputNumber [minFractionDigits]="0" locale="en-EN" [(ngModel)]="newTableItem.SoLuongCanhBao">
+                    </p-inputNumber>
+                </td>
+                <td class="text-center" *ngFor="let data of newTableItem.listChiTiet">
+                    <p-checkbox [(ngModel)]="data.isBaoDuong" binary="true" inputId="binary" (onChange)="checked($event,data)">
+                    </p-checkbox>
+                </td>
+                <td class="text-center">
+                    <button pButton pRipple type="button" icon="pi pi-plus" class="p-button-rounded p-button-sm " (click)="add()"></button>
+                </td>
+            </tr>
+        </ng-template>
+    </p-table>
+</div>

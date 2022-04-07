@@ -1,0 +1,161 @@
+<div class="modal-header">
+    <!-- {{opt==='add'?'Thêm mới':'Cập nhật'}} -->
+    <h5 class="modal-title">{{opt==='add'?'Thêm mới':'Cập nhật'}}&nbsp;thông tin thanh toán/tạm ứng</h5>
+    <button *ngIf="false" type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+
+<div class="modal-body">
+    <div class="p-d-flex p-flex-row p-jc-between">
+        <div class="modal-bt p-mb-4">
+            <button pButton pRipple type="button" label="Chấp nhận" (click)="accept('add')"
+                class="p-mr-2 p-button-sm"></button>
+            <button pButton pRipple type="button" label="Đóng" class="p-mr-2 p-button-sm"
+                (click)="activeModal.dismiss('close')"></button>
+        </div>
+    </div>
+    <div class="p-grid">
+        <div class="p-col-12 p-lg-6 p-p-3 d-flex flex-column flex-lg-row">
+            <label class="p-col-12 p-lg-2 p-p-0 my-auto">Nội dung: </label>
+            <div class="p-col-12 p-lg-10 p-p-0">
+                <input type="text" [(ngModel)]="item.noiDung" class="p-inputtext-sm" pInputText />
+            </div>
+        </div>
+        <div class="p-col-12 p-lg-6 p-p-3 d-flex flex-column flex-lg-row">
+            <label class="p-col-12 p-lg-2 p-p-0 my-auto">Loại :</label>
+            <div class="p-col-12 p-lg-10 p-p-0">
+                <p-dropdown [filter]="true" [(ngModel)]="item.loaiThanhToan" (onChange)="onChangeLoaiThanhToan($event)"
+                    [options]="optionsLoaiThanhToan" placeholder="Chọn loại thanh toán" styleClass="p-inputtext-sm">
+                </p-dropdown>
+            </div>
+        </div>
+
+        <div class="p-col-12 p-lg-6 p-p-3 d-flex flex-column flex-lg-row">
+            <label class="p-col-12 p-lg-2 p-p-0 my-auto">Giá trị: </label>
+            <div class="p-col-12 p-lg-6 p-p-0">
+                <p-inputNumber [minFractionDigits]="2" [(ngModel)]="item.giaTri" locale="en-EN" (onBlur)="changeGiaTri()" [disabled]="item.TheoGiaTri">
+                </p-inputNumber>
+            </div>
+            <label class="p-col-12 p-lg-2 my-auto">Phần trăm: </label>
+            <div class="p-col-12 p-lg-2 p-p-0">
+                <div class="p-inputgroup p-d-flex">
+                    <p-inputNumber [minFractionDigits]="2" locale="en-EN" [(ngModel)]="item.tyLe" (onBlur)="changeTyLe()" [disabled]="item.TheoGiaTri">
+                    </p-inputNumber>
+                    <span class="p-inputgroup-addon">%</span>
+                </div>
+            </div>
+        </div>
+        <div class="p-col-12 p-lg-6 p-p-3 d-flex flex-column flex-lg-row">
+            <div class="p-col-12  p-lg-6 p-mb-3 p-p-0 d-flex flex-column flex-lg-row  p-py-0 ">
+
+                <div class="p-col-12 p-lg-2 p-d-flex p-ml-lg-0 p-p-0">
+                    <p-checkbox binary="true" [(ngModel)]="item.TheoHopDong" inputId="theogiatrihopdong"
+                        (onChange)="selectTheoGiaTriHopDong()"></p-checkbox>
+                </div>
+                <label class="p-col-12 p-lg-10 p-p-0 my-auto" for="theogiatrihopdong">Theo giá trị hợp đồng</label>
+            </div>
+
+            <div class="p-col-12  p-lg-6 p-mb-3 d-flex flex-column flex-lg-row p-px-0 p-py-0">
+
+                <div class="p-col-12 p-lg-2 p-d-flex p-jc-end p-mr-4 p-ml-lg-2 p-ml-lg-0 p-p-0">
+                    <p-checkbox binary="true" [(ngModel)]="item.TheoGiaTri" inputId="gttheodotgiaohang"
+                        (onChange)="selectTheoGiaTriDotGiaoHang()"></p-checkbox>
+                </div>
+                <label class="p-col-12 p-lg-10 p-p-0 my-auto" for="gttheodotgiaohang">Theo giá trị đợt giao hàng</label>
+            </div>
+        </div>
+
+
+        <div class="p-col-12 p-lg-6 p-p-3 d-flex flex-column flex-lg-row">
+            <label class="p-col-12 p-lg-2 p-p-0 my-auto">Ngày :</label>
+            <div class="p-col-12 p-lg-10 p-p-0">
+                <p-calendar dateFormat="dd/mm/yy" inputStyleClass="p-inputtext-sm" [locale]="lang" [monthNavigator]="true" [yearNavigator]="true"
+                 [yearRange]="yearRange" [showIcon]="true" [(ngModel)]="item.ngayThanhToan" inputId="icon" placeholder="dd/mm/yyyy">
+                </p-calendar>
+            </div>
+        </div>
+        <div class="p-col-12 p-lg-6 p-p-3 d-flex flex-column flex-lg-row">
+            <div class="p-col-12 p-lg-1 p-d-flex   p-ml-lg-0 p-p-0">
+                <p-checkbox binary="true" [(ngModel)]="item.isChonThoiDiemKhac" (onChange)="toggleVisibility()"
+                    inputId="binary"></p-checkbox>
+            </div>
+            <label class="p-col-12 p-lg-11  p-p-0 my-auto">Chọn thời điểm khác</label>
+        </div>
+
+        <div *ngIf="item.isChonThoiDiemKhac" class="p-col-12 p-lg-6 p-p-3 d-flex flex-column flex-lg-row">
+            <label class="p-col-12 p-lg-2 p-p-0 my-auto">Số ngày: </label>
+            <div class="p-col-12 p-lg-10   p-p-0">
+
+                <p-inputNumber [minFractionDigits]="0" [(ngModel)]="item.soNgay" (ngModelChange)="item.soNgay = dinhDangSo($event)" locale="en-EN">
+                </p-inputNumber>
+
+            </div>
+        </div>
+        <div *ngIf="item.isChonThoiDiemKhac" class="p-col-12 p-lg-6 p-p-3 d-flex flex-column flex-lg-row">
+            <label class="p-col-12 p-lg-2 p-p-0 my-auto">Theo :</label>
+            <div class="p-col-12 p-lg-10 p-p-0">
+                <p-dropdown [filter]="true" [(ngModel)]="item.iddmTheoLoaiThanhToan"
+                    [options]="listLoaiThanhToan" placeholder="Chọn loại thanh toán" styleClass="p-inputtext-sm">
+                </p-dropdown>
+            </div>
+        </div>
+        <div class="p-col-12 p-lg-6 p-p-3 d-flex flex-column flex-lg-row">
+            <label class="p-col-12 p-lg-2 p-p-0 my-auto">Ghi chú: </label>
+            <div class="p-col-12 p-lg-10 p-p-0">
+
+                <input type="text" [(ngModel)]="item.ghiChu" class="p-inputtext-sm" pInputText />
+                <!-- <span class="p-inputgroup-addon">%</span> -->
+
+            </div>
+        </div>
+        <div class="p-grid">
+            <button pButton pRipple (click)="chonDanhMuc()" label="Danh mục tài liệu yêu cầu"
+                class="p-button-sm p-mr-2 p-my-3"></button>
+            <div></div>
+            <div class="p-col-12 p-p-0 d-flex flex-column">
+                <p-table [value]="item.listThanhToanThuTuc|isXoa"
+                    styleClass="p-datatable-sm wrap-text p-datatable-gridlines">
+                    <ng-template pTemplate="colgroup">
+                        <colgroup>
+                            <col style="width: 50px" />
+                            <col>
+                            <col>
+                            <col>
+
+
+                        </colgroup>
+                    </ng-template>
+                    <ng-template pTemplate="header">
+                        <tr>
+                            <th>STT</th>
+                            <th>Tên tài liệu</th>
+                            <th>Bản gốc</th>
+                            <th>Bản photo</th>
+                            <!-- <th></th> -->
+
+                            <!-- <th>Số máy bố trí</th> -->
+                            <!-- <th>Thao tác</th> -->
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="body" let-item let-i="rowIndex">
+                        <tr>
+                            <td class="text-center">{{ i + 1 }}</td>
+                            <td class="text-center">{{ item.tendmThanhToanThuTuc }}</td>
+                            <!-- <td class="text-center">
+                                <p-dropdown [options]="item.banGoc" placeholder="Chọn Nm" styleClass="p-inputtext-sm" [(ngModel)]="item.ChiSoMoi" (onChange)="SetChiSo($event, item)"></p-dropdown>
+                            </td> -->
+                            <td class="text-center">
+                                <p-inputNumber [minFractionDigits]="0" [(ngModel)]="item.banGoc" (ngModelChange)="item.banGoc = dinhDangSo($event)" locale="en-EN">
+                                </p-inputNumber>
+                            </td>
+                            <td class="text-center">
+                                <p-inputNumber [minFractionDigits]="0" [(ngModel)]="item.banPhoTo" (ngModelChange)="item.banPhoTo = dinhDangSo($event)" locale="en-EN">
+                                </p-inputNumber>
+                            </td>
+                        </tr>
+                    </ng-template>
+                </p-table>
+            </div>
+        </div>
+    </div>

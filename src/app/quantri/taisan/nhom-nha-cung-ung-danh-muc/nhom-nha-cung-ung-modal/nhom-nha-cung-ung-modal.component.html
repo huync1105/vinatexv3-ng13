@@ -1,0 +1,40 @@
+<!-- modal header -->
+<div class="modal-header">
+  <h5 class="modal-title">{{title}}</h5>
+</div>
+
+<!-- modal body -->
+<div class="modal-body">
+  <div class="p-d-flex p-ai-center p-mb-3">
+    <!-- <button pButton pRipple type="button" label="Quay lại" class="p-button-outlined p-mr-2" (click)="activeModal.dismiss()"></button> -->
+    <p-button label="Đóng" class="p-button-sm p-mr-2" (click)="activeModal.dismiss()"></p-button>
+    <p-button label="Ghi lại" class="p-button-sm" (click)="AddNhomCungUng()"></p-button>
+  </div>
+  <div class="p-grid">
+    <label class="p-m-0 p-lg-1 p-md-12 p-sm-12 p-d-flex p-ai-center" for="ma">
+      Mã <span class="required"> *</span>:
+    </label>
+    <div class="p-lg-9 p-md-9 p-sm-12">
+      <input type="text" pInputText [(ngModel)]="item.Ma"> 
+    </div>
+    <div class="p-d-flex p-ai-center p-jc-center p-lg-2 p-md-3 p-sm-12">
+      <p-checkbox class="p-mr-2" binary="true" inputId="binary" [(ngModel)]="item.HoatDong"></p-checkbox>
+      <label class="p-m-0" for="">Hoạt động</label>
+    </div>
+  </div>
+
+  <div class="p-grid">
+    <label class="p-m-0 p-lg-1 p-d-flex p-ai-center p-md-12 p-sm-12" for="ma">Tên: </label>
+    <div class="p-lg-11 p-md-12 p-sm-12">
+      <input type="text" pInputText [(ngModel)]="item.Ten"> 
+    </div>
+  </div>
+
+  <div class="p-grid p-mb-3">
+    <label class="p-m-0 p-lg-1 p-d-flex p-ai-center p-md-12 p-sm-12" for="ma">Ghi chú: </label>
+    <div class="p-lg-11 p-md-12 p-sm-12">
+      <input type="text" pInputText [(ngModel)]="item.GhiChu"> 
+    </div>
+  </div>
+
+</div>

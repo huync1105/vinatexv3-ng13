@@ -1,0 +1,61 @@
+<h4 class="title" style="color:#1f2779">
+    Danh mục tiêu chí đánh giá
+</h4>
+<div class="p-d-flex p-flex-column p-flex-sm-row p-jc-between p-mb-3">
+    <div class="p-d-flex p-flex-row">
+        <button pButton pRipple label="Thêm mới" icon="pi pi-plus" class="p-button-sm p-mr-2" (click)="add()"></button>
+    </div>
+    <div class="p-d-flex p-flex-row" style="width:200px">
+        <div class="p-inputgroup" style="width:200px">
+            <input type="text" placeholder="Tìm kiếm" [(ngModel)]="keyWord" (keyup.enter)="GetListdm(true)" class="p-inputtext-sm" pInputText />
+            <button type="button" pButton pRipple icon="pi pi-refresh" class="p-button-secondary p-button-text"(click)="resetFilter()" pTooltip="Làm mới" showDelay="1000" tooltipPosition="bottom"></button>
+            <button type="button" pButton pRipple icon="pi pi-search" class="p-button-secondary p-button-text" (click)="GetListdm(true)" pTooltip="Tìm kiếm" showDelay="1000" tooltipPosition="bottom"></button>
+        </div>
+    </div>
+</div>
+<p-treeTable [value]="items" [lazy]="true" [scrollable]="true" scrollHeight="65vh">
+    <ng-template pTemplate="colgroup">
+        <colgroup>
+            <col style="width: 200px;">
+            <col>
+            <col style="width: 200px;">
+            <col style="width: 200px;">
+            <col style="width: 300px;">
+            <col style="width: 100px;">
+        </colgroup>
+    </ng-template>
+    <ng-template pTemplate="header">
+        <tr>
+            <th class="text-center">Mã</th>
+            <th class="text-center">Tên</th>
+            <th class="text-center">Điểm tối đa</th>
+            <th class="text-center">Thứ tự</th>
+            <th class="text-center">Ghi chú</th>
+            <th class="text-center"></th>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-rowNode let-rowData="rowData">
+        <tr [ngStyle]="{'font-weight': rowData.isCon === false?'bold':'normal'}">
+            <td class="text-left">
+                <p-treeTableToggler [rowNode]="rowNode"></p-treeTableToggler>
+                {{rowData.ma}}</td>
+            <td class="text-left">{{rowData.ten}}</td>
+            <td class="text-right">{{rowData.diemToiDa}}</td>
+            <td class="text-right">{{rowData.thuTu}}</td>
+            <td class="text-left">{{rowData.ghiChu}}</td>
+            <td class="text-center date">
+                <button pButton pRipple type="button" icon="pi pi-pencil"
+                    class="p-button-text p-button-sm p-button-secondary p-mr-2" (click)="edit(rowData)" pTooltip="Sửa" showDelay="1000" tooltipPosition="bottom"></button>
+                <button pButton pRipple type="button" icon="pi pi-trash"
+                    class="p-button-text p-button-sm p-button-secondary" (click)="delete(rowData)" pTooltip="Xóa" showDelay="1000" tooltipPosition="bottom"></button>
+            </td>
+        </tr>
+    </ng-template>
+    <!-- <ng-template pTemplate="summary">
+        <div class="p-d-flex p-flex-column p-flex-sm-row p-jc-between">
+            Tổng số bản ghi {{paging.TotalItem}}.<p-paginator #paginator [totalRecords]="paging.TotalItem" [rows]="20"
+                (onPageChange)="changePage($event)"></p-paginator>
+        </div>
+    </ng-template> -->
+</p-treeTable>
+
