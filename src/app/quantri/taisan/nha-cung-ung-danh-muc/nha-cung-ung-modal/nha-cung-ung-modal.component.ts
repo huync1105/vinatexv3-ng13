@@ -13,6 +13,7 @@ export class NhaCungUngModalComponent implements OnInit {
 
   item: any = {};
   title: string = "";
+  opt:string = "";
 
   constructor(
     private taiSanService: TaisanService,

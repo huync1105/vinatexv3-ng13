@@ -210,7 +210,7 @@ export class DieuhanhsanxuattonghopComponent implements OnInit, AfterViewInit, O
     { label: 'Báo cáo chất lượng BCP', command: () => { this.xuatBaoCaoBanChePham() } }
   ];
   TyLeBongPhe_Hoi: any = [];
-  ThongTinLuyKeDien = {};
+  ThongTinLuyKeDien:any = {};
 
   constructor(private _services: SanXuatService, private _auth: AuthenticationService, private store: StoreService, public toastr: ToastrService) {
     this.currentUser = this._auth.currentUserValue;

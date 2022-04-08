@@ -2,7 +2,7 @@
   <div class="p-inputgroup p-lg-3 p-p-0">
     <input type="text" pInputText class="p-inputtext-sm" [(ngModel)]="filter.keyword" (keyup.enter)="SearchDanhGia(filter.keyword)"> 
     <button pButton pRipple type="button" icon="pi pi-search" class="p-button-rounded p-button-secondary p-button-text" (click)="SearchDanhGia(filter.keyword)"></button>
-    <button pButton pRipple type="button" icon="pi pi-refresh" class="p-button-rounded p-button-secondary p-button-text" (click)="ResetFilter()"></button>
+    <button pButton pRipple type="button" icon="pi pi-refresh" class="p-button-rounded p-button-secondary p-button-text" (click)="LoadData()"></button>
   </div>
 </div>
 

@@ -1,5 +1,11 @@
+import { Component } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { StoreService } from './store.service'
+
+@Component({
+    template: ''
+})
+
 export class StoreBase {
     $sub: Subscription;
     constructor(public store: StoreService) {

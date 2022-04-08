@@ -35,6 +35,10 @@ export class ChonTaiSanDieuChuyenModalComponent implements OnInit {
     this.Loaddata();
   }
 
+  resetFilter() {
+    
+  }
+
   Loaddata() {
     this._serviceTaiSan
     .GetTaiSanTheoLoai()
